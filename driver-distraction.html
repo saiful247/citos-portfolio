@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Context-Aware Driver Distraction Detection — CITOS Research · CITOS</title>
+  <meta name="description" content="Research write-up of the context-aware driver distraction detection component: EfficientNet-B0 cabin activity classification, MediaPipe gaze monitoring, YOLOv8 traffic density, and OpenStreetMap route hazards.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob page-hero__blob-right"></div>
+  <div class="decor blob page-hero__blob-left"></div>
+  <div class="page-hero__inner">
+    <span class="badge badge--caps">Research Component · R26-DS-013</span>
+    <h1>Context-Aware Driver <span class="text-gradient">Distraction Detection</span></h1>
+    <p>An intelligent driver monitoring system that combines visual distraction detection with gaze monitoring, traffic awareness, and road-context analysis to estimate real-time driving risk.</p>
+    <div class="meta-line" style="margin-block-start: 1.5rem">
+      <span class="meta-line__strong"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>W. J. K. Fernando (IT22232472)</span>
+      <span>Supervisor: Dr. Mahima Weerasinghe</span>
+      <span>Co-supervisor: Dr. Junios Anjana</span>
+    </div>
+    <div class="cluster cluster--center hero-badges"><span class="hero-badge">EfficientNet-B0</span><span class="hero-badge">MediaPipe Face Mesh</span><span class="hero-badge">YOLOv8</span><span class="hero-badge">OpenStreetMap</span><span class="hero-badge">GPS</span><span class="hero-badge">FastAPI</span><span class="hero-badge">React</span><span class="hero-badge">Python</span></div>
+    <nav aria-label="Component sections" class="cluster cluster--center nav-chips nav-chips--xs"><a href="#problem">Problem</a><a href="#context">Why Context Matters</a><a href="#architecture">Architecture</a><a href="#performance">Model Performance</a><a href="#dataset">Dataset</a><a href="#components">System Components</a><a href="#gaze">Gaze Monitoring</a><a href="#traffic">Traffic &amp; Hazards</a><a href="#scenarios">Risk Scenarios</a><a href="#dashboard">Real-Time Dashboard</a><a href="#tech-stack">Tech Stack</a><a href="#engineering">Engineering</a><a href="#limitations">Limitations</a><a href="#future">Future Work</a><a href="#documents">Documents</a></nav>
+    <div class="mt-12"><div class="flow-card switch">
+      <input type="radio" class="switch__radio" name="stream" id="stream-0" data-at="0" checked aria-label="Sensor stream 1"><input type="radio" class="switch__radio" name="stream" id="stream-1" data-at="1" aria-label="Sensor stream 2"><input type="radio" class="switch__radio" name="stream" id="stream-2" data-at="2" aria-label="Sensor stream 3"><input type="radio" class="switch__radio" name="stream" id="stream-3" data-at="3" aria-label="Sensor stream 4">
+      <div class="flow-card__head">
+        <span class="flow-card__live">Real-Time Multi-Stream Pipeline</span>
+        <span class="pill pill--slate">Interactive Flow</span>
+      </div>
+      <div class="grid mt-5" style="--cols: 2; --sm: 4; --gap: 0.5rem"><label for="stream-0" class="stream-btn tint-indigo" data-at="0">
+          <span class="stream-btn__head"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>Driver Behaviour</span>
+          <span class="stream-btn__sample">Texting (c1)</span>
+        </label><label for="stream-1" class="stream-btn tint-violet" data-at="1">
+          <span class="stream-btn__head"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>Driver Attention</span>
+          <span class="stream-btn__sample">Looking Down</span>
+        </label><label for="stream-2" class="stream-btn tint-teal" data-at="2">
+          <span class="stream-btn__head"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>Traffic Awareness</span>
+          <span class="stream-btn__sample">High Density (8)</span>
+        </label><label for="stream-3" class="stream-btn tint-amber" data-at="3">
+          <span class="stream-btn__head"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>Roadway Context</span>
+          <span class="stream-btn__sample">Sharp Curve (45m)</span>
+        </label></div>
+      <div class="flow-box mt-6"><div class="switch__panel" data-at="0">
+          <div class="flow-box__head"><span>Active Sensor Track:</span><code>Driver Camera (Cabin)</code></div>
+          <div class="flow-steps">
+            <div><small>Step 1 · Input</small><p>Driver Camera (Cabin)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 2 · Processing</small><p class="brand">EfficientNet-B0 (224×224)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 3 · Feature</small><p class="ink">c1: Texting — right hand (94.2%)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="1">
+          <div class="flow-box__head"><span>Active Sensor Track:</span><code>Driver Camera (Facial)</code></div>
+          <div class="flow-steps">
+            <div><small>Step 1 · Input</small><p>Driver Camera (Facial)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 2 · Processing</small><p class="brand">MediaPipe Face Mesh (Iris)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 3 · Feature</small><p class="ink">LOOKING DOWN (Off-road &gt; 1.8s)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="2">
+          <div class="flow-box__head"><span>Active Sensor Track:</span><code>Road Camera (Forward)</code></div>
+          <div class="flow-steps">
+            <div><small>Step 1 · Input</small><p>Road Camera (Forward)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 2 · Processing</small><p class="brand">YOLOv8 Vehicle Detection</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 3 · Feature</small><p class="ink">High Density (8 vehicles detected)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="3">
+          <div class="flow-box__head"><span>Active Sensor Track:</span><code>GPS + OpenStreetMap</code></div>
+          <div class="flow-steps">
+            <div><small>Step 1 · Input</small><p>GPS + OpenStreetMap</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 2 · Processing</small><p class="brand">OSM Graph Lookahead (150m)</p></div>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div><small>Step 3 · Feature</small><p class="ink">Sharp curve ahead (45m, Δ 48°)</p></div>
+          </div>
+        </div></div>
+      <div class="engine-box mt-5">
+        <div class="engine-box__row">
+          <div>
+            <span class="tag tag--brand"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>Context-Aware Risk Engine</span>
+            <p class="engine-box__title">Multi-Factor Sensor Fusion Result</p>
+            <p class="engine-box__text">Combines cabin activity, eye-gaze duration, forward vehicle volume, and roadway geometry into a situationally proportional safety alert.</p>
+          </div>
+          <div class="fused">
+            <span>Fused Risk</span>
+            <p>88<small>/100</small></p>
+            <em>High Risk</em>
+          </div>
+        </div>
+        <div class="warn-banner mt-4"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><p>Warning: Texting with eyes down while approaching sharp curve in traffic!</p></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section id="performance" class="anchor pb-16" style="padding-block-start: 2rem">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Model Performance</span><h2>Verified training and validation results</h2><p>Every metric below is directly derived from project training runs on the State Farm dataset. Test accuracy is not reported in the repository and is therefore not fabricated.</p></div>
+    <div class="mt-10"><div class="grid" style="--sm: 2; --lg: 4; --gap: 1rem"><div class="card metric-card lift">
+          <div>
+            <div class="metric-card__head"><span>Training Metric</span><i class="dot dot--indigo"></i></div>
+            <p class="metric-card__value">99.74%</p>
+            <h4>Final Training Accuracy</h4>
+          </div>
+          <p class="metric-card__sub">EfficientNet-B0 on State Farm training split</p>
+        </div><div class="card metric-card lift">
+          <div>
+            <div class="metric-card__head"><span>Validation Metric</span><i class="dot dot--teal"></i></div>
+            <p class="metric-card__value">84.85%</p>
+            <h4>Final Validation Accuracy</h4>
+          </div>
+          <p class="metric-card__sub">Performance on held-out validation split</p>
+        </div><div class="card metric-card lift">
+          <div>
+            <div class="metric-card__head"><span>Validation Metric</span><i class="dot dot--teal"></i></div>
+            <p class="metric-card__value">0.6121</p>
+            <h4>Best Validation Loss</h4>
+          </div>
+          <p class="metric-card__sub">Minimum loss reached during model checkpointing</p>
+        </div><div class="card metric-card lift">
+          <div>
+            <div class="metric-card__head"><span>System Metric</span><i class="dot dot--violet"></i></div>
+            <p class="metric-card__value">4 Pillars</p>
+            <h4>Context Fusion Engine</h4>
+          </div>
+          <p class="metric-card__sub">Driver behaviour + attention + traffic + hazards</p>
+        </div></div>
+    <div class="integrity mt-6">
+      <span class="integrity__icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></span>
+      <div>
+        <div class="integrity__head"><span>Scientific Integrity &amp; Generalization Gap</span><em>Δ 14.89% Gap</em></div>
+        <h4>Training accuracy is substantially higher than validation accuracy.</h4>
+        <p>Training accuracy (99.74%) is substantially higher than validation accuracy (84.85%), indicating a meaningful generalization gap that should be considered when interpreting model performance. In naturalistic in-vehicle conditions, variations in camera mounting angles, driver physiognomy, interior lighting, and steering wheel occlusions can widen this domain gap further. Independent test split metrics were not published and are therefore not claimed.</p>
+        <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+          <p class="integrity__check"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span><strong>Strict labeling:</strong> 99.74% is strictly a training metric; 84.85% is strictly a validation metric.</span></p>
+          <p class="integrity__check"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span><strong>Zero fabrication:</strong> Unreported test split metrics, FPS, or precision/recall are not invented.</span></p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section id="problem" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Research Problem</span><h2>Why an isolated distraction score is incomplete</h2><p>Driver monitoring systems that ignore external road context produce either dangerous under-alerting or continuous alarm fatigue.</p></div>
+    <div class="grid mt-12" style="--md: 2"><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Distraction severity depends on driving context</p>
+          <p class="callout__text">Traditional driver monitoring flags distraction in isolation. Looking away from the road for two seconds on an empty straight rural highway is risky, but glancing away for the exact same duration near an active intersection or in bumper-to-bumper traffic represents an imminent crash hazard.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Isolated binary alerts trigger warning fatigue</p>
+          <p class="callout__text">Systems that fire high-urgency alarms for every brief glance induce alarm fatigue, leading operators to ignore or disable safety devices. Risk interpretation must scale dynamically with immediate environmental hazards.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Action classification without gaze is blind to attention</p>
+          <p class="callout__text">A CNN classifying cabin images can mark a posture as &#x27;safe driving&#x27; while the driver&#x27;s eyes are actually diverted downward or toward side mirrors. Gaze direction and eye openness are critical prerequisites to verify visual focus on the road.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Roadway geometry bottlenecks demand proactive alerts</p>
+          <p class="callout__text">Entering sharp curves, approaching multi-lane intersections, or navigating complex road junctions demand elevated situational alertness. Detecting secondary activities in these topological zones requires escalated, actionable intervention.</p>
+        </div></div>
+    <div class="card card--brand-border mt-8">
+      <p class="title-icon bold"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>The CITOS Research Contribution</p>
+      <p class="text-sm mt-3" style="line-height: 1.75rem; color: var(--slate-700)">Conventional driver monitoring systems isolate secondary cabin activity from external driving reality. Computer vision literature extensively explores cabin activity recognition, but rarely integrates immediate road density and topological hazards into the risk verdict. Furthermore, commercial fleet telematics often log flat violation tallies without considering whether the vehicle was traversing a clear straightway or negotiating a hazardous curve. CITOS bridges cabin vision, eye-gaze tracking, forward vehicle detection, and geospatial OpenStreetMap routing into a context-aware risk engine.</p>
+    </div>
+  </div>
+</section>
+
+<section id="context" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Core Philosophy</span><h2>Why Context Matters</h2><p>Comparing identical secondary activities across differing external environments demonstrates why situational fusion is mandatory.</p></div>
+    <div class="card mt-12" style="--pad: clamp(1.5rem, 4vw, 2rem)">
+      <h4 class="mini-head mini-head--sm">The 4 Pillars of Context-Aware Driving Risk</h4>
+      <div class="grid mt-6" style="--sm: 2; --lg: 4; --gap: 1rem"><div class="pillar tint-indigo"><code>Pillar 1</code><h5>Driver Behaviour</h5><p>Secondary activities (texting, calls, drinking, radio) classified by EfficientNet-B0.</p></div><div class="pillar tint-violet"><code>Pillar 2</code><h5>Driver Attention</h5><p>Visual line of sight and sustained off-road timer tracked via MediaPipe Face Mesh.</p></div><div class="pillar tint-teal"><code>Pillar 3</code><h5>Traffic Conditions</h5><p>Surrounding vehicular congestion in active travel corridor quantified by YOLOv8.</p></div><div class="pillar tint-amber"><code>Pillar 4</code><h5>Road Hazards</h5><p>Impending sharp curves and multi-branch intersections lookahead via GPS + OSM.</p></div></div>
+      <div class="formula-box mt-8">
+        <span>Context Fusion Formula</span>
+        <p>Driver Behaviour + Driver Attention + Traffic Context + Road Context</p>
+        <i>↓</i>
+        <p class="formula-box__main">Context-Aware Risk Assessment (0–100)</p>
+        <i>↓</i>
+        <em>Actionable Proportional Warning</em>
+      </div>
+    </div>
+    <div class="grid mt-12" style="--lg: 2; --gap: 2.5rem">
+      <div>
+        <h3 class="title-2xl title-icon title-2xl--sm"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>Research Objectives</h3>
+        <ul class="check-list check-list--teal mt-6"><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Train and evaluate an EfficientNet-B0 CNN on driver cabin images for fine-grained secondary behaviour classification across 10 distinct classes.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Implement an eye and iris tracking pipeline using MediaPipe Face Mesh with neutral calibration and temporal smoothing to detect sustained off-road visual deviation.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Integrate forward road awareness via YOLOv8 vehicle detection to categorize surrounding traffic density into discrete operational tiers (Low, Medium, High).</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Develop a geospatial graph pipeline combining GPS coordinates with OpenStreetMap road network data to detect upcoming curves and intersections with distance lookahead.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Formulate a context-aware risk scoring engine that fuses driver behaviour, gaze attention, traffic density, and road hazards into calibrated risk levels (Safe, Low, Medium, High, Critical).</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Build an interactive real-time dashboard and modular FastAPI service supporting webcam capture, calibration, image analysis, and live safety telemetry.</span></li></ul>
+      </div>
+      <div>
+        <h3 class="title-2xl title-icon title-2xl--sm"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Research Questions</h3>
+        <ol class="rq-list mt-6"><li><b>RQ1</b><span>RQ1: Does EfficientNet-B0 achieve strong multi-class cabin activity recognition while maintaining parameter efficiency suitable for real-time vehicular pipelines?</span></li><li><b>RQ2</b><span>RQ2: Can iris landmark displacement relative to ocular corners reliably differentiate forward gaze from off-road visual diversion after a 30-frame calibration routine?</span></li><li><b>RQ3</b><span>RQ3: How effectively does forward traffic density estimation from YOLOv8 modulate the contextual severity of a detected driver distraction?</span></li><li><b>RQ4</b><span>RQ4: Can OpenStreetMap road topology coupled with real-time GPS coordinates reliably anticipate sharp curves and intersections ahead of the vehicle?</span></li><li><b>RQ5</b><span>RQ5: Does a multi-factor context fusion engine produce situationally proportional warnings without generating excessive false alarms in low-risk environments?</span></li></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">System Architecture</span><h2>Interactive multi-stream architecture</h2><p>Explore the decoupled sensing, computer vision, feature extraction, context fusion, and UI presentation layers.</p></div>
+    <div class="mt-12"><div class="card switch" style="--pad: clamp(1.5rem, 4vw, 2rem)">
+      <input type="radio" class="switch__radio" name="arch" id="arch-0" data-at="0" aria-label="Architecture stage 1"><input type="radio" class="switch__radio" name="arch" id="arch-1" data-at="1" aria-label="Architecture stage 2"><input type="radio" class="switch__radio" name="arch" id="arch-2" data-at="2" aria-label="Architecture stage 3"><input type="radio" class="switch__radio" name="arch" id="arch-3" data-at="3" aria-label="Architecture stage 4"><input type="radio" class="switch__radio" name="arch" id="arch-4" data-at="4" aria-label="Architecture stage 5"><input type="radio" class="switch__radio" name="arch" id="arch-5" data-at="5" aria-label="Architecture stage 6"><input type="radio" class="switch__radio" name="arch" id="arch-6" data-at="6" aria-label="Architecture stage 7"><input type="radio" class="switch__radio" name="arch" id="arch-7" data-at="7" aria-label="Architecture stage 8"><input type="radio" class="switch__radio" name="arch" id="arch-8" data-at="8" aria-label="Architecture stage 9"><input type="radio" class="switch__radio" name="arch" id="arch-9" data-at="9" aria-label="Architecture stage 10"><input type="radio" class="switch__radio" name="arch" id="arch-10" data-at="10" checked aria-label="Architecture stage 11"><input type="radio" class="switch__radio" name="arch" id="arch-11" data-at="11" aria-label="Architecture stage 12"><input type="radio" class="switch__radio" name="arch" id="arch-12" data-at="12" aria-label="Architecture stage 13"><input type="radio" class="switch__radio" name="arch" id="arch-13" data-at="13" aria-label="Architecture stage 14">
+      <div class="max-3xl">
+        <span class="tag tag--brand"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Interactive Architecture Flow</span>
+        <h3 class="widget-title">End-to-End System Architecture</h3>
+        <p class="card__text">Click any block in the architecture below to inspect its operational role, input/output contracts,
+          and underlying technology stack.</p>
+      </div>
+      <div class="arch-scroll mt-8"><div class="arch-graph"><div style="inline-size: 14rem"><label for="arch-0" class="arch-node" data-at="0"><b>Driver Camera (Cabin)</b><span>Cabin &amp; face video capture</span></label></div>
+          <div class="arch-arrow">│</div>
+          <div class="arch-row"><div style="inline-size: 12rem"><label for="arch-1" class="arch-node" data-at="1"><b>EfficientNet-B0</b><span>CNN activity classifier</span></label></div><div style="inline-size: 12rem"><label for="arch-2" class="arch-node" data-at="2"><b>MediaPipe Face Mesh</b><span>468+iris landmark tracker</span></label></div></div>
+          <div class="arch-row arch-arrow"><span>↓</span><span>↓</span></div>
+          <div class="arch-row"><div style="inline-size: 12rem"><label for="arch-3" class="arch-node" data-at="3"><b>Driver Behaviour</b><span>Activity class verdict</span></label></div><div style="inline-size: 12rem"><label for="arch-4" class="arch-node" data-at="4"><b>Driver Attention</b><span>Gaze direction &amp; timer</span></label></div></div>
+          <div class="arch-arrow">│</div>
+          <div style="inline-size: 18rem"><label for="arch-10" class="arch-node" data-at="10"><b>Context Fusion</b><span>Multi-stream synthesizer</span></label></div>
+          <div class="arch-arrow">↑</div>
+          <div class="arch-row"><div style="inline-size: 12rem"><label for="arch-8" class="arch-node" data-at="8"><b>Traffic Density</b><span>Categorical congestion level</span></label></div><div style="inline-size: 12rem"><label for="arch-9" class="arch-node" data-at="9"><b>Curves / Intersections</b><span>Topological road hazards</span></label></div></div>
+          <div class="arch-row arch-arrow"><span>↑</span><span>↑</span></div>
+          <div class="arch-row"><div style="inline-size: 12rem"><label for="arch-6" class="arch-node" data-at="6"><b>YOLOv8</b><span>Vehicle object detector</span></label></div><div style="inline-size: 12rem"><label for="arch-7" class="arch-node" data-at="7"><b>GPS + OpenStreetMap</b><span>Geospatial road network graph</span></label></div></div>
+          <div class="arch-row arch-arrow"><span>↑</span><span></span></div>
+          <div style="inline-size: 14rem"><label for="arch-5" class="arch-node" data-at="5"><b>Road Camera</b><span>Forward roadway dashcam</span></label></div>
+          <div class="arch-divider"></div>
+          <div class="arch-arrow">↓</div>
+          <div style="inline-size: 16rem"><label for="arch-11" class="arch-node" data-at="11"><b>Risk Engine</b><span>Calibrated 0–100 scoring</span></label></div>
+          <div class="arch-arrow">↓</div>
+          <div style="inline-size: 18rem"><label for="arch-12" class="arch-node" data-at="12"><b>Context-Aware Warning</b><span>Proportional driver alert</span></label></div>
+          <div class="arch-arrow">↓</div>
+          <div style="inline-size: 16rem"><label for="arch-13" class="arch-node" data-at="13"><b>React UI Dashboard</b><span>Live operator telemetry</span></label></div></div></div>
+      <div class="drawer mt-6"><div class="switch__panel" data-at="0">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>sensing</em></div>
+              <h4>Driver Camera (Cabin)</h4>
+              <p class="drawer__sub">Cabin &amp; face video capture</p>
+            </div>
+            <span class="drawer__tech">Hardware camera / WebRTC stream</span>
+          </div>
+          <p class="drawer__role">Captures in-cabin driver posture, hand placement, and facial landmarks at 30 FPS.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>In-cabin physical optical field</p></div>
+            <div class="spec"><small>Output Specification</small><p>RGB video frames (640×480)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="1">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>vision</em></div>
+              <h4>EfficientNet-B0</h4>
+              <p class="drawer__sub">CNN activity classifier</p>
+            </div>
+            <span class="drawer__tech">PyTorch / Torchvision / ImageNet weights</span>
+          </div>
+          <p class="drawer__role">Performs feature extraction and classification across 10 cabin secondary activity classes.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Standardized 224×224 normalized RGB frame</p></div>
+            <div class="spec"><small>Output Specification</small><p>Softmax probability vector across c0–c9</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="2">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>vision</em></div>
+              <h4>MediaPipe Face Mesh</h4>
+              <p class="drawer__sub">468+iris landmark tracker</p>
+            </div>
+            <span class="drawer__tech">Google MediaPipe Face Mesh API</span>
+          </div>
+          <p class="drawer__role">Regresses 3D facial topology and iris center positions to calculate horizontal/vertical gaze ratios.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Facial region crop from driver camera</p></div>
+            <div class="spec"><small>Output Specification</small><p>Iris displacement coordinates &amp; deviation timers</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="3">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>feature</em></div>
+              <h4>Driver Behaviour</h4>
+              <p class="drawer__sub">Activity class verdict</p>
+            </div>
+            <span class="drawer__tech">Heuristic severity mapping</span>
+          </div>
+          <p class="drawer__role">Interprets CNN class outputs to categorize action severity (safe driving vs high distraction).</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Predicted class label &amp; confidence</p></div>
+            <div class="spec"><small>Output Specification</small><p>Driver activity risk factor (0.0 to 1.0)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="4">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>feature</em></div>
+              <h4>Driver Attention</h4>
+              <p class="drawer__sub">Gaze direction &amp; timer</p>
+            </div>
+            <span class="drawer__tech">Moving average filter &amp; deviation counter</span>
+          </div>
+          <p class="drawer__role">Maintains temporal smoothing and fires an off-road event when gaze deviates &gt; 1.5 seconds.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Instantaneous gaze vector</p></div>
+            <div class="spec"><small>Output Specification</small><p>Gaze state (FORWARD / LEFT / RIGHT / DOWN)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="5">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>sensing</em></div>
+              <h4>Road Camera</h4>
+              <p class="drawer__sub">Forward roadway dashcam</p>
+            </div>
+            <span class="drawer__tech">Forward dashcam / USB video feed</span>
+          </div>
+          <p class="drawer__role">Observes the forward path, lead vehicles, and active traffic corridor.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Forward road optical field</p></div>
+            <div class="spec"><small>Output Specification</small><p>RGB roadway video frames</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="6">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>vision</em></div>
+              <h4>YOLOv8</h4>
+              <p class="drawer__sub">Vehicle object detector</p>
+            </div>
+            <span class="drawer__tech">Ultralytics YOLOv8 single-stage detector</span>
+          </div>
+          <p class="drawer__role">Detects surrounding vehicles (cars, trucks, buses, motorcycles) with confidence filtering.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Roadway video frame (640×640)</p></div>
+            <div class="spec"><small>Output Specification</small><p>Vehicle bounding boxes &amp; counts</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="7">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>vision</em></div>
+              <h4>GPS + OpenStreetMap</h4>
+              <p class="drawer__sub">Geospatial road network graph</p>
+            </div>
+            <span class="drawer__tech">GPS receiver + OpenStreetMap road topology</span>
+          </div>
+          <p class="drawer__role">Matches real-time coordinates to highway graph, calculating upcoming bearing deltas and node degrees.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Vehicle lat/long, heading, speed (1Hz)</p></div>
+            <div class="spec"><small>Output Specification</small><p>Lookahead curves &amp; intersections with distance</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="8">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>feature</em></div>
+              <h4>Traffic Density</h4>
+              <p class="drawer__sub">Categorical congestion level</p>
+            </div>
+            <span class="drawer__tech">Corridor vehicle count heuristic</span>
+          </div>
+          <p class="drawer__role">Discretizes vehicle counts into operational density bands (Low, Medium, High).</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Vehicle count in forward corridor</p></div>
+            <div class="spec"><small>Output Specification</small><p>Traffic band (Low / Medium / High)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="9">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>feature</em></div>
+              <h4>Curves / Intersections</h4>
+              <p class="drawer__sub">Topological road hazards</p>
+            </div>
+            <span class="drawer__tech">Haversine distance &amp; bearing divergence</span>
+          </div>
+          <p class="drawer__role">Calculates distance horizons to upcoming geometric bottlenecks (e.g., sharp curve in 45m).</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>OSM graph lookahead (150m)</p></div>
+            <div class="spec"><small>Output Specification</small><p>Hazard type, proximity, and urgency flag</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="10">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>fusion</em></div>
+              <h4>Context Fusion</h4>
+              <p class="drawer__sub">Multi-stream synthesizer</p>
+            </div>
+            <span class="drawer__tech">Asymmetric non-linear fusion engine</span>
+          </div>
+          <p class="drawer__role">Combines driver risk factors (behaviour + gaze) with environmental factors (traffic + road hazards).</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>4 processed stream features</p></div>
+            <div class="spec"><small>Output Specification</small><p>Synthesized driver and road risk components</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="11">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>fusion</em></div>
+              <h4>Risk Engine</h4>
+              <p class="drawer__sub">Calibrated 0–100 scoring</p>
+            </div>
+            <span class="drawer__tech">Risk engine mathematical rules</span>
+          </div>
+          <p class="drawer__role">Executes super-linear escalation logic when both driver and road hazards are concurrent.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Fused risk components</p></div>
+            <div class="spec"><small>Output Specification</small><p>Unified Risk Score (0–100) &amp; Tier (Safe–Critical)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="12">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>output</em></div>
+              <h4>Context-Aware Warning</h4>
+              <p class="drawer__sub">Proportional driver alert</p>
+            </div>
+            <span class="drawer__tech">Alert prioritization rules</span>
+          </div>
+          <p class="drawer__role">Formulates precise, situational warning text directly identifying the primary hazard.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Risk tier &amp; hazard breakdown</p></div>
+            <div class="spec"><small>Output Specification</small><p>Targeted alert (e.g., &#x27;Eyes off road entering curve!&#x27;)</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="13">
+          <div class="drawer__head">
+            <div>
+              <div class="drawer__kicker"><code>Selected Stage</code><span>·</span><em>output</em></div>
+              <h4>React UI Dashboard</h4>
+              <p class="drawer__sub">Live operator telemetry</p>
+            </div>
+            <span class="drawer__tech">React 19 / Tailwind CSS / WebSockets / REST</span>
+          </div>
+          <p class="drawer__role">Renders radial gauges, driver status badges, webcam preview, and diagnostic logs in real time.</p>
+          <div class="grid mt-4" style="--sm: 2; --gap: 0.75rem">
+            <div class="spec"><small>Input Specification</small><p>Structured JSON telemetry from FastAPI</p></div>
+            <div class="spec"><small>Output Specification</small><p>Interactive responsive visual interface</p></div>
+          </div>
+        </div></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="dataset" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Dataset Specification</span><h2>State Farm Driver Distraction Dataset</h2><p>Trained for multi-class driver behaviour classification across 10 distinct cabin posture classes.</p></div>
+    <div class="grid mt-12" style="--lg: 12; --gap: 2rem">
+      <div class="card" style="--span-lg: 7; --pad: clamp(1.5rem, 4vw, 2rem); align-self: start">
+        <h4 class="title-base">10 Documented Behaviour Categories</h4>
+        <div class="grid mt-4" style="--sm: 2; --gap: 0.625rem"><div class="class-row"><span><code>c0</code>Safe driving</span><small>Baseline safe (0.0)</small></div><div class="class-row"><span><code>c1</code>Texting — right hand</span><small>High risk (0.85)</small></div><div class="class-row"><span><code>c2</code>Talking on phone — right hand</span><small>Medium-high risk (0.70)</small></div><div class="class-row"><span><code>c3</code>Texting — left hand</span><small>High risk (0.85)</small></div><div class="class-row"><span><code>c4</code>Talking on phone — left hand</span><small>Medium-high risk (0.70)</small></div><div class="class-row"><span><code>c5</code>Operating the radio</span><small>Medium risk (0.50)</small></div><div class="class-row"><span><code>c6</code>Drinking / beverage consumption</span><small>Medium-high risk (0.65)</small></div><div class="class-row"><span><code>c7</code>Reaching behind</span><small>High risk (0.80)</small></div><div class="class-row"><span><code>c8</code>Hair and makeup</span><small>High risk (0.75)</small></div><div class="class-row"><span><code>c9</code>Interacting with passenger</span><small>Medium risk (0.55)</small></div></div>
+        <div class="rule-note mt-6"><strong>Dataset Reporting Rule: </strong>Exact held-out test split accuracy and per-class precision/recall values are not published in the project documentation and are not fabricated. Verified training and validation metrics are reported honestly.</div>
+      </div>
+      <div class="card" style="--span-lg: 5; --pad: clamp(1.5rem, 4vw, 2rem); align-self: start">
+        <h4 class="title-base">Preprocessing &amp; Augmentation Pipeline</h4>
+        <ol class="mini-steps mt-4"><li><span>1</span><span>Resize to 224 × 224</span></li><li><span>2</span><span>Channel-wise normalization (ImageNet mean &amp; std)</span></li><li><span>3</span><span>Random horizontal flipping</span></li><li><span>4</span><span>Random rotation (±15°)</span></li><li><span>5</span><span>Color jitter (brightness and contrast adjustments)</span></li></ol>
+        <div class="why-box">
+          <h5 class="mini-head">Why EfficientNet-B0 was selected</h5>
+          <ul>
+            <li>• <strong>Compound Scaling:</strong> Simultaneously scales network depth, width, and resolution using fixed compound coefficients.</li>
+            <li>• <strong>Parameter Efficiency:</strong> ~5.3M parameters compared to &gt;25M in ResNet-50, preventing heavy memory footprint.</li>
+            <li>• <strong>Real-Time Suitability:</strong> High throughput enables low-latency inference on server GPUs and edge embedded devices.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="components" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Interactive Architecture</span><h2>System Components</h2><p>Explore the six core technical subsystems of the context-aware driver distraction detection platform. Click any component card to inspect its full methodology, parameters, and role.</p></div>
+    <div class="mt-12"><div class="grid" style="--md: 2; --lg: 3"><button type="button" class="card explorer-card" popovertarget="comp-distraction-detection">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span><code>Component 01</code></span>
+            <span class="explorer-card__title">Driver Distraction Detection</span>
+            <span class="explorer-card__tagline">Fine-grained cabin behaviour classification using EfficientNet-B0</span>
+            <span class="explorer-card__purpose">Classify driver secondary activities from cabin camera video frames into 10 discrete behavioral categories.</span>
+            <span class="pill pill--slate mt-4">EfficientNet-B0 CNN </span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button><button type="button" class="card explorer-card" popovertarget="comp-gaze-monitoring">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><code>Component 02</code></span>
+            <span class="explorer-card__title">Driver Attention / Gaze Monitoring</span>
+            <span class="explorer-card__tagline">Facial and iris landmark tracking for visual line-of-sight estimation</span>
+            <span class="explorer-card__purpose">Estimate real-time visual attention and line of sight to confirm whether the driver&#x27;s eyes are actively focused on the forward road.</span>
+            <span class="pill pill--slate mt-4">MediaPipe Face Mesh + Iris Landmark Geometry + Temporal Smoothing Filter</span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button><button type="button" class="card explorer-card" popovertarget="comp-traffic-density">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><code>Component 03</code></span>
+            <span class="explorer-card__title">Traffic Density Estimation</span>
+            <span class="explorer-card__tagline">Forward vehicle detection and roadway congestion quantification</span>
+            <span class="explorer-card__purpose">Estimate surrounding vehicle volume and congestion from the road-facing dashcam to quantify immediate traffic risk.</span>
+            <span class="pill pill--slate mt-4">YOLOv8 </span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button><button type="button" class="card explorer-card" popovertarget="comp-route-hazard">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><code>Component 04</code></span>
+            <span class="explorer-card__title">Route Hazard Detection</span>
+            <span class="explorer-card__tagline">Geospatial curve and intersection lookahead via OpenStreetMap and GPS</span>
+            <span class="explorer-card__purpose">Identify upcoming road curvature and intersections ahead of the vehicle by matching real-time GPS coordinates with OpenStreetMap road graph data.</span>
+            <span class="pill pill--slate mt-4">Geospatial road network graph traversal + Bearing deviation + Haversine distance</span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button><button type="button" class="card explorer-card" popovertarget="comp-risk-assessment">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span><code>Component 05</code></span>
+            <span class="explorer-card__title">Context-Aware Risk Assessment</span>
+            <span class="explorer-card__tagline">Multi-factor non-linear context fusion and real-time warning generation</span>
+            <span class="explorer-card__purpose">Synthesize driver behaviour, gaze attention, traffic density, and road hazards into a unified, situation-aware driving risk index (0–100) and actionable warning.</span>
+            <span class="pill pill--slate mt-4">Multi-Factor Context Fusion Engine with Asymmetric Escalation Logic</span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button><button type="button" class="card explorer-card" popovertarget="comp-dashboard-api">
+          <span class="explorer-card__body">
+            <span class="explorer-card__top"><span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><code>Component 06</code></span>
+            <span class="explorer-card__title">Real-Time Dashboard &amp; API Architecture</span>
+            <span class="explorer-card__tagline">Operator interface, live webcam telemetry, and FastAPI backend microservices</span>
+            <span class="explorer-card__purpose">Provide interactive operator observation, live webcam inference, camera calibration tools, and microservice REST APIs for the CITOS platform.</span>
+            <span class="pill pill--slate mt-4">FastAPI Async Microservices + React Client Component Architecture</span>
+          </span>
+          <span class="explorer-card__foot"><span>Explore full methodology</span><i><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></i></span>
+        </button></div><div id="comp-distraction-detection" class="modal" popover aria-label="Driver Distraction Detection">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 01</code><span>·</span>Distraction CNN</p>
+              <h2>Driver Distraction Detection</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-distraction-detection" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Classify driver secondary activities from cabin camera video frames into 10 discrete behavioral categories.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>Secondary tasks such as texting, handheld calling, and reaching behind divert the driver&#x27;s cognitive and physical control from driving. Automated visual classification provides early indication of unsafe driver engagement.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Single driver/cabin video frame (RGB image) cropped or scaled from in-vehicle camera.</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>EfficientNet-B0 CNN (compound coefficient scaling depth, width, and resolution)</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Predicted activity class (c0–c9) and classification confidence score (0.00–1.00).</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>Frame capture and dimension extraction from cabin video stream</span></li><li><span>2</span><span>Bilinear resizing to standard 224 × 224 × 3 input tensor</span></li><li><span>3</span><span>Pixel normalization using standard ImageNet mean and variance constants</span></li><li><span>4</span><span>Training-time data augmentations: random horizontal flip, rotation (±15°), brightness jitter</span></li><li><span>5</span><span>Forward pass through pretrained EfficientNet-B0 CNN backbone</span></li><li><span>6</span><span>Dense classifier layer with Softmax activation yielding 10-class probability vector</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Input Resolution</td><td>224 × 224 × 3</td><td>Standard EfficientNet-B0 spatial input dimensions</td></tr><tr><td>Backbone Parameters</td><td>~5.3 Million</td><td>Lightweight parameter count vs &gt;25M for ResNet-50</td></tr><tr><td>Classifier Classes</td><td>10 categories</td><td>c0 (safe) through c9 (passenger interaction)</td></tr><tr><td>Optimizer</td><td>Adam / AdamW</td><td>Adaptive learning rate with weight decay during fine-tuning</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Final Training Accuracy: 99.74%, Final Validation Accuracy: 84.85%, Best Validation Loss: 0.6121. Generalization gap is 14.89%. Independent test metrics are not reported.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>Acts as the primary behavioral contributor to the Driver Risk sub-score, establishing whether the driver is in a safe posture or engaged in a secondary task.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>EfficientNet-B0 was selected over larger backbones due to its superior accuracy-to-parameter ratio, making it well-suited for near-real-time server or edge deployment.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-distraction-detection" popovertargetaction="hide">Close Details</button></div>
+      </div><div id="comp-gaze-monitoring" class="modal" popover aria-label="Driver Attention / Gaze Monitoring">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 02</code><span>·</span>Gaze &amp; Attention</p>
+              <h2>Driver Attention / Gaze Monitoring</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-gaze-monitoring" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Estimate real-time visual attention and line of sight to confirm whether the driver&#x27;s eyes are actively focused on the forward road.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>A driver might maintain hands on the steering wheel while looking away toward side mirrors, infotainment screens, or down at their lap. Direct gaze tracking detects inattention independently of hand position.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Real-time driver facial camera frames.</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>MediaPipe Face Mesh + Iris Landmark Geometry + Temporal Smoothing Filter</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Gaze direction state, normalized horizontal/vertical iris displacements, calibration status, and sustained off-road flag.</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>Facial detection and 468-point 3D landmark regression via MediaPipe Face Mesh</span></li><li><span>2</span><span>Refined iris landmark extraction (indices 468–477) identifying pupil centers</span></li><li><span>3</span><span>Calculation of horizontal (ear-to-nose) and vertical iris position ratios relative to ocular corners</span></li><li><span>4</span><span>Baseline user calibration routine gathering 30 neutral, forward-looking frames</span></li><li><span>5</span><span>Temporal smoothing over sliding frame history using exponential moving average</span></li><li><span>6</span><span>Gaze state categorization: LOOKING FORWARD, LOOKING LEFT, LOOKING RIGHT, LOOKING DOWN</span></li><li><span>7</span><span>Sustained deviation timer measuring continuous off-road gaze duration</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Calibration Samples</td><td>30 frames</td><td>Neutral baseline frames gathered on startup</td></tr><tr><td>Horizontal Threshold</td><td>±0.15 offset</td><td>Displacement threshold triggering left/right gaze</td></tr><tr><td>Vertical Threshold</td><td>-0.12 offset</td><td>Displacement threshold triggering downward gaze</td></tr><tr><td>Temporal Window</td><td>5–10 frames</td><td>Moving average filter window to suppress micro-saccades</td></tr><tr><td>Sustained Timer</td><td>≥ 1.5–2.0 s</td><td>Continuous deviation threshold marking high-risk inattention</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Empirical threshold validation; formal 3D head-pose angle ground truth was not recorded in this evaluation phase.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>Directly modulates the Driver Risk score: a secondary distraction with eyes forward is treated as lower risk than an off-road glance sustained over 2 seconds.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>Handles missing face detections gracefully with explicit &#x27;NO FACE&#x27; and &#x27;NOT CALIBRATED&#x27; states, preventing uncalibrated alerts.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-gaze-monitoring" popovertargetaction="hide">Close Details</button></div>
+      </div><div id="comp-traffic-density" class="modal" popover aria-label="Traffic Density Estimation">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 03</code><span>·</span>Traffic Density</p>
+              <h2>Traffic Density Estimation</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-traffic-density" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Estimate surrounding vehicle volume and congestion from the road-facing dashcam to quantify immediate traffic risk.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>Driver distraction in dense, stop-and-go traffic carries a severe collision hazard due to sudden braking by lead vehicles. Distraction on an open road offers substantially larger margins for error.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Forward road-facing dashcam video frame (RGB).</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>YOLOv8 (Ultralytics) convolutional object detector</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Detected vehicle count, bounding box coordinates with confidences, and traffic density tier (Low / Medium / High).</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>Ingestion of forward roadway video frames</span></li><li><span>2</span><span>YOLOv8 single-stage convolutional object detection inference</span></li><li><span>3</span><span>Target class filtering restricted to vehicular categories: car, truck, bus, motorcycle</span></li><li><span>4</span><span>Non-Maximum Suppression (NMS) to eliminate duplicate candidate bounding boxes</span></li><li><span>5</span><span>Summation of detected vehicle count in vehicle path corridor</span></li><li><span>6</span><span>Categorical bucketing into discrete traffic density tiers: Low, Medium, High</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Confidence Threshold</td><td>0.35–0.40</td><td>Minimum detection score for vehicle bounding boxes</td></tr><tr><td>IoU NMS Threshold</td><td>0.45</td><td>Intersection-over-Union threshold for box de-duplication</td></tr><tr><td>Low Density</td><td>0–2 vehicles</td><td>Light or uncongested road conditions</td></tr><tr><td>Medium Density</td><td>3–6 vehicles</td><td>Moderate traffic flow requiring standard following distance</td></tr><tr><td>High Density</td><td>7+ vehicles</td><td>Heavy congestion with elevated rear-end collision probability</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Pretrained and fine-tuned YOLOv8 model; specific mAP metrics on local transit dashcam test sets are not published in this phase.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>Feeds directly into the Road Risk calculation, dynamically elevating environmental danger whenever traffic volume rises.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>Vehicle bounding boxes are processed asynchronously to maintain high frame throughput in the pipeline.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-traffic-density" popovertargetaction="hide">Close Details</button></div>
+      </div><div id="comp-route-hazard" class="modal" popover aria-label="Route Hazard Detection">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 04</code><span>·</span>Route Hazards</p>
+              <h2>Route Hazard Detection</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-route-hazard" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Identify upcoming road curvature and intersections ahead of the vehicle by matching real-time GPS coordinates with OpenStreetMap road graph data.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>Navigating road bends and junction approaches requires peak situational awareness. Cognitive or visual distraction during curve entry or intersection crossing causes disproportionately severe accidents.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Real-time vehicle GPS coordinates (latitude, longitude, speed, heading) and OpenStreetMap road graph data.</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>Geospatial road network graph traversal + Bearing deviation + Haversine distance</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Detected hazard types, distance ahead (in meters), bearing deflection angle, and hazard severity flag.</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>GPS coordinate matching to nearest OpenStreetMap highway node / edge</span></li><li><span>2</span><span>Forward trajectory lookahead along the vehicle&#x27;s road segment (50m to 150m horizon)</span></li><li><span>3</span><span>Bearing angle change computation between successive road nodes for curve detection</span></li><li><span>4</span><span>Node connectivity degree analysis (&gt;2 highway branches) for intersection identification</span></li><li><span>5</span><span>Proximity distance computation using Haversine geodesic distance formulation</span></li><li><span>6</span><span>Hazard categorization: Sharp curve ahead, Moderate curve ahead, Intersection ahead, Intersection very close</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Lookahead Horizon</td><td>150 meters</td><td>Spatial window scanned along upcoming road trajectory</td></tr><tr><td>Sharp Curve Threshold</td><td>Bearing Δ &gt; 40°</td><td>Direction deflection over a 30m road window</td></tr><tr><td>Moderate Curve Threshold</td><td>Bearing Δ 20°–40°</td><td>Mild roadway bend requiring steering adjustment</td></tr><tr><td>Intersection Critical</td><td>&lt; 30 meters</td><td>Immediate intersection approach demanding full road focus</td></tr><tr><td>Intersection Warning</td><td>30–100 meters</td><td>Upcoming intersection transition zone</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Topological verification against OpenStreetMap network maps along regional test corridors; GPS multipath jitter handling remains an active area of refinement.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>Provides geometric road context that proactively increases the Road Risk score prior to physical entry into high-risk road features.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>Caching local OSM graph subgraphs prevents latency spikes when vehicles travel across map tile boundaries.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-route-hazard" popovertargetaction="hide">Close Details</button></div>
+      </div><div id="comp-risk-assessment" class="modal" popover aria-label="Context-Aware Risk Assessment">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 05</code><span>·</span>Risk Engine</p>
+              <h2>Context-Aware Risk Assessment</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-risk-assessment" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Synthesize driver behaviour, gaze attention, traffic density, and road hazards into a unified, situation-aware driving risk index (0–100) and actionable warning.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>Distraction must never be judged in a vacuum. Combining cabin telemetry with external environmental danger yields proportional, meaningful warnings while eliminating false alarms on clear roads.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Driver distraction class &amp; confidence, gaze direction state &amp; sustained timer, traffic density tier, and route hazard list with distances.</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>Multi-Factor Context Fusion Engine with Asymmetric Escalation Logic</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Real-time composite Risk Score (0–100), categorical Risk Level, Driver Sub-Score, Road Sub-Score, and Actionable Warning message.</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>Compute Driver Risk Sub-Score (0–100): Weighted sum of activity severity class (c0 = 0 to c1/c3 = 85) multiplied by gaze state modifier (sustained off-road gaze escalates score)</span></li><li><span>2</span><span>Compute Road Risk Sub-Score (0–100): Base traffic density score (Low = 10, Medium = 35, High = 65) + Sharp curve bonus (+25) + Intersection proximity bonus (+25)</span></li><li><span>3</span><span>Context Fusion: Non-linear interaction between Driver Risk and Road Risk — high driver risk paired with high road risk triggers super-linear escalation</span></li><li><span>4</span><span>Calibration into discrete Risk Tiers: Safe (0–19), Low (20–39), Medium (40–59), High (60–79), Critical (80–100)</span></li><li><span>5</span><span>Generate prioritized actionable text warning targeted directly at the immediate hazard</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Safe Tier</td><td>0–19</td><td>Normal driving, eyes on forward road</td></tr><tr><td>Low Tier</td><td>20–39</td><td>Minor distraction on clear, straight road</td></tr><tr><td>Medium Tier</td><td>40–59</td><td>Distraction with moderate traffic OR curve ahead</td></tr><tr><td>High Tier</td><td>60–79</td><td>Severe distraction (texting/phone) with traffic or nearby hazard</td></tr><tr><td>Critical Tier</td><td>80–100</td><td>Sustained off-road gaze or severe distraction approaching hazard in traffic</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Validated across diverse scripted test scenarios demonstrating dynamic alert differentiation. Formal closed-loop simulator safety studies are marked as future work.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>The central intelligence core of the distraction subsystem, bridging raw multi-stream sensing with driver feedback and fleet telemetry.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>Implemented as a modular pure Python evaluation service with sub-millisecond calculation overhead once inputs are parsed.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-risk-assessment" popovertargetaction="hide">Close Details</button></div>
+      </div><div id="comp-dashboard-api" class="modal" popover aria-label="Real-Time Dashboard &amp; API Architecture">
+        <div class="modal__head">
+          <div class="modal__title">
+            <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+            <div>
+              <p class="modal__kicker"><code>Component 06</code><span>·</span>Dashboard &amp; API</p>
+              <h2>Real-Time Dashboard &amp; API Architecture</h2>
+            </div>
+          </div>
+          <button type="button" class="modal__x" popovertarget="comp-dashboard-api" popovertargetaction="hide" aria-label="Close component details"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="grid" style="--md: 2">
+            <div class="box"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>What It Does</h4><p>Provide interactive operator observation, live webcam inference, camera calibration tools, and microservice REST APIs for the CITOS platform.</p></div>
+            <div class="box box--amber"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Why It Is Needed</h4><p>Fleet safety personnel and drivers require real-time transparency, diagnostic inspection, and immediate visual verification to trust and act on AI safety recommendations.</p></div>
+          </div>
+          <div class="grid" style="--sm: 3; --gap: 1rem">
+            <div class="spec spec--soft"><small>Input Stream</small><p>Webcam video streams, uploaded evaluation images, GPS telemetry payloads, and configuration parameters.</p></div>
+            <div class="spec spec--brand"><small>Model / Algorithm</small><p>FastAPI Async Microservices + React Client Component Architecture</p></div>
+            <div class="spec spec--soft"><small>Component Output</small><p>Interactive visual dashboard, structured JSON telemetry responses, and alert logs.</p></div>
+          </div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>Processing &amp; Methodology Pipeline</h4><ol class="mini-steps"><li><span>1</span><span>FastAPI asynchronous backend exposing REST endpoints: /analyze, /driver-analysis, /road-awareness, /health</span></li><li><span>2</span><span>Browser webcam capture via HTML5 MediaDevices API and canvas frame serialization</span></li><li><span>3</span><span>Interactive 30-frame gaze neutral calibration workflow directly in the browser UI</span></li><li><span>4</span><span>Support for multi-image upload testing (cabin driver frame + forward roadway frame)</span></li><li><span>5</span><span>Real-time radial risk gauge rendering, driver state indicators, and hazard countdown cards</span></li><li><span>6</span><span>Modular state handling enabling standalone simulation and live backend connection</span></li></ol></div>
+          <div class="box"><h4 class="box__h box__h--ink"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h4"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M17 16h4"/><path d="M19 12V3"/><path d="M19 21v-5"/><path d="M3 14h4"/><path d="M5 10V3"/><path d="M5 21v-7"/></svg>Key Operational Parameters</h4>
+            <div class="table-scroll"><table class="param-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Backend Runtime</td><td>FastAPI / Uvicorn</td><td>Asynchronous Python web server</td></tr><tr><td>Frontend Framework</td><td>React / Vite / Tailwind</td><td>Component-driven responsive dashboard</td></tr><tr><td>Endpoint: /driver-analysis</td><td>POST (image payload)</td><td>Returns distraction class and gaze state</td></tr><tr><td>Endpoint: /road-awareness</td><td>POST (image + GPS)</td><td>Returns traffic density and upcoming hazards</td></tr><tr><td>Endpoint: /analyze</td><td>POST (combined)</td><td>Executes full context fusion and risk scoring</td></tr></tbody></table></div>
+          </div>
+          <div class="box box--emerald"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Evaluation &amp; Verification Status</h4><p>Demonstrated operational reliability in end-to-end laboratory trials with synthetic and recorded driving tracks.</p></div>
+          <div class="box box--gradient"><h4 class="box__h"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Role in the Complete CITOS Platform</h4><p>Serves as the human-machine interface and API gateway connecting the distraction subsystem to fleet management displays.</p>
+            <p class="box__note"><strong>Implementation Note: </strong>Built with graceful degradation: when backend microservices are offline, the dashboard provides fallback interactive simulation mode.</p></div>
+        </div>
+        <div class="modal__foot"><button type="button" class="btn btn--dark btn--xs" popovertarget="comp-dashboard-api" popovertargetaction="hide">Close Details</button></div>
+      </div></div>
+  </div>
+</section>
+
+<section id="gaze" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Component 02 Deep Dive</span><h2>Driver Attention &amp; Gaze Monitoring</h2><p>Using facial landmark geometry to determine whether the driver&#x27;s eyes are actively on the road, with 30-frame calibration and temporal smoothing.</p></div>
+    <div class="mt-12"><div class="card switch" style="--pad: clamp(1.5rem, 4vw, 2rem)">
+      <input type="radio" class="switch__radio" name="gaze" id="gaze-0" data-at="0" checked aria-label="Gaze state 1"><input type="radio" class="switch__radio" name="gaze" id="gaze-1" data-at="1" aria-label="Gaze state 2"><input type="radio" class="switch__radio" name="gaze" id="gaze-2" data-at="2" aria-label="Gaze state 3"><input type="radio" class="switch__radio" name="gaze" id="gaze-3" data-at="3" aria-label="Gaze state 4"><input type="radio" class="switch__radio" name="gaze" id="gaze-4" data-at="4" aria-label="Gaze state 5"><input type="radio" class="switch__radio" name="gaze" id="gaze-5" data-at="5" aria-label="Gaze state 6">
+      <div class="max-3xl">
+        <span class="tag tag--violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>Attention Geometry</span>
+        <h3 class="widget-title">MediaPipe Face Mesh &amp; Gaze Tracking</h3>
+        <p class="card__text">Using 468 3D facial landmarks and refined iris models, the gaze engine calculates iris displacement
+          relative to outer/inner canthi, calibrated against a 30-frame personal neutral baseline.</p>
+      </div>
+      <div class="cluster mt-8"><label for="gaze-0" class="gaze-btn" data-at="0">LOOKING FORWARD</label><label for="gaze-1" class="gaze-btn" data-at="1">LOOKING LEFT</label><label for="gaze-2" class="gaze-btn" data-at="2">LOOKING RIGHT</label><label for="gaze-3" class="gaze-btn" data-at="3">LOOKING DOWN</label><label for="gaze-4" class="gaze-btn" data-at="4">NO FACE</label><label for="gaze-5" class="gaze-btn" data-at="5">NOT CALIBRATED</label></div>
+      <div class="sim-box mt-6"><div class="switch__panel" data-at="0">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__iris" style="left: 50%; top: 50%"><i></i><b></b></div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>LOOKING FORWARD</h4><span class="status status--ok">Safe</span></div>
+              <p class="small-text">Line of sight focused directly on the forward travel lane. Sustained gaze timer is inactive.</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">+0.02 (within ±0.15)</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">-0.03 (above -0.12)</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>Baseline 0.0 multiplier. Driver is visually observant of the forward roadway.</p></div>
+            </div>
+          </div>
+        </div><div class="switch__panel" data-at="1">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__iris" style="left: 25%; top: 50%"><i></i><b></b></div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>LOOKING LEFT</h4><span class="status status--bad">Off-Road</span></div>
+              <p class="small-text">Iris shifted horizontally to the driver&#x27;s left (e.g., driver-side window or side mirror).</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">+0.24 (&gt; +0.15 threshold)</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">-0.02 (within bounds)</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>Transient glances (&lt;1.5s) logged as safe checks; sustained glances (&gt;1.5s) trigger off-road warning.</p></div>
+            </div>
+          </div>
+        </div><div class="switch__panel" data-at="2">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__iris" style="left: 75%; top: 50%"><i></i><b></b></div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>LOOKING RIGHT</h4><span class="status status--bad">Off-Road</span></div>
+              <p class="small-text">Iris shifted horizontally to the passenger side (infotainment console, side mirror, or passenger).</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">-0.26 (&lt; -0.15 threshold)</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">-0.01 (within bounds)</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>If combined with secondary task (e.g., phone usage), triggers accelerated risk escalation.</p></div>
+            </div>
+          </div>
+        </div><div class="switch__panel" data-at="3">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__iris" style="left: 50%; top: 78%"><i></i><b></b></div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>LOOKING DOWN</h4><span class="status status--bad">Off-Road</span></div>
+              <p class="small-text">Iris depressed significantly downward toward the driver&#x27;s lap, phone, or center gearbox.</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">+0.04 (within ±0.15)</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">-0.19 (&lt; -0.12 threshold)</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>Highest visual risk category. Eyes are completely diverted from the forward roadway horizon.</p></div>
+            </div>
+          </div>
+        </div><div class="switch__panel" data-at="4">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__none">[ No Iris Detected ]</div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>NO FACE</h4><span class="status status--idle">No Face</span></div>
+              <p class="small-text">Face mesh could not localize facial landmarks (severe head turn, physical occlusion, or driver absence).</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">N/A</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">N/A</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>Freezes risk escalation to prevent runaway false alarms; alerts operator to check sensor visibility.</p></div>
+            </div>
+          </div>
+        </div><div class="switch__panel" data-at="5">
+          <div class="gaze-panel">
+            <div class="gaze-panel__eye">
+              <div class="eye-box">
+                <div class="eye"><div class="eye__iris" style="left: 50%; top: 50%"><i></i><b></b></div></div>
+                <span class="eye-box__pin eye-box__pin--l">Inner</span>
+                <span class="eye-box__pin eye-box__pin--r">Outer</span>
+              </div>
+              <span class="eye-caption">Simulated Iris Displacement Tracker</span>
+            </div>
+            <div class="gaze-panel__info">
+              <div class="gaze-panel__head"><h4>NOT CALIBRATED</h4><span class="status status--idle">Uncalibrated</span></div>
+              <p class="small-text">System initializing; collecting initial 30 neutral frames to establish individual baseline.</p>
+              <div class="grid" style="--sm: 2; --gap: 0.625rem">
+                <div class="spec"><small>Horizontal Offset</small><p class="mono">Calibrating (0/30 frames)</p></div>
+                <div class="spec"><small>Vertical Offset</small><p class="mono">Calibrating (0/30 frames)</p></div>
+              </div>
+              <div class="spec spec--brand"><small>Risk Engine Impact</small><p>Suppresses automated penalties until baseline is locked to prevent bias from camera mount tilt.</p></div>
+            </div>
+          </div>
+        </div></div>
+      <div class="pipe-box mt-8">
+        <h4>Gaze Pipeline Architecture</h4>
+        <div class="cluster mt-4" style="align-items: center"><span class="chip-box">Camera Frame</span><span class="arrow-text">→</span><span class="chip-box">Face Mesh</span><span class="arrow-text">→</span><span class="chip-box">Eye / Iris Landmarks</span><span class="arrow-text">→</span><span class="chip-box">Normalized Displacement</span><span class="arrow-text">→</span><span class="chip-box">30-Frame Calibration</span><span class="arrow-text">→</span><span class="chip-box">Temporal Smoothing</span><span class="arrow-text">→</span><span class="chip-box">Gaze Classification</span><span class="arrow-text">→</span><span class="chip-box">Sustained Deviation Timer</span></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section id="traffic" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Components 03 &amp; 04</span><h2>Traffic Density &amp; Route Hazard Detection</h2><p>Quantifying forward roadway congestion and anticipating geometric road hazards before the vehicle arrives.</p></div>
+    <div class="grid mt-12" style="--lg: 2; --gap: 2rem">
+      <div class="card">
+        <div class="comp-head"><span class="tone-icon tint-teal"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><div><code class="tint-text-teal">Component 03</code><h4>YOLOv8 Traffic Density</h4></div></div>
+        <p class="small-text mt-4">Surrounding traffic creates sudden braking risks. Forward dashcam frames are processed by YOLOv8,
+          filtering for vehicular classes (car, truck, bus, motorcycle) in the vehicle&#x27;s forward travel corridor.</p>
+        <div class="soft-panel mt-6">
+          <span class="soft-panel__label">Operational Density Tiers</span>
+          <div class="grid mt-3" style="--cols: 3; --gap: 0.5rem">
+            <div class="density density--low"><b>Low</b><p>0–2 vehicles</p></div>
+            <div class="density density--medium"><b>Medium</b><p>3–6 vehicles</p></div>
+            <div class="density density--high"><b>High</b><p>7+ vehicles</p></div>
+          </div>
+        </div>
+        <div class="note note--teal mt-4"><strong>Why traffic matters: </strong>Distraction during high traffic volume exponentially increases rear-end collision probability compared to an empty road.</div>
+      </div>
+      <div class="card">
+        <div class="comp-head"><span class="tone-icon tint-amber"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><div><code class="tint-text-amber">Component 04</code><h4>Route Hazard Lookahead</h4></div></div>
+        <p class="small-text mt-4">GPS coordinates are snapped to OpenStreetMap graph nodes. Downstream trajectory traversal
+          calculates angular bearing changes for curve detection and node connectivity degree for intersections.</p>
+        <div class="soft-panel mt-6">
+          <span class="soft-panel__label">Example Hazard Alerts</span>
+          <div class="stack mt-3" style="--space: 0.5rem">
+            <div class="hazard"><b>Sharp curve ahead</b><code>45 meters (Δ 48°)</code></div>
+            <div class="hazard"><b>Intersection very close</b><code>&lt; 30 meters</code></div>
+            <div class="hazard hazard--muted"><b>Moderate curve ahead</b><code>110 meters (Δ 28°)</code></div>
+          </div>
+        </div>
+        <div class="note note--amber mt-4"><strong>Lookahead horizon: </strong>150-meter forward topological scan window gives drivers ample reaction time before physical entry.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scenarios" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Context Fusion Demonstration</span><h2>Same distraction. Different risk.</h2><p>Watch how the context-aware risk engine recalculates danger and updates the warning in real time when road conditions change.</p></div>
+    <div class="mt-12"><div class="card switch" style="--pad: clamp(1.5rem, 4vw, 2rem)">
+      <input type="radio" class="switch__radio" name="scn" id="scn-0" data-at="0" checked aria-label="Scenario 1"><input type="radio" class="switch__radio" name="scn" id="scn-1" data-at="1" aria-label="Scenario 2"><input type="radio" class="switch__radio" name="scn" id="scn-2" data-at="2" aria-label="Scenario 3"><input type="radio" class="switch__radio" name="scn" id="scn-3" data-at="3" aria-label="Scenario 4">
+      <div class="max-3xl">
+        <span class="tag tag--violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>Interactive Research Demonstration</span>
+        <h3 class="widget-title">Same distraction. Different risk.</h3>
+        <p class="card__text">In all four scenarios below, the driver&#x27;s visual secondary activity is identical:
+          <strong class="ink">texting with their right hand (class c1)</strong>. Notice how the
+          context fusion engine dynamically modulates the risk score and final warning based strictly on surrounding
+          road hazards and traffic density.</p>
+      </div>
+      <div class="grid mt-8" style="--cols: 2; --sm: 4; --gap: 0.75rem"><label for="scn-0" class="scn-btn" data-at="0">
+          <span class="scn-btn__head"><code>Scenario A</code><span class="tier tier--medium">Medium</span></span>
+          <b>Distraction on Clear Open Road</b>
+          <small>Score: 42/100</small>
+        </label><label for="scn-1" class="scn-btn" data-at="1">
+          <span class="scn-btn__head"><code>Scenario B</code><span class="tier tier--high">High</span></span>
+          <b>Distraction Approaching Intersection</b>
+          <small>Score: 74/100</small>
+        </label><label for="scn-2" class="scn-btn" data-at="2">
+          <span class="scn-btn__head"><code>Scenario C</code><span class="tier tier--high">High</span></span>
+          <b>Distraction in Heavy Traffic</b>
+          <small>Score: 78/100</small>
+        </label><label for="scn-3" class="scn-btn" data-at="3">
+          <span class="scn-btn__head"><code>Scenario D</code><span class="tier tier--critical">Critical</span></span>
+          <b>Distraction Entering Sharp Curve</b>
+          <small>Score: 92/100</small>
+        </label></div>
+      <div class="sim-box mt-8"><div class="switch__panel" data-at="0">
+          <div class="scn-grid">
+            <div class="scn-inputs">
+              <h4 class="mini-head">Input Streams for Scenario A (Distraction on Clear Open Road)</h4>
+              <div class="input-row"><span class="mini-icon tint-indigo"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span><div><small>Driver Behaviour (Constant)</small><p>Texting — right hand (c1)</p></div></div><div class="input-row"><span class="mini-icon tint-violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><div><small>Attention &amp; Gaze Status</small><p>Transient off-road glance (1.1s)</p></div></div><div class="input-row"><span class="mini-icon tint-teal"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><div><small>Forward Traffic Density</small><p>Low density (1 vehicle detected)</p></div></div><div class="input-row"><span class="mini-icon tint-amber"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><div><small>OpenStreetMap Geometry Hazard</small><p>Straight road, no upcoming hazards</p></div></div>
+            </div>
+            <div class="dial-card">
+              <div class="dial">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#f1f5f9" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-dasharray="238.7610" stroke-dashoffset="138.4814"/></svg>
+                <div><strong>42</strong><span>Risk Score</span></div>
+              </div>
+              <span class="tier tier--medium tier--lg">Medium Risk</span>
+              <div class="dial-card__split"><span>Driver Risk: <strong>60</strong></span><i>|</i><span>Road Risk: <strong>15</strong></span></div>
+            </div>
+          </div>
+          <div class="warning-out mt-6">
+            <span class="mini-icon mini-icon--lg tint-rose"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+            <div><small>Actionable System Warning</small><p class="warning-out__text">CAUTION: Driver distracted — road currently clear ahead.</p><p class="small-text mt-2">Because surrounding traffic is light and the road ahead is straight with zero intersections or curves, the risk engine does not fire a critical panic alarm. It issues an advisory caution, avoiding alert fatigue while preserving driver vigilance.</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="1">
+          <div class="scn-grid">
+            <div class="scn-inputs">
+              <h4 class="mini-head">Input Streams for Scenario B (Distraction Approaching Intersection)</h4>
+              <div class="input-row"><span class="mini-icon tint-indigo"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span><div><small>Driver Behaviour (Constant)</small><p>Texting — right hand (c1)</p></div></div><div class="input-row"><span class="mini-icon tint-violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><div><small>Attention &amp; Gaze Status</small><p>Transient off-road glance (1.1s)</p></div></div><div class="input-row"><span class="mini-icon tint-teal"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><div><small>Forward Traffic Density</small><p>Low density (1 vehicle detected)</p></div></div><div class="input-row"><span class="mini-icon tint-amber"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><div><small>OpenStreetMap Geometry Hazard</small><p>Multi-leg intersection ahead (35m)</p></div></div>
+            </div>
+            <div class="dial-card">
+              <div class="dial">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#f1f5f9" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="#e11d48" stroke-width="8" stroke-linecap="round" stroke-dasharray="238.7610" stroke-dashoffset="62.0779"/></svg>
+                <div><strong>74</strong><span>Risk Score</span></div>
+              </div>
+              <span class="tier tier--high tier--lg">High Risk</span>
+              <div class="dial-card__split"><span>Driver Risk: <strong>60</strong></span><i>|</i><span>Road Risk: <strong>65</strong></span></div>
+            </div>
+          </div>
+          <div class="warning-out mt-6">
+            <span class="mini-icon mini-icon--lg tint-rose"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+            <div><small>Actionable System Warning</small><p class="warning-out__text">HIGH RISK: Distraction approaching intersection (35m)!</p><p class="small-text mt-2">The driver&#x27;s cabin activity is identical to Scenario A (texting), but the OpenStreetMap graph detects an active intersection 35 meters ahead. The road risk escalates, elevating the final score from 42 to 74 (High Risk) with an immediate directional warning.</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="2">
+          <div class="scn-grid">
+            <div class="scn-inputs">
+              <h4 class="mini-head">Input Streams for Scenario C (Distraction in Heavy Traffic)</h4>
+              <div class="input-row"><span class="mini-icon tint-indigo"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span><div><small>Driver Behaviour (Constant)</small><p>Texting — right hand (c1)</p></div></div><div class="input-row"><span class="mini-icon tint-violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><div><small>Attention &amp; Gaze Status</small><p>Transient off-road glance (1.1s)</p></div></div><div class="input-row"><span class="mini-icon tint-teal"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><div><small>Forward Traffic Density</small><p>High density (8 vehicles detected by YOLOv8)</p></div></div><div class="input-row"><span class="mini-icon tint-amber"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><div><small>OpenStreetMap Geometry Hazard</small><p>Straight road, no upcoming geometry hazards</p></div></div>
+            </div>
+            <div class="dial-card">
+              <div class="dial">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#f1f5f9" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="#e11d48" stroke-width="8" stroke-linecap="round" stroke-dasharray="238.7610" stroke-dashoffset="52.5274"/></svg>
+                <div><strong>78</strong><span>Risk Score</span></div>
+              </div>
+              <span class="tier tier--high tier--lg">High Risk</span>
+              <div class="dial-card__split"><span>Driver Risk: <strong>60</strong></span><i>|</i><span>Road Risk: <strong>70</strong></span></div>
+            </div>
+          </div>
+          <div class="warning-out mt-6">
+            <span class="mini-icon mini-icon--lg tint-rose"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+            <div><small>Actionable System Warning</small><p class="warning-out__text">HIGH RISK: Distraction in dense traffic — lead braking hazard!</p><p class="small-text mt-2">With 8 vehicles detected directly in the travel corridor, lead vehicles may brake abruptly at any moment. Even on a straight road, the environmental hazard multiplies driver inattention, escalating the composite risk to 78 (High Risk).</p></div>
+          </div>
+        </div><div class="switch__panel" data-at="3">
+          <div class="scn-grid">
+            <div class="scn-inputs">
+              <h4 class="mini-head">Input Streams for Scenario D (Distraction Entering Sharp Curve)</h4>
+              <div class="input-row"><span class="mini-icon tint-indigo"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span><div><small>Driver Behaviour (Constant)</small><p>Texting — right hand (c1)</p></div></div><div class="input-row"><span class="mini-icon tint-violet"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><div><small>Attention &amp; Gaze Status</small><p>Sustained off-road gaze (2.2s)</p></div></div><div class="input-row"><span class="mini-icon tint-teal"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span><div><small>Forward Traffic Density</small><p>Medium density (4 vehicles detected)</p></div></div><div class="input-row"><span class="mini-icon tint-amber"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span><div><small>OpenStreetMap Geometry Hazard</small><p>Sharp curve ahead (40m, bearing Δ 48°)</p></div></div>
+            </div>
+            <div class="dial-card">
+              <div class="dial">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#f1f5f9" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="#e11d48" stroke-width="8" stroke-linecap="round" stroke-dasharray="238.7610" stroke-dashoffset="19.1009"/></svg>
+                <div><strong>92</strong><span>Risk Score</span></div>
+              </div>
+              <span class="tier tier--critical tier--lg">Critical Risk</span>
+              <div class="dial-card__split"><span>Driver Risk: <strong>85</strong></span><i>|</i><span>Road Risk: <strong>80</strong></span></div>
+            </div>
+          </div>
+          <div class="warning-out mt-6">
+            <span class="mini-icon mini-icon--lg tint-rose"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+            <div><small>Actionable System Warning</small><p class="warning-out__text">CRITICAL: Eyes off road entering sharp curve (40m) — immediate takeover!</p><p class="small-text mt-2">This compound hazard combines secondary texting, sustained off-road eye gaze, moderate traffic, and an impending sharp curve. The context fusion engine triggers a Critical Risk alarm (Score 92) demanding immediate corrective intervention.</p></div>
+          </div>
+        </div></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="dashboard" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Live Implementation</span><h2>Real-Time Driver Distraction Dashboard</h2><p>The complete research prototype includes a full-featured React dashboard connected to the FastAPI backend service.</p></div>
+    <div class="card mt-12" style="--pad: 2rem">
+      <div class="grid grid--center" style="--lg: 12; --gap: 2rem">
+        <div class="stack" style="--span-lg: 7; --space: 1rem">
+          <span class="tag tag--brand-solid"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Frontend &amp; Backend Integration</span>
+          <h3 class="widget-title" style="margin: 0">Interactive Observation &amp; Telemetry Console</h3>
+          <p class="card__text" style="margin: 0">The implemented dashboard interfaces directly with vehicle cameras and sensor streams.
+            It supports both live webcams and image upload evaluation pipelines:</p>
+          <div class="grid" style="--sm: 2; --gap: 0.625rem"><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Real-time webcam feed ingestion</span></div><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>30-frame neutral gaze calibration</span></div><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Dual cabin &amp; road image upload</span></div><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Real-time radial risk score gauge</span></div><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>YOLOv8 traffic density indicators</span></div><div class="feat-row"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>OSM curves &amp; intersection meters</span></div></div>
+          <div class="cluster" style="--gap: 1rem; padding-block-start: 1rem">
+            <a href="research.html" class="btn btn--lg btn--primary btn--lift">View All CITOS Research <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <a href="#components" class="btn btn--lg btn--outline">Inspect Component Specs</a>
+          </div>
+        </div>
+        <div class="console" style="--span-lg: 5">
+          <div class="console__bar"><span><i class="red"></i><i class="amber"></i><i class="green"></i></span><code>citos-distraction-v1.0</code></div>
+          <div class="console__block"><small>Live Driver Status</small><p class="rose">c1: Texting — Right Hand (94.2%)</p><p class="amber-t">Gaze: LOOKING DOWN (1.9s sustained)</p></div>
+          <div class="console__block"><small>Road Context Feed</small><p class="teal-t">Traffic: High Density (8 vehicles)</p><p class="amber-t">Hazard: Sharp Curve Ahead (45m, Δ 48°)</p></div>
+          <div class="console__block console__block--alert">
+            <div class="console__row"><small>Composite Risk</small><code>Tier: Critical</code></div>
+            <p class="console__score">Score: 92 / 100</p>
+            <p class="console__warn">Warning: Immediate attention required — sharp curve in dense traffic!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech-stack" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Technology Stack</span><h2>Technologies verified in the repository</h2><p>Strictly reporting technologies actually implemented in the CITOS driver distraction codebase.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 3"><div class="card stack-card" style="--pad: 1.5rem">
+          <h4>AI &amp; Deep Learning</h4>
+          <ul><li><b>EfficientNet-B0</b><p>CNN backbone for 10-class driver cabin behaviour classification</p></li><li><b>PyTorch / Torchvision</b><p>Model definition, data loaders, and tensor forward inference</p></li><li><b>YOLOv8 (Ultralytics)</b><p>Forward vehicle detection for traffic density estimation</p></li></ul>
+        </div><div class="card stack-card" style="--pad: 1.5rem">
+          <h4>Computer Vision</h4>
+          <ul><li><b>MediaPipe Face Mesh</b><p>468-point 3D facial topology regression and iris tracking</p></li><li><b>OpenCV (cv2)</b><p>Image preprocessing, frame resizing (224×224), and color space transformations</p></li></ul>
+        </div><div class="card stack-card" style="--pad: 1.5rem">
+          <h4>Geospatial &amp; Mapping</h4>
+          <ul><li><b>GPS Telemetry</b><p>Real-time latitude, longitude, speed, and heading coordinates</p></li><li><b>OpenStreetMap (OSM)</b><p>Roadway network graph topology, node connectivity, and highway geometries</p></li><li><b>Haversine Distance</b><p>Geodesic proximity calculation to upcoming roadway features</p></li></ul>
+        </div><div class="card stack-card" style="--pad: 1.5rem">
+          <h4>Backend &amp; Services</h4>
+          <ul><li><b>Python 3.11</b><p>Core backend runtime for computer vision and mathematical modeling</p></li><li><b>FastAPI</b><p>Asynchronous microservice REST APIs (/analyze, /driver-analysis, /road-awareness)</p></li><li><b>Uvicorn</b><p>ASGI web server delivering sub-second response times</p></li></ul>
+        </div><div class="card stack-card" style="--pad: 1.5rem">
+          <h4>Frontend &amp; Dashboard</h4>
+          <ul><li><b>React 19</b><p>Component-driven interactive dashboard and reactive state architecture</p></li><li><b>Next.js 16 (App Router)</b><p>Research showcase platform, server-side rendering, and SEO routing</p></li><li><b>Tailwind CSS v4</b><p>Modern design token system, light research theme, and responsive styling</p></li></ul>
+        </div></div>
+  </div>
+</section>
+
+<section id="engineering" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Engineering Architecture</span><h2>Implementation and engineering details</h2><p>Detailed specifications of the data pipelines, mathematical transforms, calibration routines, and microservice APIs.</p></div>
+    <div class="grid mt-12" style="--md: 2; --lg: 3"><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Model Architecture &amp; Preprocessing</h4>
+          <p class="small-text small-text--loose mt-2">EfficientNet-B0 employs compound coefficient scaling to balance network depth, width, and resolution. Input frames are standardized to 224 × 224 × 3 with bilinear interpolation and normalized using ImageNet channel statistics. Training incorporates random horizontal flips, rotation (±15°), and brightness jitter to prevent overfitting on the State Farm dataset.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Gaze Calibration &amp; Saccade Filtering</h4>
+          <p class="small-text small-text--loose mt-2">Because eye morphology and seating position differ between individuals, the system collects a 30-frame neutral baseline upon session startup. Normalized iris displacement is computed relative to the outer and inner canthi. An exponential moving average filter smooths transient saccades, firing an off-road event only when deviation persists beyond 1.5 seconds.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Traffic Density Corridor Filtering</h4>
+          <p class="small-text small-text--loose mt-2">YOLOv8 inference processes forward dashcam imagery. Detections are restricted to vehicle classes (car, truck, bus, motorcycle) with confidence ≥ 0.35. A spatial corridor filter isolates vehicles in the active travel lane, bucketing counts into discrete tiers (Low: 0–2, Medium: 3–6, High: 7+) to represent situational density.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Geospatial Road Graph Lookahead</h4>
+          <p class="small-text small-text--loose mt-2">Real-time GPS fixes are snapped to OpenStreetMap graph edges. Lookahead algorithms traverse the downstream path up to 150 meters, calculating bearing delta angles between consecutive nodes. Nodes with degree &gt; 2 are flagged as intersections, computing exact Euclidean and geodesic proximity to the vehicle.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Context Fusion &amp; Risk Scoring Logic</h4>
+          <p class="small-text small-text--loose mt-2">Driver risk (distraction severity × gaze status) and road risk (traffic density + curvature + intersection proximity) are fused through an asymmetric non-linear function. If both driver risk and road risk are elevated, a multiplicative penalty triggers instant escalation to High or Critical tiers. When driving is safe (c0), high road risk yields an informational advisory rather than a distraction violation.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <p class="spec-kicker"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></svg><span>Architecture Spec</span></p>
+          <h4 class="title-base mt-3">Asynchronous API &amp; Frontend Pipeline</h4>
+          <p class="small-text small-text--loose mt-2">FastAPI handles frame ingestion asynchronously, preventing blocking during model execution. The React frontend interacts via REST endpoints, offering instant visual feedback on radial gauges, driver status indicators, and hazard countdown cards with built-in client fallback simulation.</p>
+        </div></div>
+  </div>
+</section>
+
+<section id="limitations" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Scientific Rigor</span><h2>Project Limitations</h2><p>In keeping with academic research ethics, we explicitly document every empirical limitation and constraint discovered during development.</p></div>
+    <div class="stack mt-12 container--4xl" style="--space: 1rem; margin-inline: auto; padding: 0"><div class="lim-row"><span>1</span><div><h4>Training vs. Validation Generalization Gap</h4><p>The EfficientNet-B0 model achieved 99.74% training accuracy and 84.85% validation accuracy on the State Farm dataset — a 14.89% gap. This indicates noticeable overfitting to training subjects and camera setups. In real commercial buses, varying camera mounts, steering wheel occlusions, and diverse driver physiognomy can broaden this gap.</p></div></div><div class="lim-row"><span>2</span><div><h4>Held-Out Test Set Metrics Not Reported</h4><p>Independent held-out test split metrics (such as test accuracy, mAP, precision, recall, and F1 scores on unseen drivers) were not published in the project repository. True zero-shot cross-driver generalizability remains unverified without a formal leave-one-subject-out (LOSO) study.</p></div></div><div class="lim-row"><span>3</span><div><h4>Empirical Gaze Calibration Thresholds</h4><p>MediaPipe Face Mesh gaze tracking relies on empirical threshold offsets (±0.15 horizontal, -0.12 vertical) relative to a 30-frame neutral baseline. The current implementation does not incorporate calibrated 3D pupil corneal reflection ground truth or calibrated head-pose sensors.</p></div></div><div class="lim-row"><span>4</span><div><h4>Geospatial &amp; GPS Network Dependencies</h4><p>Route hazard detection depends on continuous GPS lock and comprehensive OpenStreetMap graph coverage. Satellite multipath interference in dense urban canyons, bridge underpasses, and unmapped rural roads can degrade lookahead precision.</p></div></div><div class="lim-row"><span>5</span><div><h4>In-Cabin Environmental Sensitivities</h4><p>Low-light nighttime driving, severe direct solar glare, polarized sunglasses, and physical camera obstructions represent uncontrolled real-world failure modes that were not comprehensively evaluated under closed laboratory datasets.</p></div></div></div>
+  </div>
+</section>
+
+<section id="future" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Research Roadmap</span><h2>Future Work and Extensions</h2><p>Active directions for refining model generalizability, hardware acceleration, and longitudinal fleet safety integration.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 3"><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 1</code>
+          <h4 class="title-base mt-2">Validation on Naturalistic In-the-Wild Datasets</h4>
+          <p class="small-text mt-2">Evaluate the model against in-the-wild, naturalistic driver monitoring benchmarks such as Drive&amp;Act, DMD (Driver Monitoring Dataset), or D-DD (Driver Distraction Dataset) using strict leave-one-subject-out cross-validation.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 2</code>
+          <h4 class="title-base mt-2">Calibrated 3D Head-Pose &amp; Eye-Gaze Sensor Fusion</h4>
+          <p class="small-text mt-2">Integrate infrared corneal reflection cameras and calibrate true 3D gaze angles in degrees against fixed cabin zones (windshield, left mirror, right mirror, dashboard cluster, center console).</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 3</code>
+          <h4 class="title-base mt-2">Temporal Sequence Modeling Over Video Windows</h4>
+          <p class="small-text mt-2">Transition from single-frame CNN classification to temporal architectures (such as BiLSTM, 3D ConvNets, or Video Vision Transformers) over sliding 30–60 frame windows to accurately capture activity initiation, duration, and termination.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 4</code>
+          <h4 class="title-base mt-2">Hardware Edge Deployment &amp; Latency Optimization</h4>
+          <p class="small-text mt-2">Quantize the models using TensorRT / ONNX Runtime for edge execution on vehicle-mounted hardware (such as NVIDIA Jetson Orin Nano or Hailo-8 AI accelerators), recording verified end-to-end latency and frame-rate figures.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 5</code>
+          <h4 class="title-base mt-2">Multi-Modal Warning Actuation in Fleet Environments</h4>
+          <p class="small-text mt-2">Pilot contextual alert modalities inside real passenger buses, including directional seat haptics, heads-up display symbols, and localized voice prompts in Sinhala, Tamil, and English.</p>
+        </div><div class="card" style="--pad: 1.5rem">
+          <code class="phase">Phase 6</code>
+          <h4 class="title-base mt-2">Integration with CITOS Fleet Knowledge Graph</h4>
+          <p class="small-text mt-2">Stream context-aware risk scores into the CITOS Neo4j knowledge graph, enabling longitudinal driver coaching and exposure-adjusted driver assessment.</p>
+        </div></div>
+  </div>
+</section>
+
+<section id="documents" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Project Documentation</span><h2>Official Milestones &amp; Submissions</h2><p>Academic project documents and thesis milestones for the Context-Aware Driver Distraction Detection research component.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 3; --gap: 1rem"><article class="card kdoc lift">
+          <div>
+            <div class="kdoc__top"><span class="soft-icon" style="--size: 2.75rem"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><code>PDF</code></div>
+            <p class="kdoc__cat">Driver distraction</p>
+            <h4 class="title-base mt-1">Project Proposal — Context-Aware Distraction</h4>
+            <p class="doc-tile__date">15 March 2026</p>
+            <p class="small-text mt-3">Comprehensive project proposal report specifying camera-based monitoring, MediaPipe gaze tracking, and contextual risk assessment.</p>
+          </div>
+          <div class="kdoc__actions">
+            <div class="cluster" style="align-items: center">
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/project-proposal-driver-distraction.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>View Document</a>
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/project-proposal-driver-distraction.pdf" download="project-proposal-driver-distraction.pdf" class="btn btn--outline btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download PDF</a>
+            </div>
+            
+            <a href="documents.html" class="archive-link">Browse in Project Documents Archive <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article><article class="card kdoc lift">
+          <div>
+            <div class="kdoc__top"><span class="soft-icon" style="--size: 2.75rem"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><code>PDF</code></div>
+            <p class="kdoc__cat">Driver distraction</p>
+            <h4 class="title-base mt-1">Progress Checklist 1 — Research Paper Master Sheet</h4>
+            <p class="doc-tile__date">13 May 2026</p>
+            <p class="small-text mt-3">Literature survey master sheet analyzing 8 key research papers across vision architectures, Q1 journal rankings, citations, and methodology reviews.</p>
+          </div>
+          <div class="kdoc__actions">
+            <div class="cluster" style="align-items: center">
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/checklist-1-research-paper-mastersheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>View Document</a>
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/checklist-1-research-paper-mastersheet.pdf" download="checklist-1-research-paper-mastersheet.pdf" class="btn btn--outline btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download PDF</a>
+            </div>
+            <a href="https://storage.googleapis.com/citos-portfolio/kauz/checklist-1-research-paper-mastersheet.xlsx" download="checklist-1-research-paper-mastersheet.xlsx" class="xlsx-link"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>Download Literature Master Sheet (.xlsx)</a>
+            <a href="documents.html" class="archive-link">Browse in Project Documents Archive <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article><article class="card kdoc lift">
+          <div>
+            <div class="kdoc__top"><span class="soft-icon" style="--size: 2.75rem"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><code>PDF</code></div>
+            <p class="kdoc__cat">Driver distraction</p>
+            <h4 class="title-base mt-1">Progress Checklist 2 — Data Analysis Report</h4>
+            <p class="doc-tile__date">31 August 2026</p>
+            <p class="small-text mt-3">IT4010 Data Analysis Report evaluating dataset suitability, preprocessing, EfficientNet-B0 convergence, MediaPipe landmarks, and YOLOv8 traffic density.</p>
+          </div>
+          <div class="kdoc__actions">
+            <div class="cluster" style="align-items: center">
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/checklist-2-data-analysis-report.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>View Document</a>
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/checklist-2-data-analysis-report.pdf" download="checklist-2-data-analysis-report.pdf" class="btn btn--outline btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download PDF</a>
+            </div>
+            
+            <a href="documents.html" class="archive-link">Browse in Project Documents Archive <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article><article class="card kdoc lift">
+          <div>
+            <div class="kdoc__top"><span class="soft-icon" style="--size: 2.75rem"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><code>PDF</code></div>
+            <p class="kdoc__cat">Driver distraction</p>
+            <h4 class="title-base mt-1">Final Report — Context-Aware Driver Distraction Detection</h4>
+            <p class="doc-tile__date">28 October 2026</p>
+            <p class="small-text mt-3">Complete 75-page undergraduate project final report and dissertation submitted to the Department of Information Technology, SLIIT.</p>
+          </div>
+          <div class="kdoc__actions">
+            <div class="cluster" style="align-items: center">
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/final-report-driver-distraction.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>View Document</a>
+              <a href="https://storage.googleapis.com/citos-portfolio/kauz/final-report-driver-distraction.pdf" download="final-report-driver-distraction.pdf" class="btn btn--outline btn--xs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>Download PDF</a>
+            </div>
+            
+            <a href="documents.html" class="archive-link">Browse in Project Documents Archive <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article></div>
+  </div>
+</section>
+
+<section class="section--sm section--surface bordered-top">
+  <div class="container container--4xl center">
+    <h3 class="title-2xl">Explore the Complete CITOS Platform</h3>
+    <p class="card__text mt-3">The Comprehensive Intelligent Transport Observation System connects distraction analysis with
+      intelligent driver assessment, driver fatigue detection, route-aware telemetry, and traffic law QA.</p>
+    <div class="cluster cluster--center mt-8" style="--gap: 1rem">
+      <a href="research.html" class="btn btn--lg btn--outline btn--muted"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to Research Overview</a>
+      <a href="driver-fatigue.html" class="btn btn--lg btn--outline btn--muted">Explore Driver Fatigue <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      <a href="driver-assessment.html" class="btn btn--lg btn--primary">Driver Assessment &amp; GraphRAG <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

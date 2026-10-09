@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Driver Assessment &amp; Explainable AI · CITOS</title>
+  <meta name="description" content="Research write-up of the Intelligent Bus Driver Assessment &amp; Explainable AI-Based System: YOLOv8m violation detection with a GPS stop test, context-aware speed limits, fair risk scoring and the verifiable multilingual DriverGraphRAG assistant.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob page-hero__blob-right"></div>
+  <div class="decor blob page-hero__blob-left"></div>
+  <div class="page-hero__inner">
+    <span class="badge badge--caps">Research component · R26-DS-013</span>
+    <h1>Driver assessment you can <span class="text-gradient">check and question</span></h1>
+    <p>Detects traffic violations from the bus dashcam, GPS and route context, scores every driver fairly, and explains each score in English, Sinhala, Tamil or Singlish with answers that are checked against the evidence before anyone sees them.</p>
+    <div class="meta-line">
+      <span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Saiful Islam I (IT22071484)</span>
+      <span>Supervisor: Dr. Mahima Weerasinghe</span>
+      <span>Co-supervisor: Dr. Junios Anjana</span>
+    </div>
+    <nav aria-label="Sections" class="cluster cluster--center nav-chips nav-chips--sm"><a href="#problem">Problem</a><a href="#objectives">Objectives</a><a href="#method">Methodology</a><a href="#architecture">Architecture</a><a href="#detection">Violation detection</a><a href="#speed">Context-aware speed</a><a href="#scoring">Risk scoring</a><a href="#graphrag">DriverGraphRAG</a><a href="#results">Results</a><a href="#journey">Research journey</a><a href="#documents">Documents</a></nav>
+  </div>
+</section>
+
+<!-- ───────────── Key results ───────────── -->
+<section aria-label="Key results" class="pb-16">
+  <div class="container grid" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card key-result"><strong>0.973</strong><span>mAP@0.5 of the YOLOv8m detector on its held-out test split</span></div><div class="card key-result"><strong>3.5%</strong><span>false violations from the GPS stop test, against 27.3% without our correction</span></div><div class="card key-result"><strong>76% → 95%</strong><span>multilingual answer accuracy after cross-lingual value linking</span></div><div class="card key-result"><strong>0 / 341</strong><span>false alarms when checking answer claims against the graph</span></div><div class="card key-result"><strong>≤ 2.07%</strong><span>certified rate of unsupported claims at 95% confidence</span></div></div>
+</section>
+
+<!-- ───────────── Problem and gap ───────────── -->
+<section id="problem" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Research problem</span><h2>Why driver assessment needed rethinking</h2><p>Four problems, each one making a driver score harder to trust.</p></div>
+    <div class="grid mt-12" style="--md: 2"><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>A detection is not a violation</p>
+          <p class="callout__text">A camera that flags every red light it sees punishes the drivers who stopped correctly. What matters is what the bus did after the light turned red.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>One speed limit does not fit every road</p>
+          <p class="callout__text">60 km/h can be legal on an open road and dangerous outside a school at 8 a.m. or in heavy rain. Fixed limits ignore that context.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Scores are numbers nobody can question</p>
+          <p class="callout__text">Flat point deductions ignore how much a driver has driven, never forgive old mistakes, and give no reason a driver or manager can check against the law.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>LLM explanations can be confidently wrong</p>
+          <p class="callout__text">A language model asked about a driver can state a fine, a section or a date that is not in the records. In a disciplinary setting that is worse than no answer.</p>
+        </div></div>
+    <div class="card card--brand-border mt-8">
+      <p class="title-icon bold"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Research gap</p>
+      <p class="text-sm mt-3" style="line-height: 1.75rem; color: var(--slate-700)">Existing work detects lights and signs but does not test whether the vehicle then stopped; fleet telematics compare speed against one fixed limit; adaptive RAG methods need token probabilities, internal model signals or training that a commercial black-box model does not expose; and verification methods rely on another model that can itself hallucinate. No system ties these together into one explainable, evidence-backed assessment for bus drivers in Sri Lanka.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Objectives and questions ───────────── -->
+<section id="objectives" class="section section--md anchor">
+  <div class="container grid" style="--lg: 2; --gap: 2.5rem">
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>Objectives</h2>
+      <ul class="check-list mt-6"><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Train a detector for traffic lights, crosswalks and pedestrians, and decide violations only after a statistical GPS stop test.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Set speed limits from hospital, school and university zones, time of day and live weather along the bus route.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Store every violation in Firestore and the Neo4j graph, linked to the Motor Traffic Act, and score drivers with an exposure-normalised, time-decayed rate.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Answer questions over the graph with a failure-aware, multilingual GraphRAG pipeline that works with a black-box model.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Verify every claim in an answer against the retrieved rows, with a statistical bound on unsupported claims.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Show each user only what their role allows, and integrate everything into the CITOS platform.</span></li></ul>
+    </div>
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Research questions</h2>
+      <ol class="rq-list mt-6"><li><b>RQ1</b><span>Can a camera detector and a GPS stop test together decide red-light and crossing violations without accusing drivers who stopped?</span></li><li><b>RQ2</b><span>Can speed limits that depend on location, time and weather be applied automatically along a route?</span></li><li><b>RQ3</b><span>Does diagnosing why retrieval failed, and choosing a matching repair, improve accuracy without extra latency?</span></li><li><b>RQ4</b><span>Does binding Sinhala, Tamil and Singlish mentions to graph values improve accuracy on non-English questions?</span></li><li><b>RQ5</b><span>Can answers be verified claim by claim without extra model inference, with a certified bound on errors?</span></li><li><b>RQ6</b><span>Can a driver score be made fair to exposure and allow recovery?</span></li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Methodology ───────────── -->
+<section id="method" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Methodology</span><h2>How the research was carried out</h2><p>Every mechanism was built, measured and kept only when the evidence supported it.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card method-card"><small>01</small><strong>Design Science Research</strong><p>Build the artefact in short cycles, evaluate each mechanism, and keep it only if the evidence shows it helps.</p></div><div class="card method-card"><small>02</small><strong>Held-out model testing</strong><p>Both detectors were trained on Google Colab and evaluated on their own held-out test splits.</p></div><div class="card method-card"><small>03</small><strong>Controlled validation</strong><p>The stop test was checked on validation tracks with known ground truth, the only way to measure a false violation rate.</p></div><div class="card method-card"><small>04</small><strong>Paired ablations</strong><p>The same questions were sent to the live system with a mechanism off and on, with every other setting checked to be identical.</p></div><div class="card method-card"><small>05</small><strong>Hand labelling</strong><p>Every answer and every checked claim was labelled correct or incorrect by hand.</p></div></div>
+  </div>
+</section>
+
+<!-- ───────────── Architecture ───────────── -->
+<section id="architecture" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Architecture</span><h2>Four parts, one evidence trail</h2><p>Two violation sources feed one pipeline into Firestore and the Neo4j knowledge graph. The risk score and the assistant read from the same records, so every score can be explained.</p></div>
+    <div class="grid mt-12" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fig_component_arch.png" alt="Layered architecture of the component" loading="lazy">
+          <figcaption>Layered architecture of the component</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fig_sources.png" alt="Both violation sources share one ingestion pipeline" loading="lazy">
+          <figcaption>Both violation sources share one ingestion pipeline</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Part 1: detection ───────────── -->
+<section id="detection" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+          <span class="part-label">Part 1</span>
+        </div>
+        <h2>Camera-based violation detection</h2>
+        <p>A YOLOv8m detector finds traffic lights, crosswalks and pedestrians in the dashcam video. Seeing a red light is not enough: a statistical test on the bus GPS speed decides whether the bus actually stopped.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div class="card">
+        <h3 class="bold">How it works</h3>
+        <div class="mt-5"><ol class="steps"><li><span class="num">1</span><span>The dashcam clip is uploaded with the time of its first frame, so video time lines up with GPS time.</span></li><li><span class="num">2</span><span>YOLOv8m runs on the sampled frames (640 px, confidence 0.25, IoU 0.45).</span></li><li><span class="num">3</span><span>A class counts only after it appears in two sampled frames, which filters flickers and brake lights.</span></li><li><span class="num">4</span><span>A confirmed red light, or a pedestrian on a crosswalk, sets the event anchor and triggers the stop test.</span></li><li><span class="num">5</span><span>The stop test reads the bus GPS speed 2 s before to 5 s after the anchor and returns one of five verdicts.</span></li><li><span class="num">6</span><span>Only &#x27;slowing&#x27; or &#x27;not stopping&#x27; becomes a violation, with the measured speed, minimum speed and braking attached, and a Sinhala voice alert tells the driver to stop completely.</span></li></ol></div>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/fig_detect_flow.png" alt="Detection flow from dashcam clip to recorded violation" loading="lazy">
+          <figcaption>Detection flow from dashcam clip to recorded violation</figcaption>
+        </figure>
+    </div>
+
+    <h3 class="title-xl mt-12">Training data and models</h3>
+    <p class="card__text max-3xl">We first trained YOLOv8n on the LISA traffic light dataset on a Colab Tesla T4. It reached only 0.309
+      mAP@0.5 and never detected yellow, so we moved to YOLOv8m on three merged Roboflow datasets (7,417 images,
+      five classes), trained for 100 epochs on a Colab A100.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Dataset</th><th scope="col">Source</th><th scope="col">Classes</th><th scope="col">Train / val / test</th><th scope="col">Used for</th></tr></thead><tbody><tr><td>LISA Traffic Light</td><td>Public research dataset</td><td>Green, yellow, red</td><td>14,247 / 3,766 / 18,252</td><td>Baseline (YOLOv8n)</td></tr><tr><td>Traffic Light Detection</td><td>Roboflow Universe</td><td>Green, red, yellow</td><td>3,286 / 50 / 574</td><td>Final model</td></tr><tr><td>Crosswalk Detection</td><td>Roboflow Universe</td><td>Crosswalk</td><td>734 / 210 / 105</td><td>Final model</td></tr><tr><td>Pedestrian Detection</td><td>Roboflow Universe (IIT Palakkad)</td><td>Pedestrian</td><td>1,773 / 343 / 342</td><td>Final model</td></tr></tbody></table></div></div>
+
+    <div class="grid mt-12" style="--lg: 2; --gap: 2rem">
+      <div>
+        <h3 class="title-xl">The GPS stop test</h3>
+        <p class="card__text">A weighted regression fits the speed trend after the red light and a one-sided t-test asks whether
+          the bus was really slowing. Because GPS samples are correlated, the test uses an effective sample
+          size; without that correction it would accuse more than a quarter of drivers who never slowed down.
+          Three of the five verdicts never record a violation.</p>
+        <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Verdict</th><th scope="col">Meaning</th><th scope="col">Outcome</th></tr></thead><tbody><tr><td>Stopped</td><td>Came to rest and stayed below 0.30 m/s for a second</td><td>No violation</td></tr><tr><td>Decelerating</td><td>Braking properly when the window ended</td><td>No violation</td></tr><tr><td>Indeterminate</td><td>Too few good GPS fixes to decide</td><td>No violation (abstain)</td></tr><tr><td>Slowing</td><td>Real deceleration, far too gentle to stop</td><td>Rolling stop</td></tr><tr><td>Not stopping</td><td>No significant deceleration</td><td>Red-light running</td></tr></tbody></table></div></div>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/fig_stop_flow.png" alt="Decision logic of the GPS stop test" loading="lazy">
+          <figcaption>Decision logic of the GPS stop test</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Part 2: speed ───────────── -->
+<section id="speed" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="part-label">Part 2</span>
+        </div>
+        <h2>Context-aware speed monitoring</h2>
+        <p>The safe speed depends on where the bus is, what time it is and what the weather is doing. The module works out the limit at the bus&#x27;s position along the route and records speeding against that limit.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div class="card">
+        <h3 class="bold">How it works</h3>
+        <div class="mt-5"><ol class="steps"><li><span class="num">1</span><span>The SLTB Route 177 corridor (Kollupitiya to Kaduwela) is traced with the Google Directions API.</span></li><li><span class="num">2</span><span>Hospitals, schools, preschools and universities come from a curated list plus the Google Places API, and are kept only if they lie within 150 m of the route.</span></li><li><span class="num">3</span><span>At each bus GPS position, every sensitive place whose 1 km zone contains the bus is checked, highest priority first.</span></li><li><span class="num">4</span><span>Live weather at the bus position comes from the Google Weather API, with Open-Meteo as a fallback.</span></li><li><span class="num">5</span><span>If the bus is faster than the applicable limit, a violation with speed, limit, zone, weather and address is recorded, at most once per zone every 45 seconds.</span></li></ol></div>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/fig_speed_flow.png" alt="Context-aware speed monitoring flow" loading="lazy">
+          <figcaption>Context-aware speed monitoring flow</figcaption>
+        </figure>
+    </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div>
+        <h3 class="title-xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>Applicable limits</h3>
+        <div class="mt-4"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Context</th><th scope="col">Dry</th><th scope="col">Rain</th></tr></thead><tbody><tr><td>Within 1 km of a hospital (any time)</td><td>35 km/h</td><td>35 km/h</td></tr><tr><td>Within 1 km of a school or preschool (06:00 to 14:00)</td><td>40 km/h</td><td>35 km/h</td></tr><tr><td>Within 1 km of a university (06:00 to 17:30)</td><td>40 km/h</td><td>35 km/h</td></tr><tr><td>Open corridor</td><td>70 km/h</td><td>50 km/h</td></tr></tbody></table></div></div>
+      </div>
+      <div>
+        <h3 class="title-xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Linked to the Motor Traffic Act</h3>
+        <p class="card__text">Violations from both sources are stored in Firestore and merged into the Neo4j graph with the
+          sections that govern them.</p>
+        <div class="mt-4"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Violation</th><th scope="col">Section</th><th scope="col">Penalty section</th></tr></thead><tbody><tr><td>Red-light running / rolling stop</td><td>151(2)</td><td>217</td></tr><tr><td>Pedestrian crossing rolling stop</td><td>151(2)</td><td>217</td></tr><tr><td>School, hospital or university zone speeding</td><td>141A</td><td>141A</td></tr><tr><td>Rain speeding</td><td>141A</td><td>141A</td></tr></tbody></table></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Part 3: scoring ───────────── -->
+<section id="scoring" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
+          <span class="part-label">Part 3</span>
+        </div>
+        <h2>A fair driver risk score</h2>
+        <p>The old score started at 100 and subtracted fixed points. The new one borrows the credibility models motor insurers use, so it is fair to how much and where a driver drives, and it lets a driver recover.</p>
+      </div>
+    <div class="grid mt-10" style="--sm: 2; --lg: 3; --gap: 1.25rem"><div class="card" style="--pad: 1.5rem"><p class="bold">A rate, not a count</p><p class="card__text">Risk is severity per kilometre driven, so a driver with 5,000 trips is not judged like one with 5.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Fair to new drivers</p><p class="card__text">A prior pulls drivers with little history toward the fleet average until enough evidence builds up.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Violations fade</p><p class="card__text">Both sides of the rate halve every six months, so a clean period raises the score with no special rule.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Severity is measured</p><p class="card__text">A rolling stop is graded by the minimum speed at the crossing, speeding by the excess over the limit.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Weather is fair</p><p class="card__text">Rain, fog and storms increase exposure, so a driver rostered onto monsoon shifts is not punished for it.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Honest confidence</p><p class="card__text">Each score says how much driving supports it, and a separate flag catches three violations within 30 days.</p></div></div>
+    <div class="card card--brand-border formula mt-8">
+      <p>risk = (prior + decayed severity) / (prior exposure + decayed kilometres)<span class="dot">·</span>score = 100 · e<sup>−k · risk</sup></p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Part 4: GraphRAG ───────────── -->
+<section id="graphrag" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></span>
+          <span class="part-label">Part 4</span>
+        </div>
+        <h2>DriverGraphRAG: answers that are checked</h2>
+        <p>Drivers and fleet managers ask about scores, violations and the law in English, Sinhala, Tamil or Singlish. The model writes a graph query, answers only from the rows it gets back, and every claim is verified before the answer is shown.</p>
+      </div>
+    <div class="mt-10">
+      <figure class="figure">
+          <img src="assets/figures/fig_pipeline.png" alt="End-to-end request flow of DriverGraphRAG" loading="lazy">
+          <figcaption>End-to-end request flow of DriverGraphRAG</figcaption>
+        </figure>
+    </div>
+    <div class="grid mt-12" style="--lg: 2; --gap: 2rem">
+      <div>
+        <h3 class="title-xl">Diagnose before retrying</h3>
+        <p class="card__text">When a first answer is weak, the controller first works out why, then applies the matching repair.
+          Two failures that both return nothing need opposite fixes, which is why Mode E is checked before
+          Mode A.</p>
+        <div class="mt-4"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Mode</th><th scope="col">What went wrong</th><th scope="col">Repair</th></tr></thead><tbody><tr><td>E</td><td>No rows, and a value never matched anything in the graph</td><td>Swap in the real graph value, keep the query</td></tr><tr><td>A</td><td>No rows, values were correct</td><td>Ask for a broader query</td></tr><tr><td>B</td><td>Still no rows after broadening</td><td>Search the legal text by meaning</td></tr><tr><td>C</td><td>Rows came back, but the answer was weak</td><td>Ask for a targeted query using those rows</td></tr><tr><td>D</td><td>Law and records were never linked in one row</td><td>Bridge retrieval across both</td></tr><tr><td>F</td><td>The answer used values not in the rows</td><td>Regenerate, naming the bad values</td></tr></tbody></table></div></div>
+      </div>
+      <div>
+        <h3 class="title-xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Layers that keep answers honest</h3>
+        <ul class="verify-list mt-4"><li><span class="num">1</span><div><strong>Evidence sufficiency gate</strong><p>Before writing, checks the rows actually contain what the question needs, for example that a penalty question really has penalty text.</p></div></li><li><span class="num">2</span><div><strong>Chain-of-Verification</strong><p>Asks verification questions about the draft and answers them from the rows with the draft hidden, then cross-checks the values.</p></div></li><li><span class="num">3</span><div><strong>Faithfulness ledger (GAFL)</strong><p>Extracts every amount, section, date, time, code, quantity and name and looks each one up in the rows, with no extra model call.</p></div></li><li><span class="num">4</span><div><strong>Grounding contrast (PGC)</strong><p>Re-asks with no evidence; anything the model says either way may come from memory and gets lower confidence.</p></div></li><li><span class="num">5</span><div><strong>Conformal abstention</strong><p>A threshold calibrated on labelled answers bounds how often an accepted claim is unsupported.</p></div></li><li><span class="num">6</span><div><strong>Claim confidence</strong><p>Each claim gets a confidence from how it was proved, and weak claims are qualified in the answer text itself.</p></div></li></ul>
+      </div>
+    </div>
+    <div class="callout callout--accent callout--xl mt-10">
+      <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg>A design we tried and dropped</p>
+      <p class="callout__text">Early on, we assumed questions had to be translated to English first, so we fine-tuned Qwen2.5-3B-Instruct with LoRA as a Singlish and Tanglish translator, using sentence pairs built from YouTube transcripts translated with NotebookLM. It did not translate reliably enough. Testing then showed that Gemini already understood the languages; what failed was turning a word into the exact value stored in the database. That finding led directly to cross-lingual value linking (XLINK).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Results ───────────── -->
+<section id="results" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Findings</span><h2>What the <span class="text-gradient">evaluation showed</span></h2><p>Results from held-out test sets, controlled validation and paired ablations on the live system.</p></div>
+
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Violation detection</h3>
+    <div class="grid mt-5" style="--lg: 2">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Class</th><th scope="col">Precision</th><th scope="col">Recall</th><th scope="col">mAP@0.5</th><th scope="col">mAP@0.5:0.95</th></tr></thead><tbody><tr><td>All classes</td><td>0.939</td><td>0.948</td><td>0.973</td><td>0.760</td></tr><tr><td>Green</td><td>0.915</td><td>0.940</td><td>0.972</td><td>0.705</td></tr><tr><td>Yellow</td><td>0.879</td><td>0.895</td><td>0.942</td><td>0.714</td></tr><tr><td>Red</td><td>0.953</td><td>0.943</td><td>0.964</td><td>0.666</td></tr><tr><td>Crosswalk</td><td>0.966</td><td>0.969</td><td>0.990</td><td>0.859</td></tr><tr><td>Pedestrian</td><td>0.982</td><td>0.993</td><td>0.994</td><td>0.854</td></tr></tbody></table></div>
+      <figure class="figure">
+          <img src="assets/figures/fig_yolo_compare.png" alt="Light classes: LISA YOLOv8n baseline vs final YOLOv8m (each on its own test split)" loading="lazy">
+          <figcaption>Light classes: LISA YOLOv8n baseline vs final YOLOv8m (each on its own test split)</figcaption>
+        </figure>
+    </div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fig_stop_fp.png" alt="Stop test false violations with and without the autocorrelation correction" loading="lazy">
+          <figcaption>Stop test false violations with and without the autocorrelation correction</figcaption>
+        </figure>
+      <div class="card">
+        <p class="bold">Reading the stop-test result</p>
+        <p class="card__text mt-3">On 400 controlled tracks where nobody braked, the corrected test flagged 3.5%, close to the chosen
+          5% significance level. The uncorrected version flagged 27.3%. On five tracks with known braking from
+          0.8 to 2.4 m/s², the estimated deceleration was off by only 0.022 m/s² on average.</p>
+      </div>
+    </div>
+
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>DriverGraphRAG</h3>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Study</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Adaptive retrieval (40 paired questions)</td><td>80.0%</td><td>85.0%</td><td>2 fixed, 0 broken, no extra latency (17.1 s vs 17.0 s mean)</td></tr><tr><td>Cross-lingual linking (24 questions, 21 completed)</td><td>76.2%</td><td>95.2%</td><td>Sinhala 3/6 → 6/6, Tamil 4/6 → 5/6</td></tr><tr><td>Wrong-subgraph fault injection (10 questions)</td><td>-</td><td>8 / 10</td><td>All diagnosed as Mode C; confidence improved on 8</td></tr><tr><td>Faithfulness ledger (341 hand-labelled claims)</td><td>-</td><td>0 false alarms</td><td>No model inference needed</td></tr><tr><td>Conformal certificate</td><td>-</td><td>≤ 2.07%</td><td>Unsupported claims at 95% confidence, keeping 97.1% of content</td></tr></tbody></table></div></div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fig_adaptive.png" alt="Accuracy by question category, with and without adaptive retrieval" loading="lazy">
+          <figcaption>Accuracy by question category, with and without adaptive retrieval</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fig_xlink.png" alt="Accuracy by language, with and without cross-lingual linking" loading="lazy">
+          <figcaption>Accuracy by language, with and without cross-lingual linking</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Journey and limits ───────────── -->
+<section id="journey" class="section section--md anchor">
+  <div class="container grid" style="--lg: 5; --gap: 3rem">
+    <div style="--span-lg: 3">
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M12 3v3"/><path d="M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>Research journey</h2>
+      <ol class="journey"><li><small>Mar 2026</small><strong>Project proposal</strong><p>Proposed a multi-sensor assessment and coaching system with explainable reports for Sri Lankan buses.</p></li><li><small>May 2026</small><strong>First graph and detectors</strong><p>Built the first Neo4j graph and driver rating dashboard. Trained YOLOv8n on LISA as a baseline, then YOLOv8m on three merged datasets.</p></li><li><small>Aug 2026</small><strong>From translation to linking</strong><p>Replaced the fine-tuned Qwen translator with LLM text-to-Cypher, adaptive retrieval and cross-lingual value linking.</p></li><li><small>Aug 2026</small><strong>Verification and fairness</strong><p>Added the sufficiency gate, GAFL, CoVe, PGC, conformal abstention, identity scoping, the new risk score, the GPS stop test and context-aware speed.</p></li><li><small>Sep 2026</small><strong>Evaluation and paper</strong><p>Ran the paired ablations and calibrations and prepared the research paper.</p></li><li><small>Oct 2026</small><strong>Thesis and integration</strong><p>Integrated into the CITOS platform and submitted the individual thesis.</p></li></ol>
+    </div>
+    <div style="--span-lg: 2">
+      <h2 class="title-2xl title-icon"><svg class="icon amber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Limitations and next steps</h2>
+      <ul class="limit-list"><li>Detector test sets come from public datasets; the next step is a held-out set of NCG fleet footage, including night driving.</li><li>Without mapped stop lines, the stop test measures stopping behaviour, not stop-line compliance.</li><li>Speed zones are configured for Route 177 and do not yet follow school holidays.</li><li>The GraphRAG question sets are small (40 and 24), so gains are directional; legal questions remain the hardest.</li><li>The verifier checks values, not the relationships between them.</li></ul>
+      <div class="cluster mt-8"><span class="chip chip--md">YOLOv8m</span><span class="chip chip--md">Ultralytics</span><span class="chip chip--md">Google Colab</span><span class="chip chip--md">OpenCV</span><span class="chip chip--md">SciPy</span><span class="chip chip--md">Google Maps Platform</span><span class="chip chip--md">Neo4j</span><span class="chip chip--md">Cloud Firestore</span><span class="chip chip--md">Gemini on Vertex AI</span><span class="chip chip--md">gemini-embedding-001</span><span class="chip chip--md">FastAPI</span><span class="chip chip--md">React</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Documents ───────────── -->
+<section id="documents" class="pb-24 anchor">
+  <div class="container container--5xl">
+    <h2 class="title-2xl center">Research documents</h2>
+    <div class="grid mt-8" style="--gap: 1rem"><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">Mar 2026</p>
+            <p class="bold mt-1">Project proposal</p>
+            <p class="text-sm-tight muted">R26-DS-013 individual proposal</p>
+          </div>
+          <a href="https://storage.googleapis.com/citos-portfolio/saiful/Proposal%20Document_R26-DS-013_IT22071484.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">2026</p>
+            <p class="bold mt-1">Research paper</p>
+            <p class="text-sm-tight muted">Diagnose, Verify, Personalize: A Black-Box GraphRAG Pipeline for Multilingual Driver-Safety and Traffic-Law Question Answering</p>
+          </div>
+          <a href="https://storage.googleapis.com/citos-portfolio/saiful/Diagnose%20Verify%20Personalize%20A%20Black-Box%20GraphRAG%20Pipeline%20for%20Multilingual%20Driver-Safety%20and%20Traffic-Law%20Question%20Answering.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">Oct 2026</p>
+            <p class="bold mt-1">Individual thesis</p>
+            <p class="text-sm-tight muted">Intelligent Bus Driver Assessment &amp; Explainable AI-Based System</p>
+          </div>
+          <a href="https://storage.googleapis.com/citos-portfolio/saiful/IT22071484_DRAFT.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        </div></div>
+    <div class="center mt-10">
+      <a href="research.html" class="link-arrow"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to all research components</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

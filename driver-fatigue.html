@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Driver Fatigue and Drowsiness Detection · CITOS</title>
+  <meta name="description" content="Research write-up of the driver fatigue component: a four-subject NTHU study, a MobileNetV2 baseline, a causal landmark BiLSTM, and a webcam prototype with replayed physiology and CAN context.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob page-hero__blob-right"></div>
+  <div class="decor blob page-hero__blob-left"></div>
+  <div class="page-hero__inner">
+    <span class="badge badge--caps">Research component · R26-DS-013</span>
+    <h1>Drowsiness detection you can <span class="text-gradient">trace and question</span></h1>
+    <p>Tests acted drowsiness on a four-subject NTHU subset, shows why a frame CNN did not travel to a new driver, and runs a causal landmark BiLSTM from the webcam. Heart-rate and vehicle signals are replayed context, not a second live fatigue test.</p>
+    <div class="meta-line">
+      <span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Iqra YUSUF (IT22071620)</span>
+      <span>Supervisor: Dr. Mahima Weerasinghe</span>
+      <span>Co-supervisor: Dr. Junios Anjana</span>
+    </div>
+    <nav aria-label="Sections" class="cluster cluster--center nav-chips nav-chips--sm"><a href="#problem">Problem</a><a href="#objectives">Objectives</a><a href="#method">Methodology</a><a href="#architecture">Architecture</a><a href="#dataset">Dataset</a><a href="#cnn">CNN track</a><a href="#explainability">Explainability</a><a href="#landmarks">Landmark model</a><a href="#signals">Other signals</a><a href="#prototype">Prototype</a><a href="#results">Results</a><a href="#journey">Research journey</a><a href="#documents">Documents</a></nav>
+  </div>
+</section>
+
+<section aria-label="Key results" class="pb-16">
+  <div class="container grid" style="--sm: 2; --lg: 4; --gap: 1rem"><div class="card key-result"><strong>0.898</strong><span>mean ROC-AUC of the Vision V2 landmark BiLSTM across four leave-one-subject-out folds</span></div><div class="card key-result"><strong>0.932 vs 0.644</strong><span>matched LOSO ROC-AUC: landmark BiLSTM against the MobileNetV2 frame CNN</span></div><div class="card key-result"><strong>66,521</strong><span>acted frames from four NTHU subjects: 30,491 alert and 36,030 drowsy</span></div><div class="card key-result"><strong>Vision only</strong><span>live sensor in the prototype. Physiology and CAN are held-out test replays</span></div></div>
+</section>
+
+<section id="problem" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Research problem</span><h2>Why a drowsiness score needed a harder test</h2><p>Four limits on what a camera model of acted drowsiness is allowed to claim.</p></div>
+    <div class="grid mt-12" style="--md: 2"><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>The labels are acted, not a clinical test</p>
+          <p class="callout__text">The vision set is a local NTHU-DDD copy. Each frame is marked drowsy or not drowsy for the session. That is acted drowsiness in front of a camera, not a roadside or clinical fatigue score.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Four drivers cannot stand in for every driver</p>
+          <p class="callout__text">The copy contains subjects 001, 002, 005 and 006. A model can look strong when the same people appear in training and testing, and still fail on a person it has never seen.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>The first vision split still shared subjects</p>
+          <p class="callout__text">The locked landmark model was scored on a session split whose test sessions came from people who were also in training. That number describes the split. It does not describe a new driver.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>A camera score is not yet a fatigue decision</p>
+          <p class="callout__text">The research model outputs a continuous P(Drowsy). The prototype turns a fused score into an alert only after it has stayed high. Those are different claims, and neither one is a live accuracy trial.</p>
+        </div></div>
+    <div class="card card--brand-border mt-8">
+      <p class="title-icon bold"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Research gap</p>
+      <p class="text-sm mt-3" style="line-height: 1.75rem; color: var(--slate-700)">Frame CNNs, embedding sequences and landmark sequences were all scored on the same four subjects, but they were not the same experiment. The early landmark result used a session split with subject overlap and a scaler fit on the whole table. Physiology predicts labels written from the same signals. The vehicle model predicts a driving-behaviour label, and a later audit found that label pointing the opposite way from speed and throttle. No file in the project is a synchronized recording of one driver on camera, on a wearable and on the bus CAN bus at the same time.</p>
+    </div>
+  </div>
+</section>
+
+<section id="objectives" class="section section--md anchor">
+  <div class="container grid" style="--lg: 2; --gap: 2.5rem">
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>Objectives</h2>
+      <ul class="check-list mt-6"><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Describe the four-subject NTHU subset and score vision models with the held-out driver left out.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Train a frame-level CNN baseline and test whether its embeddings separate drowsiness from identity.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Test whether a temporal model on those embeddings improves on the frame CNN.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Build a landmark sequence from eye opening, mouth opening and head tilt, then remove the scaler leak.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Compare the landmark BiLSTM with the CNN tracks under one leave-one-subject-out protocol.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Wire a live webcam path to the deployment checkpoint, and keep physiology and CAN as labelled replays.</span></li></ul>
+    </div>
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Research questions</h2>
+      <ol class="rq-list mt-6"><li><b>RQ1</b><span>Does a frame CNN trained on three of these subjects recognise drowsiness in the fourth?</span></li><li><b>RQ2</b><span>Do the CNN embeddings cluster by drowsiness, or by who is in the frame?</span></li><li><b>RQ3</b><span>Does a BiLSTM on those embeddings beat the frame CNN under the project’s own decision rule?</span></li><li><b>RQ4</b><span>After the scaler is fit on training data only, does a landmark sequence rank above the CNN tracks?</span></li><li><b>RQ5</b><span>What does the corrected Vision V2 leave-one-subject-out result support, once window construction is audited?</span></li><li><b>RQ6</b><span>Which signals in the prototype are live, and which are replayed from other datasets?</span></li></ol>
+    </div>
+  </div>
+</section>
+
+<section id="method" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Methodology</span><h2>How the research was carried out</h2><p>Leave-one-subject-out asks whether the model still works when the driver changes. With only four people, that answer stays inside this subset.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card method-card"><small>01</small><strong>Subject-out testing</strong><p>Vision models are scored by holding out one of the four subjects. Training never sees that person’s frames.</p></div><div class="card method-card"><small>02</small><strong>Train-only scaling</strong><p>After the leak was found, feature scaling for the landmark model is fit on training windows only.</p></div><div class="card method-card"><small>03</small><strong>Causal features</strong><p>Vision V2 drops the full-table scaler and builds the 41 features from past frames on a 30 Hz grid.</p></div><div class="card method-card"><small>04</small><strong>Matched comparison</strong><p>The landmark BiLSTM, the frame CNN and the CNN-plus-BiLSTM were re-scored on the same four held-out subjects.</p></div><div class="card method-card"><small>05</small><strong>Later audits</strong><p>Scaler leakage, label rules, CAN wording and the way 90-frame windows were built were checked after the models existed.</p></div></div>
+    <div class="mt-10"><figure class="figure">
+          <img src="assets/figures/fatigue/loso-evaluation.jpg" alt="Leave-one-subject-out: each round trains on three subjects and tests the one who was held out" loading="lazy">
+          <figcaption>Leave-one-subject-out: each round trains on three subjects and tests the one who was held out</figcaption>
+        </figure></div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the evaluation</p><p class="card__text mt-3">One subject is completely absent from training in each round. Round 1 tests subject 001, round 2 tests 002, round 3 tests 005, and round 4 tests 006. The fold scores are then averaged. That is how this page asks whether a representation travels to an unseen person. The numbers for those folds are in the landmark and results sections.</p></div></div>
+  </div>
+</section>
+
+<section id="architecture" class="section section--md anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Architecture</span><h2>One research path, one live path</h2><p>Vision, physiology and driving context meet in one score, then a decision engine, then the dashboard. The diagram is the architecture. It is not an accuracy claim.</p></div>
+    <p class="card__text center max-3xl mt-8" style="margin-inline: auto">The multimodal layout combines the camera, the physiological stream and the driving-context stream before one fatigue decision.</p>
+    <div class="mt-8"><figure class="figure">
+          <img src="assets/figures/fatigue/driver-fatigue-system-architecture.jpg" alt="System architecture: vision, physiology and CAN context, then fusion, the decision engine and the dashboard" loading="lazy">
+          <figcaption>System architecture: vision, physiology and CAN context, then fusion, the decision engine and the dashboard</figcaption>
+        </figure></div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the architecture</p><p class="card__text mt-3">Vision contributes P(Drowsy) from EAR, MAR, head tilt and 41 causal features. Physiology contributes a Transformer score on 30×7 windows. CAN contributes a monotony score from 30×10 behaviour windows, not a drowsiness probability. Those three weights are 0.60, 0.30 and 0.10. In the running prototype only the webcam is live. Physiology and CAN are held-out replays. The gates drawn as 0.50, 0.80 and 0.98, held for 5 s, 8 s and 15 s, are the same thresholds as the decision table below. No face still means no score and no escalation.</p></div></div>
+    <div class="grid mt-12" style="--lg: 2; --gap: 2rem">
+      <div class="card">
+        <h3 class="bold">Research pipeline</h3>
+        <p class="card__text">NTHU frames, then a representation, then a model, then a subject held out. CNN and landmark tracks are reported side by side.</p>
+        <div class="mt-5"><ol class="steps"><li><span class="num">1</span><span>Start from the local NTHU frames and the filename labels drowsy and not drowsy.</span></li><li><span class="num">2</span><span>Train a MobileNetV2 frame CNN with leave-one-subject-out, then inspect embeddings, probes and Grad-CAM.</span></li><li><span class="num">3</span><span>Try a temporal model on the CNN embeddings. Keep it only if the project’s decision file says it improved.</span></li><li><span class="num">4</span><span>Extract EAR, MAR and head tilt, engineer a 41-feature sequence, and train a BiLSTM.</span></li><li><span class="num">5</span><span>Correct the full-table scaler, then score subject-out folds.</span></li><li><span class="num">6</span><span>Rebuild the features so they cannot see future frames, and report Vision V2 leave-one-subject-out separately from the live checkpoint.</span></li></ol></div>
+      </div>
+      <div class="card">
+        <h3 class="bold">Live prototype</h3>
+        <p class="card__text">Webcam to MediaPipe, then the API, then the 90×41 BiLSTM. Physiology and CAN join only as replay.</p>
+        <div class="mt-5"><ol class="steps"><li><span class="num">1</span><span>The browser opens the webcam and runs MediaPipe Face Landmarker on the video.</span></li><li><span class="num">2</span><span>It sends EAR, MAR, head tilt and whether a face was found to POST /fatigue/vision/tick.</span></li><li><span class="num">3</span><span>The API places those samples on a 30 Hz grid and builds 41 causal features, including blinks.</span></li><li><span class="num">4</span><span>A 90-step window goes through the deployment BiLSTM, which returns a continuous P(Drowsy).</span></li><li><span class="num">5</span><span>Physiology and CAN, when their replay files are present, contribute their own scores.</span></li><li><span class="num">6</span><span>The fused score enters the decision engine. No face means no score and no escalation.</span></li></ol></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dataset" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <span class="part-label">Part 1</span>
+        </div>
+        <h2>A four-subject acted set</h2>
+        <p>The vision work uses a local NTHU-DDD image copy: 66,521 JPEG frames, 30,491 alert (not drowsy) and 36,030 drowsy. Subjects 003 and 004 are not in this copy.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/eda_class_distribution.png" alt="Class counts in the local NTHU copy" loading="lazy">
+          <figcaption>Class counts in the local NTHU copy</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/eda_subject_distribution.png" alt="Frames per subject. Subject 006 is the smallest group" loading="lazy">
+          <figcaption>Frames per subject. Subject 006 is the smallest group</figcaption>
+        </figure>
+    </div>
+    <div class="mt-8"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Subject</th><th scope="col">Alert</th><th scope="col">Drowsy</th><th scope="col">Frames</th><th scope="col">Conditions</th></tr></thead><tbody><tr><td>001</td><td>9,432</td><td>9,584</td><td>19,016</td><td>8</td></tr><tr><td>002</td><td>8,237</td><td>10,596</td><td>18,833</td><td>8</td></tr><tr><td>005</td><td>8,846</td><td>13,087</td><td>21,933</td><td>8</td></tr><tr><td>006</td><td>3,976</td><td>2,763</td><td>6,739</td><td>3</td></tr></tbody></table></div></div>
+    <p class="card__text max-3xl mt-6">Subjects 001, 002 and 005 each have eight filename conditions, mixing glasses with yawning, nodding and sleepy combinations. Subject 006 has three. The landmark table later collapsed some of those filenames into 16 session ids. The image counts above follow the filenames.</p>
+    <h3 class="title-xl mt-12">What the face measurements already show</h3>
+    <p class="card__text max-3xl">Before any network, eye opening and mouth opening differ between the acted classes. These histograms are from the landmark extraction, not from the CNN.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/hist_ear.png" alt="Eye Aspect Ratio by acted class" loading="lazy">
+          <figcaption>Eye Aspect Ratio by acted class</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/hist_mar.png" alt="Mouth Aspect Ratio by acted class" loading="lazy">
+          <figcaption>Mouth Aspect Ratio by acted class</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<section id="cnn" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/></svg></span>
+          <span class="part-label">Part 2</span>
+        </div>
+        <h2>The frame CNN did not travel</h2>
+        <p>MobileNetV2 was trained on 192-pixel frames with leave-one-subject-out. Each fold tests a person who was absent from training. The report’s recommendation is that this baseline is not yet suitable.</p>
+      </div>
+    <div class="mt-10"><figure class="figure">
+          <img src="assets/figures/fatigue/vision-research-evolution.jpg" alt="How the vision work moved from the frame CNN to the landmark BiLSTM" loading="lazy">
+          <figcaption>How the vision work moved from the frame CNN to the landmark BiLSTM</figcaption>
+        </figure></div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the progression</p><p class="card__text mt-3">The frame CNN and its embeddings were inspected with PCA, t-SNE and linear probes. A BiLSTM on those embeddings did not improve on the frame model, so that temporal track was dropped. The work then moved to landmarks: EAR, MAR and head tilt, expanded to 41 causal features, read as a 90-step sequence by a BiLSTM, and scored with subject-out evaluation. Vision V2 is that corrected landmark model. The plots under this diagram are the measurements behind those steps.</p></div></div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div>
+        <h3 class="title-xl">LOSO means</h3>
+        <p class="card__text">Accuracy 0.560 and ROC-AUC 0.644 are the headline means from the 14 July 2026 training report. Macro-F1 is 0.462. A later subject study kept the same ROC-AUC and marked the frame CNN not ready.</p>
+        <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Accuracy</td><td>0.560</td></tr><tr><td>ROC-AUC</td><td>0.644</td></tr><tr><td>Macro-F1</td><td>0.462</td></tr><tr><td>Balanced accuracy</td><td>0.554</td></tr><tr><td>Written recommendation</td><td>Not yet suitable</td></tr></tbody></table></div></div>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/cnn_roc.png" alt="MobileNetV2 ROC curves across the four subject-out folds" loading="lazy">
+          <figcaption>MobileNetV2 ROC curves across the four subject-out folds</figcaption>
+        </figure>
+    </div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/cnn_confusion.png" alt="Pooled confusion matrix for the frame CNN" loading="lazy">
+          <figcaption>Pooled confusion matrix for the frame CNN</figcaption>
+        </figure>
+      <div class="card"><p class="bold">Reading the baseline</p><p class="card__text mt-3">The curves sit above chance and well below a model that would be ready to deploy. The worst subject in the follow-up study was 001 and the best was 006. Failures lined up with driving condition as well as with identity. The weakest condition named in that summary is no-glasses nonsleepy combination.</p></div>
+    </div>
+
+    <h3 class="title-xl mt-14">Embeddings follow the person</h3>
+    <p class="card__text max-3xl">A frozen linear probe on the embeddings reached F1 0.413. Fine-tuning the probe fell to 0.347. The best crop setting in that ablation was the full frame. The study marked the embeddings not ready for a CNN-BiLSTM.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Check</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Frozen linear probe</td><td>0.413</td></tr><tr><td>Fine-tuned linear probe</td><td>0.347</td></tr><tr><td>Best face crop in that study</td><td>Full frame</td></tr><tr><td>Frame-level CNN readiness</td><td>Not ready</td></tr><tr><td>Embeddings ready for a CNN-BiLSTM</td><td>Not ready</td></tr></tbody></table></div></div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/embeddings_by_subject.png" alt="t-SNE of the CNN embeddings, coloured by subject" loading="lazy">
+          <figcaption>t-SNE of the CNN embeddings, coloured by subject</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/embeddings_pca.png" alt="PCA of the fine-tuned CNN embeddings from the same study" loading="lazy">
+          <figcaption>PCA of the fine-tuned CNN embeddings from the same study</figcaption>
+        </figure>
+    </div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the embedding plot</p><p class="card__text mt-3">The t-SNE forms separate clouds for subjects 001, 002, 005 and 006. A representation that sorts people this cleanly can score well on a split that reuses those people, and still fail the subject who was held out. That is the generalisation problem the CNN track ran into.</p></div></div>
+
+    <h3 class="title-xl mt-14">A temporal model on the same embeddings</h3>
+    <p class="card__text max-3xl">The feasibility chart compares the single-frame CNN with the best classical temporal model from that study. The later Prompt-3 BiLSTM is a different bar, and it is the one the decision file rejects.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/temporal_gain.png" alt="Feasibility study: single-frame CNN against its best temporal model" loading="lazy">
+          <figcaption>Feasibility study: single-frame CNN against its best temporal model</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/cnn_temporal_baselines.png" alt="Prompt-3 macro-F1 against the frame CNN and earlier temporal baselines" loading="lazy">
+          <figcaption>Prompt-3 macro-F1 against the frame CNN and earlier temporal baselines</figcaption>
+        </figure>
+    </div>
+    <div class="mt-6"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Model</th><th scope="col">Macro-F1</th></tr></thead><tbody><tr><td>Prompt-3 CNN + BiLSTM</td><td>0.406</td></tr><tr><td>Single-frame CNN baseline</td><td>0.462</td></tr><tr><td>Frozen-embedding logistic probe</td><td>0.416</td></tr><tr><td>Earlier temporal MLP baseline</td><td>0.525</td></tr></tbody></table></div></div>
+    <div class="callout callout--accent callout--xl mt-8">
+      <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg>A design we tried and dropped</p>
+      <p class="callout__text">The embedding BiLSTM was the natural next step after the frame CNN: drowsiness unfolds over time, so a sequence model should help. The feasibility BiLSTM on those embeddings reached a mean macro-F1 of 0.384. The later Prompt-3 model reached 0.406, below the single-frame CNN at 0.462 and below the earlier temporal MLP at 0.525. It beat that temporal baseline on none of the four folds. The decision file records q1_temporal_modelling_improved as NO. The embedding sequence was kept as a negative result, not as the vision model.</p>
+    </div>
+  </div>
+</section>
+
+<section id="explainability" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Explainability</span><h2>Where the CNN was looking</h2><p>Grad-CAM overlays from the CNN subject-generalisation outputs. They show the spatial support of a prediction. They are not a medical explanation.</p></div>
+    <div class="grid mt-12" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/gradcam_correct.png" alt="Correctly classified frame. The heatmap sits on the upper head, not a tight eye mask" loading="lazy">
+          <figcaption>Correctly classified frame. The heatmap sits on the upper head, not a tight eye mask</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/gradcam_incorrect.png" alt="Incorrectly classified frame. The strongest response is on the background beside the face" loading="lazy">
+          <figcaption>Incorrectly classified frame. The strongest response is on the background beside the face</figcaption>
+        </figure>
+    </div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the overlays</p><p class="card__text mt-3">The written subject-generalisation summary attributes the weak leave-one-subject-out result to condition-linked failures and to subject identity shift. These two overlays agree with that reading in a simple way: a correct example lights the hair and forehead, and an incorrect example lights the wall. The network is not behaving like an eye-only detector. The Grad-CAM report is supporting evidence for that CNN failure, not a second accuracy number.</p></div></div>
+  </div>
+</section>
+
+<section id="landmarks" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+          <span class="part-label">Part 3</span>
+        </div>
+        <h2>A landmark sequence, then a corrected one</h2>
+        <p>Eye Aspect Ratio, Mouth Aspect Ratio and head tilt are computed from MediaPipe landmarks. Vision V2 expands them to 41 causal features on a 30 Hz grid and reads 90 steps with a BiLSTM.</p>
+      </div>
+    <div class="grid mt-10" style="--sm: 2; --lg: 3; --gap: 1.25rem"><div class="card" style="--pad: 1.5rem"><p class="bold">Eye Aspect Ratio</p><p class="card__text">Six landmarks around each eye. A smaller ratio means the eye is more closed. The live page and the research extractor use the same indices.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Mouth Aspect Ratio</p><p class="card__text">The opening between the lips divided by the width of the mouth. It is one of the base signals, not a yawn label by itself.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Head tilt</p><p class="card__text">The angle between the outer corners of the eyes. It carries nod and lean, which a single cropped face can miss.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">41 causal features</p><p class="card__text">V2 expands those bases with blink rate, blink duration and rolling statistics. Each value uses only frames already seen.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">90-step BiLSTM</p><p class="card__text">Two bidirectional LSTM layers, 128 then 64, then a small dense layer and a sigmoid. The output is P(Drowsy), not a hard class.</p></div><div class="card" style="--pad: 1.5rem"><p class="bold">Thresholds do not travel</p><p class="card__text">The fold thresholds on V2 were 0.02, 0.98, 0.98 and 0.88. A high ROC-AUC can still miss drowsy frames when the threshold was chosen on other people.</p></div></div>
+
+    <h3 class="title-xl mt-14">The first split was too kind</h3>
+    <p class="card__text max-3xl">The locked BiLSTM was the best of the May landmark bake-off on drowsy recall, at accuracy 0.628 and ROC-AUC 0.945. Test sessions still belonged to subjects who appeared in training, and the first feature scaler was fit on all 66,521 rows. Refitting that scaler on training data only, on the same split, moved accuracy to 0.591 and ROC-AUC to 0.878.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Version</th><th scope="col">Accuracy</th><th scope="col">Drowsy recall</th><th scope="col">ROC-AUC</th><th scope="col">Threshold</th></tr></thead><tbody><tr><td>Locked V1, full-table scaler</td><td>0.628</td><td>0.412</td><td>0.945</td><td>0.98</td></tr><tr><td>Same split, train-only scaler</td><td>0.591</td><td>0.354</td><td>0.878</td><td>0.96</td></tr></tbody></table></div></div>
+
+    <h3 class="title-xl mt-14">Same subjects, three representations</h3>
+    <p class="card__text max-3xl">The 22 August comparison re-scored three saved tracks on the same held-out subjects. ROC-AUC does not depend on the threshold. Under that ranking the landmark BiLSTM leads on every subject. Mean ROC-AUC is 0.932 for landmarks, 0.644 for the frame CNN and 0.586 for the CNN-plus-BiLSTM. The inputs are still different: 41 landmark features, a raw frame, and a 1,280-d embedding sequence.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Track</th><th scope="col">ROC-AUC</th><th scope="col">PR-AUC</th><th scope="col">Macro-F1</th></tr></thead><tbody><tr><td>A′ landmark BiLSTM</td><td>0.932</td><td>0.954</td><td>0.710</td></tr><tr><td>B′ MobileNetV2 CNN</td><td>0.644</td><td>0.668</td><td>0.479</td></tr><tr><td>C′ CNN + BiLSTM</td><td>0.586</td><td>0.615</td><td>0.406</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Held-out subject</th><th scope="col">Landmark</th><th scope="col">CNN</th><th scope="col">CNN + BiLSTM</th></tr></thead><tbody><tr><td>001</td><td>0.995</td><td>0.609</td><td>0.570</td></tr><tr><td>002</td><td>0.992</td><td>0.591</td><td>0.642</td></tr><tr><td>005</td><td>0.769</td><td>0.603</td><td>0.448</td></tr><tr><td>006</td><td>0.973</td><td>0.774</td><td>0.684</td></tr></tbody></table></div>
+    </div>
+
+    <h3 class="title-xl mt-14">Vision V2, subject by subject</h3>
+    <p class="card__text max-3xl">V2 removes the full-table scaler, uses causal statistics, and chooses each fold’s threshold on validation only: maximise drowsy recall while alert recall stays at least 0.88. Mean ROC-AUC is 0.898, mean accuracy 0.756, mean macro-F1 0.738. This is a different pipeline from the 0.932 comparison above, so the two ROC-AUC figures are not a before-and-after of the same model.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Fold</th><th scope="col">Subject</th><th scope="col">Threshold</th><th scope="col">Accuracy</th><th scope="col">Drowsy recall</th><th scope="col">Alert recall</th><th scope="col">ROC-AUC</th><th scope="col">Macro-F1</th></tr></thead><tbody><tr><td>1</td><td>001</td><td>0.02</td><td>0.6161</td><td>0.2385</td><td>1.0000</td><td>0.9589</td><td>0.5530</td></tr><tr><td>2</td><td>002</td><td>0.98</td><td>0.9136</td><td>0.9087</td><td>0.9200</td><td>0.9748</td><td>0.9125</td></tr><tr><td>3</td><td>005</td><td>0.98</td><td>0.6476</td><td>0.6325</td><td>0.6702</td><td>0.7221</td><td>0.6434</td></tr><tr><td>4</td><td>006</td><td>0.88</td><td>0.8474</td><td>0.8673</td><td>0.8339</td><td>0.9381</td><td>0.8441</td></tr></tbody></table></div></div>
+    <div class="mt-6"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Metric</th><th scope="col">Mean</th><th scope="col">Lowest fold</th><th scope="col">Highest fold</th></tr></thead><tbody><tr><td>Accuracy</td><td>0.756</td><td>0.616</td><td>0.914</td></tr><tr><td>Drowsy recall</td><td>0.662</td><td>0.238</td><td>0.909</td></tr><tr><td>ROC-AUC</td><td>0.898</td><td>0.722</td><td>0.975</td></tr><tr><td>PR-AUC</td><td>0.926</td><td>0.840</td><td>0.978</td></tr><tr><td>Macro-F1</td><td>0.738</td><td>0.553</td><td>0.912</td></tr></tbody></table></div></div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the V2 table</p><p class="card__text mt-3">Subject 002 is strong at both ranking and the chosen threshold. Subject 001 ranks well, ROC-AUC 0.959, and then the validation threshold of 0.02 keeps almost every alert frame while drowsy recall falls to 0.238. The median threshold across folds is 0.93. The project notes say not to deploy that median as a global cutoff.</p></div></div>
+
+    <h3 class="title-xl mt-14">What a 90-step window actually contains</h3>
+    <p class="card__text max-3xl">The grid is 30 Hz, so 90 steps cover three seconds of that grid. A later audit of the landmark table found that session id is not one original clip. Glasses filenames were collapsed, and yawning and nodding were folded into an unknown combination. Subject hold-out is unchanged: a window still belongs to one person. The single-clip reading is not.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Audit check</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Reconstructed 90-step windows</td><td>65,097</td></tr><tr><td>Windows mixing more than one true clip</td><td>35,555 (54.62%)</td></tr><tr><td>Windows mixing glasses and no-glasses</td><td>33,841 (51.99%)</td></tr><tr><td>Windows with a repeated frame index</td><td>33,946 (52.15%)</td></tr><tr><td>Sessions that contain more than one clip</td><td>13 of 16</td></tr><tr><td>Subject hold-out</td><td>Intact</td></tr></tbody></table></div></div>
+  </div>
+</section>
+
+<section id="signals" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
+          <span class="part-label">Part 4</span>
+        </div>
+        <h2>Two other signals, two other tasks</h2>
+        <p>Physiology and CAN were trained on their own datasets. They can add context in the prototype. They are not extra proofs that the vision model detects fatigue.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2"><div class="card">
+          <p class="overline">Transformer, 30 × 7</p>
+          <h3 class="title-xl mt-2">Physiology</h3>
+          <p class="text-sm-tight bold mt-3">Test accuracy 0.883, macro-F1 0.869</p>
+          <p class="card__text">Recovers Alert, Slight fatigue and Drowsy labels written from the same heart-rate, respiration and skin-conductance features. The rule and the saved test labels agree on every test window.</p>
+        </div><div class="card">
+          <p class="overline">Transformer, 30 × 10</p>
+          <h3 class="title-xl mt-2">CAN / OBD</h3>
+          <p class="text-sm-tight bold mt-3">Test accuracy 0.981, ROC-AUC 0.998</p>
+          <p class="card__text">Classifies a driving-behaviour label on three drivers. The export marks it as not a fatigue classifier. Class 1 is the lower-speed, lower-throttle group, so the word “risky” does not match the measurements.</p>
+        </div></div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/fatigue/physio_confusion.png" alt="Physiology Transformer on its held-out drives. The classes are the project’s own labels" loading="lazy">
+          <figcaption>Physiology Transformer on its held-out drives. The classes are the project’s own labels</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/fatigue/can_confusion.png" alt="CAN Transformer on held-out driver 3. The task is driving behaviour, not drowsiness" loading="lazy">
+          <figcaption>CAN Transformer on held-out driver 3. The task is driving behaviour, not drowsiness</figcaption>
+        </figure>
+    </div>
+    <p class="card__text max-3xl mt-6">Physiology uses heart rate, heart-rate variability, respiration and two skin-conductance channels at 15.5 Hz, from PhysioNet drives, with drives 12 and 13 held out. CAN uses ten OBD channels from three drivers, one session each, with driver 3 held out. A cross-corpus fusion that zipped these datasets by rank reached a high accuracy against a vision-stratum label. That experiment has no shared driver and no shared clock, so it is not reported here as a fatigue result.</p>
+  </div>
+</section>
+
+<section id="prototype" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span>
+          <span class="part-label">Part 5</span>
+        </div>
+        <h2>What the running system actually does</h2>
+        <p>The React dashboard talks to a FastAPI fatigue module. The webcam is the only live sensor. The model in that path is the deployment checkpoint, trained on all four subjects after the subject-out study.</p>
+      </div>
+    <div class="mt-10"><figure class="figure">
+          <img src="assets/figures/fatigue/vision-pipeline.jpg" alt="Live vision path: webcam landmarks to a 90×41 BiLSTM, then P(Drowsy) and the dashboard" loading="lazy">
+          <figcaption>Live vision path: webcam landmarks to a 90×41 BiLSTM, then P(Drowsy) and the dashboard</figcaption>
+        </figure></div>
+    <div class="mt-6"><div class="card"><p class="bold">Reading the vision path</p><p class="card__text mt-3">The browser sends EAR, MAR and head tilt from MediaPipe. The API places them on a 30 Hz grid, builds 41 causal features, and scores a 90×41 window with the BiLSTM. The model returns a continuous P(Drowsy). The stored diagnostic threshold of 0.94 is not applied as a live class. Alerts come from the fused score and the persistence gates, and only after a face has been present long enough to fill the window.</p></div></div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div>
+        <h3 class="title-xl">How the score is combined</h3>
+        <p class="card__text">When all three values are present, the overall score is 0.60 times vision, 0.30 times physiology and 0.10 times CAN monotony. If one is missing, that term is left out and the remaining weights are rescaled so they still sum to one.</p>
+        <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Signal</th><th scope="col">Weight</th><th scope="col">Role in the prototype</th></tr></thead><tbody><tr><td>Vision P(Drowsy)</td><td>0.60</td><td>Required before the decision engine will escalate</td></tr><tr><td>Physiology P(class 1) + P(class 2)</td><td>0.30</td><td>Replay score. Slight fatigue and drowsy both count as non-alert</td></tr><tr><td>CAN driving-context monotony</td><td>0.10</td><td>How steady the replayed driving window is. Not the behaviour-model probability</td></tr></tbody></table></div></div>
+      </div>
+      <div>
+        <h3 class="title-xl">When an alert is allowed</h3>
+        <p class="card__text">One high window is not critical. The score has to stay at or above the gate for the whole hold time. If the face disappears, the engine clears the timers and will not escalate.</p>
+        <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">State</th><th scope="col">Score gate</th><th scope="col">Hold</th></tr></thead><tbody><tr><td>Early fatigue</td><td>0.50</td><td>5 seconds</td></tr><tr><td>High fatigue</td><td>0.80</td><td>8 seconds</td></tr><tr><td>Critical fatigue</td><td>0.98</td><td>15 seconds</td></tr></tbody></table></div></div>
+      </div>
+    </div>
+    <div class="card card--brand-border formula mt-8">
+      <p>S = (0.60 V + 0.30 P + 0.10 C) / (0.60 + 0.30 + 0.10)</p>
+      <p class="formula__note">When every signal is present. Missing signals drop out of both the numerator and the denominator.</p>
+    </div>
+    <ul class="limit-list"><li>Only the webcam is live. Physiology replays held-out drives. CAN replays a held-out driver file.</li><li>If a signal is missing, its weight is dropped and the remaining weights are divided by their new total. Vision is never filled in.</li><li>The stored deployment threshold 0.94 is a validation diagnostic. The live path does not turn P(Drowsy) into a class with it.</li><li>The decision thresholds were chosen for a vision probability and have not been re-fit on the fused score.</li><li>The deployment checkpoint was trained on all four subjects after the subject-out study. Its validation ROC-AUC of 0.989 is not the research result.</li></ul>
+  </div>
+</section>
+
+<section id="results" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Findings</span><h2>What the <span class="text-gradient">evaluation showed</span></h2><p>Subject-out vision results, kept apart from the deployment checkpoint and from the replayed signals.</p></div>
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Which vision representation ranked higher</h3>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Track</th><th scope="col">Mean ROC-AUC</th><th scope="col">Mean PR-AUC</th><th scope="col">Mean macro-F1</th></tr></thead><tbody><tr><td>A′ landmark BiLSTM</td><td>0.932</td><td>0.954</td><td>0.710</td></tr><tr><td>B′ MobileNetV2 CNN</td><td>0.644</td><td>0.668</td><td>0.479</td></tr><tr><td>C′ CNN + BiLSTM</td><td>0.586</td><td>0.615</td><td>0.406</td></tr></tbody></table></div></div>
+    <p class="card__text max-3xl mt-4">Landmark features led on every held-out subject. The CNN-plus-BiLSTM was last. That ordering is why the research model moved to landmarks, and why the embedding sequence stayed a negative result.</p>
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Vision V2 leave-one-subject-out</h3>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Metric</th><th scope="col">Mean</th><th scope="col">Lowest fold</th><th scope="col">Highest fold</th></tr></thead><tbody><tr><td>Accuracy</td><td>0.756</td><td>0.616</td><td>0.914</td></tr><tr><td>Drowsy recall</td><td>0.662</td><td>0.238</td><td>0.909</td></tr><tr><td>ROC-AUC</td><td>0.898</td><td>0.722</td><td>0.975</td></tr><tr><td>PR-AUC</td><td>0.926</td><td>0.840</td><td>0.978</td></tr><tr><td>Macro-F1</td><td>0.738</td><td>0.553</td><td>0.912</td></tr></tbody></table></div></div>
+    <p class="card__text max-3xl mt-4">The mean ROC-AUC of 0.898 is the research summary for the causal BiLSTM. The spread is large, and the window audit limits how those 90 steps can be described. The deployment validation ROC-AUC of 0.989 is a checkpoint diagnostic on mixed subjects. It is not this table.</p>
+  </div>
+</section>
+
+<section id="journey" class="section section--md anchor">
+  <div class="container grid" style="--lg: 5; --gap: 3rem">
+    <div style="--span-lg: 3">
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M12 3v3"/><path d="M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>Research journey</h2>
+      <ol class="journey"><li><small>May 2026</small><strong>Separate modality models</strong><p>Physiology and CAN transformers were scored on their own group splits. A landmark bake-off on the vision features kept the BiLSTM because it had the highest drowsy recall on that session split.</p></li><li><small>10 Jul 2026</small><strong>Dataset check</strong><p>Verification counted 66,521 frames, four subjects, and the alert and drowsy totals used on this page.</p></li><li><small>14 Jul 2026</small><strong>Frame CNN baseline</strong><p>MobileNetV2 leave-one-subject-out finished at accuracy 0.560 and ROC-AUC 0.644. The report says it is not yet suitable.</p></li><li><small>18 Jul 2026</small><strong>Subject and embedding study</strong><p>Embeddings clustered by person. Linear probes stayed weak. The study marked the frame CNN and the embeddings as not ready.</p></li><li><small>19–25 Jul 2026</small><strong>Temporal CNN track closed</strong><p>A BiLSTM on the embeddings did not beat the frame CNN. The decision file records that temporal modelling did not improve.</p></li><li><small>21 Aug 2026</small><strong>Scaler leak</strong><p>The first landmark table had been scaled on every row, including future test subjects. A retrain on the same session split dropped accuracy from 0.628 to 0.591.</p></li><li><small>22 Aug 2026</small><strong>Matched subject-out comparison</strong><p>On ROC-AUC the landmark model led the frame CNN and the CNN-plus-BiLSTM for every held-out subject.</p></li><li><small>29 Aug 2026</small><strong>Vision V2 and a separate checkpoint</strong><p>Causal 30 Hz features and a four-fold subject-out run were reported. A second model, trained on all four subjects, was saved for the application only.</p></li><li><small>30 Aug 2026</small><strong>Prototype audit</strong><p>The running app was checked against the code: live webcam vision, replayed physiology and CAN, and the 0.60 / 0.30 / 0.10 fusion.</p></li><li><small>After 30 Aug 2026</small><strong>Window-construction audit</strong><p>A later read of the landmark table found that a 90-step window often mixes more than one original clip. Subject hold-out still holds. The three-second single-clip reading does not.</p></li></ol>
+    </div>
+    <div style="--span-lg: 2">
+      <h2 class="title-2xl title-icon"><svg class="icon amber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Limitations and next steps</h2>
+      <ul class="limit-list"><li>Four acted subjects. The result does not extend to a fleet, a night highway, or a clinical fatigue scale.</li><li>Subject 006 contributes 6,739 frames and three conditions. Subject 005 contributes 21,933. The folds are not equal workloads.</li><li>V2 thresholds swing from 0.02 to 0.98. Subject 001 has ROC-AUC 0.959 and drowsy recall 0.238 at the validation threshold.</li><li>54.62% of reconstructed 90-step windows mix more than one original clip. They are not a clean 3-second recording.</li><li>No live webcam accuracy is reported. A working demo is not a test set.</li><li>Physiology has no independent fatigue label. The model is scored against a rule built from its own inputs.</li><li>CAN is a behaviour classifier on three drivers. The fusion term is a monotony score from that replay, not a drowsiness probability.</li><li>The three datasets do not share a driver or a clock. Replayed signals are not same-person multimodal sensing.</li><li>The deployment checkpoint and the 0.60 / 0.30 / 0.10 score are integration choices. They do not replace the subject-out tables.</li></ul>
+      <div class="cluster mt-8"><span class="chip chip--md">MediaPipe Face Landmarker</span><span class="chip chip--md">EAR / MAR / head tilt</span><span class="chip chip--md">MobileNetV2</span><span class="chip chip--md">BiLSTM</span><span class="chip chip--md">Keras</span><span class="chip chip--md">Leave-one-subject-out</span><span class="chip chip--md">FastAPI</span><span class="chip chip--md">React</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="documents" class="pb-24 anchor">
+  <div class="container container--5xl">
+    <h2 class="title-2xl center">Research documents</h2>
+    <div class="grid mt-8" style="--gap: 1rem"><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">Mar 2026</p>
+            <p class="bold mt-1">Project proposal</p>
+            <p class="text-sm-tight muted">R26-DS-013 individual proposal</p>
+          </div>
+          <a href="contact.html" class="btn btn--dark">Request a copy</a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">2026</p>
+            <p class="bold mt-1">Research paper</p>
+            <p class="text-sm-tight muted">Driver fatigue and drowsiness detection</p>
+          </div>
+          <a href="contact.html" class="btn btn--dark">Request a copy</a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">Oct 2026</p>
+            <p class="bold mt-1">Individual thesis</p>
+            <p class="text-sm-tight muted">Adaptive Multimodal Fusion for Driver Fatigue Detection</p>
+          </div>
+          <a href="contact.html" class="btn btn--dark">Request a copy</a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">14th October 2026</p>
+            <p class="bold mt-1">Final Check List submission</p>
+            <p class="text-sm-tight muted">Final checklist submission for the Driver Fatigue research project.</p>
+          </div>
+          <a href="contact.html" class="btn btn--dark">Request a copy</a>
+        </div></div>
+    <div class="center mt-10">
+      <a href="research.html" class="link-arrow"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to all research components</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

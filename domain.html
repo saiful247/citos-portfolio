@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Domain · CITOS</title>
+  <meta name="description" content="Group-level research story for CITOS: literature, gap, problem, objectives, methodology, architecture, and technologies.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html">Home</a></li><li><a href="domain.html" aria-current="page">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html">Home</a></li><li><a href="domain.html" aria-current="page">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob page-hero__blob-right"></div>
+  <div class="decor blob page-hero__blob-left"></div>
+  <div class="page-hero__inner">
+    <span class="badge badge--caps">Domain</span>
+    <h1>The CITOS <span class="text-gradient">research story</span></h1>
+    <p>This page is the group account of the project. Component methods, figures, and results stay on the Research pages.</p>
+    
+  </div>
+</section>
+
+<section class="pb-20">
+  <div class="container container--3xl">
+    <div class="reveal"><div class="section-heading"><span class="eyebrow">Project overview</span><h2>What CITOS is</h2></div></div>
+    <div class="prose mt-8 reveal" style="--delay: 80ms">
+      <p>CITOS, the Comprehensive Intelligent Transport Observation System, is an AI-driven framework for
+        real-time driver behaviour analysis, vehicle monitoring, and road safety. It is a final-year research
+        project at the SLIIT Faculty of Computing.</p>
+      <p>The work treats driver monitoring as more than one detector. A camera view of the driver, a view of the
+        road, vehicle motion, and an explanation of traffic law answer different questions. CITOS is the frame
+        that holds those questions together. It is not presented here as a single deployed product, and it is
+        not presented as one experiment that has already validated every sensor at once.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Domain explorer (radio tabs) ───────────── -->
+<section class="section--md section--surface">
+  <div class="container switch">
+    <input type="radio" class="switch__radio" name="domain" id="domain-0" data-at="0" checked aria-label="Domain topic 1"><input type="radio" class="switch__radio" name="domain" id="domain-1" data-at="1" aria-label="Domain topic 2"><input type="radio" class="switch__radio" name="domain" id="domain-2" data-at="2" aria-label="Domain topic 3"><input type="radio" class="switch__radio" name="domain" id="domain-3" data-at="3" aria-label="Domain topic 4"><input type="radio" class="switch__radio" name="domain" id="domain-4" data-at="4" aria-label="Domain topic 5"><input type="radio" class="switch__radio" name="domain" id="domain-5" data-at="5" aria-label="Domain topic 6">
+    <div class="tabs" role="tablist" aria-label="Domain topics"><label for="domain-0" class="tab" data-at="0">Literature Survey</label><label for="domain-1" class="tab" data-at="1">Research Problem</label><label for="domain-2" class="tab" data-at="2">Research Gap</label><label for="domain-3" class="tab" data-at="3">Research Objective</label><label for="domain-4" class="tab" data-at="4">Methodology</label><label for="domain-5" class="tab" data-at="5">Technologies</label></div>
+    <div class="mt-8"><div class="switch__panel tab-panel" data-at="0" role="tabpanel" aria-label="Literature Survey"><div class="grid" style="--lg: 2; --gap: 1rem"><article class="card lit-card">
+          <h3 class="title-lg">Driver inattention and fatigue</h3>
+          <dl class="lit-card__list">
+            <div><dt>Existing approaches</dt><dd>Reviews of driver inattention monitoring find that hybrid measures reduce false alarms compared with any single physical or driving-performance measure (Dong et al., 2011). Heart-rate variability is an established drowsiness indicator (Vicente et al., 2016; Fujiwara et al., 2019).</dd></div>
+            <div><dt>Limitations</dt><dd>Wearable sensing varies between people (Chowdhury et al., 2018). On this project, physiological labels are a proxy written from the same signals, not verified ground truth.</dd></div>
+            <div><dt>CITOS motivation</dt><dd>CITOS studies vision, physiology, and CAN as separate branches, and does not treat one sensor reading as a finished fatigue decision.</dd></div>
+          </dl>
+        </article><article class="card lit-card">
+          <h3 class="title-lg">Driver distraction</h3>
+          <dl class="lit-card__list">
+            <div><dt>Existing approaches</dt><dd>Vision systems classify secondary activities such as phone use, and surveys consolidate those methods into detection frameworks (Li et al., 2021; Kashevnik et al., 2021).</dd></div>
+            <div><dt>Limitations</dt><dd>Classifying an activity still does not show whether the driver is looking at the road. This paper does not yet report numbers for the distraction subsystem.</dd></div>
+            <div><dt>CITOS motivation</dt><dd>CITOS specifies activity classification together with head pose, traffic density, and route hazards.</dd></div>
+          </dl>
+        </article><article class="card lit-card">
+          <h3 class="title-lg">Motion, pedals, and telematics</h3>
+          <dl class="lit-card__list">
+            <div><dt>Existing approaches</dt><dd>Aggressive-event detection from vehicle motion has been compared across devices and places (Gatteschi et al., 2022). Foot gesture has been studied as a direct view of accelerator use (Tran et al., 2012).</dd></div>
+            <div><dt>Limitations</dt><dd>CAN and OBD-II capture the result of a manoeuvre rather than the control input, and a single speed threshold ignores the route. In CITOS the CAN labels describe driving risk, not fatigue.</dd></div>
+            <div><dt>CITOS motivation</dt><dd>The behaviour subsystem reads inertial motion directly. Pedal vision and predictive maintenance stay at the design stage.</dd></div>
+          </dl>
+        </article><article class="card lit-card">
+          <h3 class="title-lg">Signals, context, and explainable coaching</h3>
+          <dl class="lit-card__list">
+            <div><dt>Existing approaches</dt><dd>Low-visibility traffic-light detection has been pursued with YOLO-family models (Zhou et al., 2024). Adaptive retrieval often needs token probabilities, internal activations, or a fine-tuned confidence model (Jiang et al., 2023; Yao et al., 2025; Zhou et al., 2025).</dd></div>
+            <div><dt>Limitations</dt><dd>Those signals are unavailable from a commercial API, and a language model that answers from memory cannot show where a traffic-law claim came from.</dd></div>
+            <div><dt>CITOS motivation</dt><dd>The assessment subsystem answers from a Neo4j graph of operations and traffic law, and can retry according to why a query failed.</dd></div>
+          </dl>
+        </article></div></div><div class="switch__panel tab-panel" data-at="1" role="tabpanel" aria-label="Research Problem"><article class="card statement">
+          <p class="overline">Research problem</p>
+          <h3>One framework for several signals</h3>
+          <p>The project-level problem is the gap between fragmented driver monitoring and a comprehensive intelligent
+            transport observation framework. Safer driving needs more than one sensing source and more than one kind of
+            analysis: who is driving, how they are driving, what the vehicle is doing, and which rule applies.</p>
+          <p>The research question at group level is how those complementary analyses can be organised so each one remains
+            checkable, without pretending that separate datasets are one recording.</p>
+        </article></div><div class="switch__panel tab-panel" data-at="2" role="tabpanel" aria-label="Research Gap"><article class="card statement statement--accent">
+          <p class="overline">Research gap</p>
+          <h3>Complementary work, still fragmented</h3>
+          <p>Existing driver-monitoring and transport-safety approaches in this project focus on one problem or one sensing
+            family at a time. A drowsiness frame, a cabin action, an IMU window, a dashcam violation, and a legal answer
+            are useful on their own. They do not, by themselves, observe the driver and the trip together.</p>
+          <p>CITOS brings four research areas into one framework so those views can inform each other. That is the
+            motivation. It is not a claim that the four areas have been validated end to end.</p>
+        </article></div><div class="switch__panel tab-panel" data-at="3" role="tabpanel" aria-label="Research Objective"><ol class="grid" style="--md: 2; --gap: 1rem"><li class="card objective-card lift">
+          <span>01</span>
+          <h3 class="title-lg mt-2">Intelligent driver assessment and explainable coaching</h3>
+          <p class="card__text mt-3">Detect traffic-light, crosswalk, and pedestrian events from the dashcam, decide a stop with GPS, score drivers by exposure rather than flat points, and answer traffic-law questions in English, Sinhala, Tamil, or Singlish only when the graph contains the evidence.</p>
+        </li><li class="card objective-card lift">
+          <span>02</span>
+          <h3 class="title-lg mt-2">Multimodal driver fatigue detection</h3>
+          <p class="card__text mt-3">Study driver-facing vision for acted drowsiness, and keep physiological and CAN models on their own recordings. Do not treat a replayed file as a synchronized reading from the same driver at the same time.</p>
+        </li><li class="card objective-card lift">
+          <span>03</span>
+          <h3 class="title-lg mt-2">Route-aware behaviour and vehicle monitoring</h3>
+          <p class="card__text mt-3">Classify driving style and passenger comfort from inertial windows. Pedal vision, route-specific baselines, and predictive maintenance are part of the design and are not yet implemented.</p>
+        </li><li class="card objective-card lift">
+          <span>04</span>
+          <h3 class="title-lg mt-2">Driver distraction detection</h3>
+          <p class="card__text mt-3">Recognise distracting cabin activity and combine it with the road scene so the reported risk depends on both the driver and the road.</p>
+        </li></ol></div><div class="switch__panel tab-panel" data-at="4" role="tabpanel" aria-label="Methodology"><ol class="method-flow"><span class="method-rail" aria-hidden="true"></span><li class="method-step">
+          <div class="method-step__head"><span>Sensors</span><h3>Sensors and data</h3></div>
+          <p class="card__text">The shared sensing layer is a driver-facing camera, a road-facing camera, GPS, an inertial unit, CAN or OBD-II, and wearable physiological signals. Pedal monitoring is specified by reusing the cockpit camera. It is not a separate synchronized recording, and the paper leaves pedal vision at the design stage.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>Data processing</span><h3>Processing</h3></div>
+          <p class="card__text">Each component prepares its own input: landmarks and windowed vision features, IMU windows, GPS aligned to video time, or a replayed physiology or CAN sequence.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>Research components</span><h3>Individual research components</h3></div>
+          <p class="card__text">Assessment, fatigue, behaviour, and distraction stay separate studies. They do not share one training table.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>AI / ML / DL models</span><h3>Models</h3></div>
+          <p class="card__text">The published components use a landmark BiLSTM, a frame CNN baseline, a cabin CNN, YOLOv8m, Random Forest models, and a GraphRAG pipeline over Neo4j. Physiology and CAN use their own sequence models on separate files.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>Component outputs</span><h3>Component outputs</h3></div>
+          <p class="card__text">Outputs include a vision drowsiness probability, a distraction class, a behaviour and comfort reading, a violation record, a driver score, and a grounded legal answer.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>Integration</span><h3>Integration</h3></div>
+          <p class="card__text">The fatigue prototype can mix a live vision score with replayed physiology and CAN using fixed weights. That mix is an integration choice. It is not a joint experiment on one synchronized dataset.</p>
+        </li><li class="method-step">
+          <div class="method-step__head"><span>Presentation / alerts</span><h3>Dashboard, alerts, and explanations</h3></div>
+          <p class="card__text">Component interfaces surface alerts, scores, and, in the assessment work, answers that cite the graph or abstain. This site does not report one system-level trial of the full stack.</p>
+        </li></ol></div><div class="switch__panel tab-panel" data-at="5" role="tabpanel" aria-label="Technologies"><ul class="grid" style="--cols: 2; --sm: 3; --lg: 4; --gap: 0.75rem"><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Python</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>TensorFlow</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Keras</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>scikit-learn</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>FastAPI</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>React</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>MediaPipe Face Landmarker</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>YOLOv8m</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>OpenCV</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>MobileNetV2</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>BiLSTM</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>PyTorch CNN</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Random Forest</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Deep learning</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Computer vision</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Neo4j</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>GraphRAG</li><li class="tech-tile"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></span>Gemini on Vertex AI</li></ul></div></div>
+  </div>
+</section>
+
+<section class="section--md">
+  <div class="container">
+    <div class="reveal"><div class="section-heading section-heading--center"><span class="eyebrow">System architecture</span><h2>Four layers</h2><p>The inference layer is where the four research areas sit. Detailed diagrams remain on the component pages.</p></div></div>
+    <div class="grid mt-12" style="--md: 2; --gap: 1rem"><article class="card layer-tile lift reveal" style="--delay: 0ms">
+          <span class="overline">Layer 1</span>
+          <h3 class="title-lg mt-2">Sensing layer</h3>
+          <p class="card__text mt-3">Driver-facing video, road-facing video, GPS, inertial measurements, CAN or OBD-II, and wearable signals. Integration is late: scores and decisions are combined, not raw features. No synchronized recording links all four subsystems.</p>
+        </article><article class="card layer-tile lift reveal" style="--delay: 70ms">
+          <span class="overline">Layer 2</span>
+          <h3 class="title-lg mt-2">Inference layer</h3>
+          <p class="card__text mt-3">Four complementary studies: intelligent driver assessment, driver fatigue detection, route-aware behaviour analytics, and driver distraction detection.</p>
+        </article><article class="card layer-tile lift reveal" style="--delay: 140ms">
+          <span class="overline">Layer 3</span>
+          <h3 class="title-lg mt-2">Integration layer</h3>
+          <p class="card__text mt-3">Component outputs can be shown together and, in the fatigue prototype, combined with stated weights. Cross-corpus fusion is not treated as proof that the sensors were recorded together.</p>
+        </article><article class="card layer-tile lift reveal" style="--delay: 210ms">
+          <span class="overline">Layer 4</span>
+          <h3 class="title-lg mt-2">Presentation layer</h3>
+          <p class="card__text mt-3">Dashboards, driver alerts, score explanations, and the GraphRAG answer. Detailed evidence stays on the research pages.</p>
+        </article></div>
+    <div class="inner-box mt-6">
+      <h3>Inside the inference layer</h3>
+      <ul class="grid mt-4" style="--sm: 2; --gap: 0.75rem"><li><a href="driver-assessment.html" class="inner-link">Intelligent Driver Assessment <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li><li><a href="driver-fatigue.html" class="inner-link">Multimodal Driver Fatigue Detection <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li><li><a href="research.html#behaviour" class="inner-link">Route-Aware Behaviour Analytics <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li><li><a href="driver-distraction.html" class="inner-link">Context-Aware Driver Distraction Detection <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="section--md section--surface">
+  <div class="container container--3xl">
+    <div class="reveal"><div class="section-heading"><span class="eyebrow">Overall research direction</span><h2>Checkable components inside one framework</h2></div></div>
+    <div class="prose mt-8 reveal" style="--delay: 80ms">
+      <p>The direction of CITOS is to keep the four areas complementary and inspectable. Assessment explains
+        violations and the law. Fatigue studies drowsiness without upgrading a replay into a live wearable.
+        Behaviour reads the vehicle motion. Distraction reads the cabin against the road.</p>
+      <p>The limits below are part of that direction. They are stated so the group story does not run ahead of
+        the component evidence.</p>
+    </div>
+    <div class="stack mt-8" style="--space: 0.75rem"><p class="limit-row reveal" style="--delay: 0ms">Physiological labels are generated from the same variables later given to the model. They measure a fatigue proxy, not verified ground truth.</p><p class="limit-row reveal" style="--delay: 50ms">CAN labels describe driving risk rather than fatigue. The paper also notes that the scaler was fitted before the driver split.</p><p class="limit-row reveal" style="--delay: 100ms">The subsystems use different datasets and protocols. Their results are not a system-level comparison.</p><p class="limit-row reveal" style="--delay: 150ms">Pedal vision, route-aware contextual scoring, and predictive maintenance are designed but not implemented.</p><p class="limit-row reveal" style="--delay: 200ms">Distraction detection is specified, and its quantitative evaluation is not yet reported.</p><p class="limit-row reveal" style="--delay: 250ms">Cross-subsystem fusion is specified and not experimentally validated. No synchronized collection links all four subsystems, and no integrated system accuracy is reported.</p></div>
+    <a href="research.html" class="link-arrow link-arrow--nudge mt-8">Continue to the research components <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CITOS — Comprehensive Intelligent Transport Observation System</title>
+  <meta name="description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html" aria-current="page">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html" aria-current="page">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<!-- ───────────── Hero ───────────── -->
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob home-hero__blob hero-drift"></div>
+  <div class="decor blob home-hero__blob2 hero-drift" style="animation-delay: -6s"></div>
+  <span class="decor spark" style="--x: 12%; --y: 8rem; --s: 0.5rem; --c: rgb(129 140 248 / 0.7)"></span>
+  <span class="decor spark" style="--x: 80%; --y: 12rem; --s: 0.375rem; --c: rgb(20 184 166 / 0.7); animation-delay: 1.2s"></span>
+  <span class="decor spark spark--bottom" style="--x: 42%; --s: 0.5rem; --c: rgb(167 139 250 / 0.6); animation-delay: 2s"></span>
+  <div class="container grid grid--center home-hero__grid" style="--lg: 2">
+    <div class="home-hero__copy">
+      <span class="badge fade-up">Faculty of Computing · R26-DS-013</span>
+      <p class="home-hero__kicker fade-up" style="animation-delay: 80ms">CITOS</p>
+      <h1 class="fade-up" style="animation-delay: 140ms">Comprehensive Intelligent Transport Observation System</h1>
+      <p class="fade-up" style="animation-delay: 220ms">An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="home-hero__more">Driver monitoring is often split across one camera, one vehicle signal, or one legal question. CITOS
+        is the group framework that places those studies side by side for safer driving. The detailed evidence
+        stays in the research components.</p>
+      <div class="cluster mt-8 fade-up" style="--gap: 0.75rem; animation-delay: 300ms">
+        <a href="domain.html" class="btn btn--lg btn--primary btn--lift btn--nudge">Read the domain <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        <a href="research.html" class="btn btn--lg btn--outline btn--lift">Open the research</a>
+      </div>
+    </div>
+    <div class="home-hero__visual">
+      <div class="hero-visual" aria-hidden="true">
+  <div class="decor hero-visual__glow"></div>
+  <div class="dash-card">
+    <div class="dash-card__head">
+      <div>
+        <p class="kicker">Live trip · Route 87</p>
+        <p class="title-lg mt-1">Colombo → Kandy</p>
+      </div>
+      <span class="live-pill">Monitoring</span>
+    </div>
+    <div class="dash-card__body">
+      <div class="score-ring">
+        <svg viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="score" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4f46e5"/>
+              <stop offset="100%" stop-color="#14b8a6"/>
+            </linearGradient>
+          </defs>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#eef2ff" stroke-width="12"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="url(#score)" stroke-width="12" stroke-linecap="round" stroke-dasharray="270.04 314"/>
+        </svg>
+        <div><strong>86</strong><span>Safety</span></div>
+      </div>
+      <ul class="meters"><li class="meter meter--accent">
+          <div class="meter__label"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>Fatigue</span><span>Alert</span></div>
+          <div class="meter__track"><span style="--value: 22%"></span></div>
+        </li><li class="meter meter--violet">
+          <div class="meter__label"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/></svg>Distraction</span><span>Safe driving</span></div>
+          <div class="meter__track"><span style="--value: 9%"></span></div>
+        </li><li class="meter meter--amber">
+          <div class="meter__label"><span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>Aggression</span><span>Moderate</span></div>
+          <div class="meter__track"><span style="--value: 41%"></span></div>
+        </li></ul>
+    </div>
+    <div class="bars"><span style="--h: 30%"></span><span style="--h: 42%"></span><span style="--h: 38%"></span><span style="--h: 55%"></span><span style="--h: 48%"></span><span style="--h: 62%"></span><span style="--h: 44%"></span><span style="--h: 70%"></span><span style="--h: 52%"></span><span style="--h: 46%"></span><span style="--h: 58%"></span><span style="--h: 40%"></span><span style="--h: 36%"></span><span style="--h: 50%"></span><span style="--h: 64%"></span><span style="--h: 48%"></span><span style="--h: 42%"></span><span style="--h: 56%"></span><span style="--h: 38%"></span><span style="--h: 46%"></span></div>
+    <p class="bars-caption">IMU jerk · last 60 s</p>
+  </div>
+  <div class="chat-card">
+    <div class="chat-card__title"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1"/></svg>DriverGraphRAG</div>
+    <p class="bubble bubble--user">DRV-001 overspeed wena ekata neethiya mokakda?</p>
+    <p class="bubble bubble--bot">Overspeeding is governed by <b>Section 141A</b> of the Motor Traffic Act…</p>
+    <div class="chat-tags">
+      <span class="chat-tags__ok"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg> GAFL verified</span>
+      <span class="chat-tags__cite"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Cited § 141A</span>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Research areas ───────────── -->
+<section class="section section--surface">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-heading section-heading--center"><span class="eyebrow">Research areas</span><h2>Four complementary studies</h2><p>Domain introduces the project. Research holds the component pages, including the detailed driver fatigue study.</p></div>
+    </div>
+    <div class="grid mt-14" style="--md: 2">
+      <a href="driver-assessment.html" class="card area-card reveal" style="--delay: 0ms">
+        <span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></span>
+        <h3 class="title-lg mt-5">Intelligent Driver Assessment</h3>
+        <p class="card__text mt-3">Dashcam violations, a GPS stop test, a fair driver score, and a GraphRAG assistant that answers traffic-law questions only from evidence it can trace.</p>
+        <span class="more">Open the assessment research <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </a><a href="driver-fatigue.html" class="card area-card reveal" style="--delay: 80ms">
+        <span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3 class="title-lg mt-5">Multimodal Driver Fatigue Detection</h3>
+        <p class="card__text mt-3">A vision study of acted drowsiness, with physiology and CAN held as separate test replays. The live prototype uses the camera only.</p>
+        <span class="more">Open the fatigue research <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </a><a href="research.html#behaviour" class="card area-card reveal" style="--delay: 160ms">
+        <span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
+        <h3 class="title-lg mt-5">Route-Aware Behaviour Analytics</h3>
+        <p class="card__text mt-3">An MPU6050 and ESP32 stream classifies smooth against aggressive driving, then braking against acceleration, and estimates passenger comfort. Pedal vision, route-context scoring, and predictive maintenance are specified and not yet implemented.</p>
+        <span class="more">Open behaviour analytics <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </a><a href="driver-distraction.html" class="card area-card reveal" style="--delay: 240ms">
+        <span class="soft-icon soft-icon--flip"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/></svg></span>
+        <h3 class="title-lg mt-5">Context-Aware Driver Distraction Detection</h3>
+        <p class="card__text mt-3">An intelligent driver monitoring system combining EfficientNet-B0 activity classification, MediaPipe gaze monitoring, YOLOv8 traffic density, and OSM route hazards for situational risk estimation.</p>
+        <span class="more">Open distraction research <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── System overview ───────────── -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-heading section-heading--center"><span class="eyebrow">System overview</span><h2>From separate signals to a shared picture</h2><p>Each layer is described in full on the Domain page. Component results are not repeated here.</p></div>
+    </div>
+    <ol class="overview mt-14">
+      <li class="reveal" style="--delay: 0ms">
+          <span class="overview__num">01</span>
+          <h3 class="title-lg">Sensing</h3>
+          <p class="card__text">Cameras, GPS, an IMU, and, in separate studies, physiology and CAN / OBD-II.</p>
+        </li><li class="reveal" style="--delay: 70ms">
+          <span class="overview__num">02</span>
+          <h3 class="title-lg">Inference</h3>
+          <p class="card__text">Assessment, fatigue, behaviour, and distraction each keep their own models.</p>
+        </li><li class="reveal" style="--delay: 140ms">
+          <span class="overview__num">03</span>
+          <h3 class="title-lg">Integration</h3>
+          <p class="card__text">Outputs can be shown together. A joint synchronized trial is not claimed.</p>
+        </li><li class="reveal" style="--delay: 210ms">
+          <span class="overview__num">04</span>
+          <h3 class="title-lg">Presentation</h3>
+          <p class="card__text">Alerts, scores, and explanations a reader can check on the research pages.</p>
+        </li>
+    </ol>
+    <div class="center mt-10">
+      <a href="domain.html" class="link-arrow">Continue on the Domain page <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Highlights ───────────── -->
+<section class="highlights">
+  <div class="container">
+    <h2 class="highlights__title">Selected highlights from the research pages</h2>
+    <dl class="grid mt-8" style="--cols: 2; --lg: 4; --gap: 1rem"><div class="reveal" style="--delay: 0ms"><dt>Research components</dt><dd>6</dd></div><div class="reveal" style="--delay: 70ms"><dt>Languages supported</dt><dd>4</dd></div><div class="reveal" style="--delay: 140ms"><dt>Hallucination-control layers</dt><dd>5</dd></div><div class="reveal" style="--delay: 210ms"><dt>Distraction classes</dt><dd>10</dd></div></dl>
+  </div>
+</section>
+
+<section class="ncg section--surface" aria-labelledby="ncg-heading">
+  <div class="container grid grid--center" style="--lg: 12; --gap: 2rem">
+    <div style="--span-lg: 7">
+      <span class="eyebrow">Demonstration</span>
+      <h2 id="ncg-heading" class="ncg__title">Project Demonstration at NCG</h2>
+      <p class="lead" style="max-inline-size: 36rem">The CITOS research team presented the developed system and research work during a project demonstration
+        at NCG.</p>
+      <p class="card__text mt-3" style="max-inline-size: 36rem">The slides show the presentation screen, the demonstration setup, and the project team.</p>
+    </div>
+    <div class="switch carousel carousel--fade ncg__carousel" style="--span-lg: 5">
+      <input type="radio" class="carousel__radio" name="ncg" id="ncg-0" data-at="0" checked aria-label="Slide 1 of 3"><input type="radio" class="carousel__radio" name="ncg" id="ncg-1" data-at="1" aria-label="Slide 2 of 3"><input type="radio" class="carousel__radio" name="ncg" id="ncg-2" data-at="2" aria-label="Slide 3 of 3">
+      <div class="carousel__frame"><img src="assets/photos/ncg-screen.jpg" alt="CITOS project presentation displayed on a screen during the NCG demonstration" style="object-position: center 38%" data-at="0"><img src="assets/photos/ncg-setup.jpg" alt="CITOS system demonstration setup at NCG" style="object-position: center 42%" data-at="1" loading="lazy"><img src="assets/photos/ncg-team.jpg" alt="CITOS research team at the NCG demonstration" style="object-position: center" data-at="2" loading="lazy"></div>
+      <div class="carousel__controls">
+        <div class="carousel__prev"><label for="ncg-2" class="carousel__step" data-at="0">Previous</label><label for="ncg-0" class="carousel__step" data-at="1">Previous</label><label for="ncg-1" class="carousel__step" data-at="2">Previous</label></div>
+        <div class="carousel__dots"><label for="ncg-0" class="carousel__dot" data-at="0" aria-label="NCG demonstration photograph 1 of 3"></label><label for="ncg-1" class="carousel__dot" data-at="1" aria-label="NCG demonstration photograph 2 of 3"></label><label for="ncg-2" class="carousel__dot" data-at="2" aria-label="NCG demonstration photograph 3 of 3"></label></div>
+        <div class="carousel__next"><label for="ncg-1" class="carousel__step" data-at="0">Next</label><label for="ncg-2" class="carousel__step" data-at="1">Next</label><label for="ncg-0" class="carousel__step" data-at="2">Next</label></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── Closing call to action ───────────── -->
+<section class="section">
+  <div class="container">
+    <div class="closing">
+      <h2>Read the project, then the components</h2>
+      <p>Domain is the group account of CITOS. Research is where each component keeps its method, figures, and
+        limits.</p>
+      <div class="cluster cluster--center mt-8" style="--gap: 0.75rem">
+        <a href="domain.html" class="btn btn--lg btn--primary btn--flat">Domain <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        <a href="research.html" class="btn btn--lg btn--line">Research</a>
+        <a href="contact.html" class="btn btn--lg btn--line">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

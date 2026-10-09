@@ -8,9 +8,11 @@
  * contact.html with a fragment (#sent, #send-invalid, #send-error) that CSS
  * uses to show the result, so the page itself needs no JavaScript.
  *
- * Settings come from a .env file (see .env.example). The file is looked for
- * one folder ABOVE the website first, so it can live outside the public web
- * root, then next to this script (where .htaccess blocks direct downloads).
+ * Settings come from environment variables (how Cloud Run and Docker pass
+ * them) or from a .env file (see .env.example). Environment variables win.
+ * The .env file is looked for one folder ABOVE the website first, so it can
+ * live outside the public web root, then next to this script (where
+ * .htaccess blocks direct downloads).
  *
  * Requires PHP 7.4+ with the openssl extension. No Composer packages.
  */
@@ -38,7 +40,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 
 /* ───────────────────────────── Settings ───────────────────────────── */
 
-function load_env(): array
+const SETTINGS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_SECURE', 'SMTP_USER', 'SMTP_PASS', 'MAIL_FROM',
+    'CONTACT_RECIPIENTS', 'CONTACT_SEND_AUTOREPLY'];
+
+/** Real environment variables override the .env file. */
+function load_settings(): array
+{
+    $env = load_env_file();
+    foreach (SETTINGS as $key) {
+        $value = getenv($key);
+        if ($value !== false && $value !== '') {
+            $env[$key] = $value;
+        }
+    }
+    return $env;
+}
+
+function load_env_file(): array
 {
     foreach ([dirname(__DIR__) . '/.env', __DIR__ . '/.env'] as $file) {
         if (!is_readable($file)) {
@@ -67,7 +85,7 @@ function is_true(string $value): bool
     return in_array(strtolower($value), ['true', '1', 'yes'], true);
 }
 
-$env = load_env();
+$env = load_settings();
 $smtpHost = $env['SMTP_HOST'] ?? '';
 $smtpPort = (int) (($env['SMTP_PORT'] ?? '') ?: 465);
 $smtpUser = $env['SMTP_USER'] ?? '';

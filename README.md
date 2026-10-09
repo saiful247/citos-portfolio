@@ -93,6 +93,32 @@ If it has to sit inside the site folder, `.htaccess` blocks downloads of every
 dotfile (Apache hosts). `.env` is git-ignored. Submissions are limited to 5 per
 IP every 10 minutes, and a hidden honeypot field filters simple bots.
 
+## Deploy to Cloud Run
+
+The `Dockerfile` builds a `php:8.3-apache` image: Apache serves the pages and
+runs `contact.php`. It listens on Cloud Run's `$PORT` (8080 by default).
+`.env` is never copied into the image (`.dockerignore`), so the SMTP settings
+are added to the Cloud Run service instead.
+
+**From GitHub (continuous deployment):** Cloud Run → *Create service* →
+*Continuously deploy from a repository* → pick this repo and branch →
+*Build type: Dockerfile*, source location `/Dockerfile` → container port `8080`
+→ *Allow unauthenticated invocations*. Under *Variables & secrets* add every
+key from `.env.example` with the real values (put `SMTP_PASS` in Secret Manager
+and reference it as a secret).
+
+**From the command line:**
+
+```
+gcloud run deploy citos-basic --source . --region asia-south1 --port 8080 --allow-unauthenticated   --set-env-vars "^;^SMTP_HOST=smtp.gmail.com;SMTP_PORT=465;SMTP_USER=you@gmail.com;MAIL_FROM=CITOS Research <you@gmail.com>;CONTACT_RECIPIENTS=IT2207184@my.sliit.lk,saifulis.4965@gmail.com;CONTACT_SEND_AUTOREPLY=true"   --set-secrets SMTP_PASS=citos-smtp-pass:latest
+```
+
+(`^;^` makes `;` the separator, because the recipient list contains commas.
+Create the secret first with `gcloud secrets create citos-smtp-pass --data-file=-`.)
+
+**Locally:** `docker compose up --build`, then open http://localhost:8080
+(compose reads the SMTP settings from `.env`).
+
 ## Running it
 
 Open `index.html` in a browser to view the pages. The contact form needs PHP,

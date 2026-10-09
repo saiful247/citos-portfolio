@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    image: citos-basic:latest
+    container_name: citos-basic
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    env_file:
+      - .env
+    restart: unless-stopped

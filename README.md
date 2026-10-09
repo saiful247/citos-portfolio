@@ -15,6 +15,7 @@ JavaScript.
 | `driver-assessment.html`  | Intelligent Bus Driver Assessment & Explainable AI (IT22071484)      |
 | `driver-fatigue.html`     | Driver Fatigue and Drowsiness Detection (IT22071620)                 |
 | `driver-distraction.html` | Context-Aware Driver Distraction Detection (IT22232472)              |
+| `driver-behaviour.html`   | RouteGuard: Route-Aware Driver Behaviour Analytics (IT22297440)      |
 | `milestones.html`         | 2026 Regular Batch timeline with a Group / Individual filter          |
 | `documents.html`          | All project and component documents                                  |
 | `presentations.html`      | Presentation slides carousel                                         |
@@ -27,12 +28,14 @@ css/styles.css             the only stylesheet
 assets/images/             logo (PNG and SVG favicon)
 assets/figures/            driver assessment figures
 assets/figures/fatigue/    driver fatigue figures
+assets/figures/behaviour/  driver behaviour figures
 assets/photos/             NCG demonstration photographs
 ```
 
 Research PDFs are not stored in this folder. They open from Google Cloud Storage
-(`storage.googleapis.com/citos-portfolio/...`), including the driver distraction
-documents listed in `citos/public/kauz_documents/links.txt`.
+(`storage.googleapis.com/citos-portfolio/...`), including the documents listed in
+`citos/public/kauz_documents/links.txt` (driver distraction) and
+`citos/public/harry_component/links.txt` (driver behaviour).
 
 ## How the interactive parts work without JavaScript
 
@@ -54,13 +57,44 @@ nesting, range media queries, `@property`, `color-mix()`, logical properties and
 
 Only where a feature needed JavaScript or a server:
 
-- **Contact form**: there is no server to send email, so the form uses `action="mailto:"`.
 - **Carousels** do not auto-advance; visitors use Previous / Next or the dots.
 - **Milestone status** (Completed / Upcoming) was set on 10 October 2026. To update one,
   change its `data-status` to `done` or `upcoming` and its badge text.
 - **Footer year** is written as 2026.
 
+## Contact form
+
+The form posts to `contact.php`, the only server-side file. It validates the
+message, emails it to `CONTACT_RECIPIENTS` over SMTP, sends the visitor a
+confirmation, and redirects back to `contact.html#sent` (or `#send-error`,
+`#send-invalid`, `#send-limit`). CSS `:target` shows the matching message.
+It needs PHP 7.4+ with `openssl`, which any host that runs WordPress has.
+
+Settings come from `.env` (copy `.env.example` and fill it in):
+
+| Variable | Meaning |
+| --- | --- |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE` | SMTP server. Port 465 uses TLS, 587 uses STARTTLS |
+| `SMTP_USER`, `SMTP_PASS` | Login. For Gmail use an App Password |
+| `MAIL_FROM` | From header. With Gmail it must be `SMTP_USER` |
+| `CONTACT_RECIPIENTS` | Comma-separated team addresses |
+| `CONTACT_SEND_AUTOREPLY` | `true` sends the visitor a confirmation |
+
+**Keep `.env` private.** `contact.php` looks for it one folder *above* the site
+first, so the safest upload is:
+
+```
+public_html/        ← or wherever the course web space starts
+  .env              ← here, outside the site folder, if the host allows it
+  citos/            ← this folder: index.html, contact.php, …
+```
+
+If it has to sit inside the site folder, `.htaccess` blocks downloads of every
+dotfile (Apache hosts). `.env` is git-ignored. Submissions are limited to 5 per
+IP every 10 minutes, and a hidden honeypot field filters simple bots.
+
 ## Running it
 
-Open `index.html` in a browser, or upload the whole folder to any web host.
-The total size is about 4 MB.
+Open `index.html` in a browser to view the pages. The contact form needs PHP,
+so upload the folder to the course web (or run `php -S localhost:8000` in it).
+The total size is about 5 MB.

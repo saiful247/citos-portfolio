@@ -77,7 +77,19 @@
     <div class="form-card reveal" style="--span-lg: 3; --delay: 120ms">
       <h2 class="title-2xl">Send us a message</h2>
       <p>All fields are required.</p>
-      <form class="form" action="mailto:IT2207184@my.sliit.lk?subject=CITOS%20website%20enquiry" method="post" enctype="text/plain">
+
+      <!-- contact.php redirects back with one of these fragments; :target shows the matching message. -->
+      <div id="sent" class="form-result" role="status">
+        <span class="form-result__icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg></span>
+        <h3>Message sent!</h3>
+        <p>Thanks for reaching out. We&#x27;ve sent a confirmation to your inbox and will reply soon.</p>
+        <a href="contact.html#message-form" class="btn btn--lg btn--outline">Send another message</a>
+      </div>
+      <p id="send-error" class="form-alert" role="alert"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span>We couldn&#x27;t send your message right now. Please try again later.</span></p>
+      <p id="send-invalid" class="form-alert" role="alert"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span>Some details were not valid. Please check each field and try again.</span></p>
+      <p id="send-limit" class="form-alert" role="alert"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span>Too many messages. Please try again in a few minutes.</span></p>
+
+      <form id="message-form" class="form" action="contact.php" method="post">
         <div class="form__row">
           <div class="field">
             <div class="field__head"><label for="name">Full name</label></div>
@@ -107,7 +119,11 @@
         <div>
           <button type="submit" class="btn-send">Send message <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></button>
         </div>
-        <p class="form__note">Sending opens your email app with the message filled in, addressed to IT2207184@my.sliit.lk.</p>
+        <!-- Honeypot: invisible to people and screen readers. -->
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
       </form>
     </div>
   </div>

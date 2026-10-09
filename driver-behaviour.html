@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Route-Aware Driver Behaviour · CITOS</title>
+  <meta name="description" content="Research write-up of RouteGuard: windowed IMU behaviour classification, footwell pedal estimation, OpenStreetMap context-aware scoring, and relative maintenance duty for Sri Lankan bus corridors.">
+  <meta name="keywords" content="driver monitoring, GraphRAG, fatigue detection, driver distraction, traffic violation detection, road safety, Sri Lanka, SLIIT research">
+  <meta property="og:title" content="CITOS">
+  <meta property="og:description" content="An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-pills"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </nav>
+    <button type="button" class="menu-toggle" popovertarget="mobile-nav" aria-controls="mobile-nav" aria-label="Toggle menu">
+      <svg class="icon icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg><svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" popover aria-label="Mobile">
+    <ul class="container"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html" aria-current="page">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="decor decor--fill bg-grid mask-fade-b"></div>
+  <div class="decor blob page-hero__blob-right"></div>
+  <div class="decor blob page-hero__blob-left"></div>
+  <div class="page-hero__inner">
+    <span class="badge badge--caps">Research component · R26-DS-013</span>
+    <h1>Score the driver, <span class="text-gradient">not the corridor</span></h1>
+    <p>Classifies short IMU windows into smooth driving, sudden acceleration and sudden braking, checks harsh events against the bus route, and reports passenger comfort and relative component duty.</p>
+    <div class="meta-line">
+      <span><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Harry Croshan K (IT22297440)</span>
+      <span>Supervisor: Dr. Mahima Weerasinghe</span>
+      <span>Co-supervisor: Dr. Junius Anjana</span>
+    </div>
+    <nav aria-label="Sections" class="cluster cluster--center nav-chips nav-chips--sm"><a href="#problem">Problem</a><a href="#objectives">Objectives</a><a href="#method">Methodology</a><a href="#sensing">Sensing and models</a><a href="#scoring">Route-aware score</a><a href="#maintenance">Maintenance</a><a href="#results">Results</a><a href="#journey">Research journey</a><a href="#documents">Documents</a></nav>
+  </div>
+</section>
+
+<section aria-label="Key results" class="pb-16">
+  <div class="container grid" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card key-result key-result--fit"><strong>76.4%</strong><span>Accuracy of the 30-sample window behaviour model on 110 held-out windows</span></div><div class="card key-result key-result--fit"><strong>0.74</strong><span>Macro F1, against 0.54 for a model that sees one IMU sample at a time</span></div><div class="card key-result key-result--fit"><strong>0.040</strong><span>Brake-pedal test MAE of ResNet18, about 4% of full pedal travel</span></div><div class="card key-result key-result--fit"><strong>0.293 → 0.065</strong><span>Webcam pedal error after fine-tuning on the deployment camera</span></div><div class="card key-result key-result--fit"><strong>52 / 20 / 271</strong><span>Bus stops, signals and junctions on Route 138 (Homagama to Pettah, 25 km)</span></div></div>
+</section>
+
+<section id="problem" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Research problem</span><h2>Why a harsh-event count is unfair on a city bus</h2><p>Four problems that make a raw brake-and-acceleration tally a poor driver score.</p></div>
+    <div class="grid mt-12" style="--md: 2"><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>The corridor gets the blame</p>
+          <p class="callout__text">A city bus has to stop, slow for signals and give way at junctions. Route 138 alone has 52 bus stops, 20 signals and 271 junctions. Counting every harsh event scores the route, so two equally skilled drivers can look different because of the corridor they were given.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Cabin vibration looks like aggression</p>
+          <p class="callout__text">An IMU inside a bus also records road roughness and engine shake. A spike in acceleration is not, by itself, proof that the driver pressed a pedal.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>A healing score hides an early event</p>
+          <p class="callout__text">A score that climbs back after a stretch of smooth driving can bury a dangerous manoeuvre from the start of the trip. Fleet managers need that event to stay visible.</p>
+        </div><div class="callout callout--amber callout--amber-soft callout--lg">
+          <p class="callout__title callout__title--base"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Absolute wear needs failure data</p>
+          <p class="callout__text">Predicting remaining useful life needs a history of component failures that a small operator often does not have. What they can compare is how hard this bus is being worked against other buses on the same route.</p>
+        </div></div>
+    <div class="grid grid--start mt-8" style="--lg: 2; --gap: 2rem">
+      <div class="card card--brand-border">
+        <p class="title-icon bold"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Research gap</p>
+        <p class="text-sm mt-3" style="line-height: 1.75rem; color: var(--slate-700)">Harsh-event detection, bus comfort and map matching each have a literature of their own. The gap is the join. Scoring rarely uses stops, signals, junction size, curvature and gradient to excuse manoeuvres the road demands. Pedal vision is usually studied apart from the IMU label. Maintenance is usually framed as time-to-failure. And a fluent trip summary can state facts that were never recorded. RouteGuard joins motion classification, optional pedal evidence, OpenStreetMap context and a relative duty comparison, and it restricts the language-model summary to stored journey fields.</p>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_2.png" alt="Each gap is tied to one mechanism in RouteGuard" loading="lazy">
+          <figcaption>Each gap is tied to one mechanism in RouteGuard</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<section id="objectives" class="section section--md anchor">
+  <div class="container grid" style="--lg: 2; --gap: 2.5rem">
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>Objectives</h2>
+      <ul class="check-list mt-6"><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Classify 30-sample IMU windows into smooth driving, sudden acceleration and sudden braking, and estimate passenger comfort from the same motion.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Estimate continuous brake and throttle positions from footwell images, and fuse that evidence with the IMU stream so vibration alone does not become a harsh event.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Build route context from OpenStreetMap for real bus corridors and score drivers with a ledger that excuses road-demanded manoeuvres, kept beside a naive event-count ledger.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Estimate relative maintenance duty for brakes, tyres, transmission, engine and driveline, and suspension, compared with a same-route fleet baseline.</span></li><li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg><span>Run the pipeline as a FastAPI service and a React interface inside the CITOS shell, with Firestore persistence and a trip summary drawn only from stored facts.</span></li></ul>
+    </div>
+    <div>
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Research questions</h2>
+      <ol class="rq-list mt-6"><li><b>RQ1</b><span>How accurately can a Random Forest separate smooth driving, sudden acceleration and sudden braking from windowed accelerometer and gyroscope features, compared with a per-sample model?</span></li><li><b>RQ2</b><span>Can passenger comfort be estimated from the same IMU windows, and which motion features carry the decision?</span></li><li><b>RQ3</b><span>How accurately can a convolutional network estimate brake and throttle from footwell images, and does fine-tuning on the deployment camera improve that camera?</span></li><li><b>RQ4</b><span>Does a context-aware score that excuses events near stops, signals and major junctions separate road-demanded manoeuvres from driver-caused ones better than a naive event count?</span></li></ol>
+      <p class="note-box mt-6">RQ1 to RQ3 are answered with held-out measurements below. RQ4 has a working ledger. Its counted
+        comparison on real trips is still to be collected.</p>
+    </div>
+  </div>
+</section>
+
+<section id="method" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Methodology</span><h2>How the research was carried out</h2><p>Models were trained on held-out splits. Route context was built from mapped bus corridors.</p></div>
+    <div class="grid mt-12" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card method-card"><small>01</small><strong>IMU preparation</strong><p>16,867 cleaned samples were mapped to three classes. Acceleration magnitude and jerk were recomputed inside each recording, then grouped into 550 non-overlapping windows of 30 samples.</p></div><div class="card method-card"><small>02</small><strong>Behaviour and comfort models</strong><p>Random Forests were trained in scikit-learn and scored on a stratified 20% hold-out. Comfort labels are tertiles of an index, not passenger ratings.</p></div><div class="card method-card"><small>03</small><strong>Pedal video</strong><p>53 phone videos and 20 webcam videos supplied time-stamped brake and throttle labels. A custom CNN and an ImageNet ResNet18 were compared, then ResNet18 was fine-tuned for the live camera.</p></div><div class="card method-card"><small>04</small><strong>Route context</strong><p>OpenStreetMap corridors for Routes 138, 141 and 177 carry stops, signals, junctions, curvature, gradient and speed limit. A harsh event is map-matched by chainage along the route.</p></div><div class="card method-card"><small>05</small><strong>Held-out metrics</strong><p>Behaviour and comfort use accuracy, precision, recall and F1. Pedal models use mean absolute error and root mean squared error on positions between 0 and 1.</p></div></div>
+  </div>
+</section>
+
+<section id="sensing" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
+          <span class="part-label">Sensing</span>
+        </div>
+        <h2>Motion windows, then an optional look at the pedals</h2>
+        <p>An ESP32 reads the MPU6050 and posts 30-sample windows to the RouteGuard FastAPI service. A footwell camera can add brake and throttle position when it is running.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <div class="card">
+        <h3 class="bold">Behaviour cascade and fusion</h3>
+        <div class="mt-5"><ol class="steps"><li><span class="num">1</span><span>Each window becomes a statistical feature vector: magnitude, jerk and gyroscope mean, spread and extremes.</span></li><li><span class="num">2</span><span>Stage 1 separates smooth driving from aggressive driving. A smooth window stops here.</span></li><li><span class="num">3</span><span>Stage 2 separates sudden acceleration from sudden braking.</span></li><li><span class="num">4</span><span>When the footwell camera is on, ResNet18 estimates brake and throttle in [0, 1]. Harshness is the rate of change of those positions, not a single pedal value.</span></li><li><span class="num">5</span><span>Fusion uses pedal evidence at 0.7 and IMU evidence at 0.3. With no pedal stream the weights fall back to the IMU alone, and the interface says so.</span></li></ol></div>
+      </div>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_11.png" alt="Two-stage behaviour cascade with optional pedal–IMU fusion" loading="lazy">
+          <figcaption>Two-stage behaviour cascade with optional pedal–IMU fusion</figcaption>
+        </figure>
+    </div>
+    <div class="grid mt-8" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_7.png" alt="IMU samples become window statistics for behaviour and comfort" loading="lazy">
+          <figcaption>IMU samples become window statistics for behaviour and comfort</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_8.png" alt="Footwell frames are resized and passed through ResNet18" loading="lazy">
+          <figcaption>Footwell frames are resized and passed through ResNet18</figcaption>
+        </figure>
+    </div>
+    <div class="grid grid--center mt-8" style="--lg: 2; --gap: 2rem">
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_16.jpg" alt="ESP32, MPU6050 and NEO-6M GPS assembled on the development bus" loading="lazy">
+          <figcaption>ESP32, MPU6050 and NEO-6M GPS assembled on the development bus</figcaption>
+        </figure>
+      <div class="card">
+        <h3 class="bold">What the device contributes</h3>
+        <p class="card__text mt-3 text-7">The MPU6050 is connected to the ESP32 over I²C. Firmware packs accelerometer and gyroscope readings
+          into windows and posts them to the sensor endpoint over Wi-Fi. A NEO-6M receiver is mounted with the
+          patch antenna and already returns position, speed and time. Confirming harsh events with those GPS
+          fixes is designed for a later on-road check.</p>
+        <p class="card__text mt-3 text-7">Comfort runs on every window beside the behaviour cascade and stays out of the driver score. A rough
+          road can feel uncomfortable without being the driver&#x27;s fault.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scoring" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="part-label">Route context</span>
+        </div>
+        <h2>Excuse the manoeuvre the road required</h2>
+        <p>Each harsh event is placed by chainage on an OpenStreetMap corridor. The context layer looks ahead and behind for the next stop, signal and major junction, plus curvature, gradient and the speed limit.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_12.png" alt="Naive ledger versus the context-aware excuse rules" loading="lazy">
+          <figcaption>Naive ledger versus the context-aware excuse rules</figcaption>
+        </figure>
+      <div class="grid" style="--sm: 2; --gap: 1rem"><div class="card" style="--pad: 1.25rem"><p class="bold">Brake on approach</p><p class="card__text">A sudden brake is excused or reduced while the bus is approaching a stop, a signal or a major junction.</p></div><div class="card" style="--pad: 1.25rem"><p class="bold">Acceleration on departure</p><p class="card__text">A sudden acceleration is excused or reduced while the bus is leaving a stop, a signal or a major junction.</p></div><div class="card" style="--pad: 1.25rem"><p class="bold">Curve and gradient credit</p><p class="card__text">Curvature and gradient reduce the penalty for braking before a sharp curve and for accelerating on a climb.</p></div><div class="card" style="--pad: 1.25rem"><p class="bold">Major junctions only</p><p class="card__text">A junction excuses an event only when its OpenStreetMap degree passes a threshold, so a small side lane does not wipe the penalty.</p></div><div class="card" style="--pad: 1.25rem"><p class="bold">Unexplained events stay</p><p class="card__text">An event that matches none of these situations takes the full penalty and is marked unexplained.</p></div><div class="card" style="--pad: 1.25rem"><p class="bold">Two ledgers, one formula</p><p class="card__text">The naive ledger penalises every harsh event. The context-aware ledger applies the excuse rules first. Both use the same per-kilometre formula, so the difference is the rules.</p></div></div>
+    </div>
+    <div class="card card--brand-border formula mt-8">
+      <p>score = clamp(100 − k · penalty / kilometres, 0, 100)</p>
+      <p class="formula__text">Penalties accumulate and stay. Later smooth driving does not erase an early unexplained event. Dividing
+        by distance lets trips of different lengths be compared. Routes 138, 141 and 177 are loaded from
+        OpenStreetMap. On Route 138 the corridor is 25.01 km, with 52 bus stops, 20 traffic signals and 271
+        junctions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="maintenance" class="section section--md anchor">
+  <div class="container">
+    <div class="part-header">
+        <div class="component-label">
+          <span class="tone-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg></span>
+          <span class="part-label">Vehicle duty</span>
+        </div>
+        <h2>How hard this bus is being worked</h2>
+        <p>Duty rises with distance, speed and the extra load of harsh events, then is compared with other buses on the same route. Early in a trip the comparison is damped, because there is still little exposure.</p>
+      </div>
+    <div class="grid mt-10" style="--lg: 2; --gap: 2rem">
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_14.png" alt="Relative maintenance duty against a same-route fleet baseline" loading="lazy">
+          <figcaption>Relative maintenance duty against a same-route fleet baseline</figcaption>
+        </figure>
+      <div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Component group</th><th scope="col">What adds duty</th></tr></thead><tbody><tr><td>Brakes</td><td>Harsh braking</td></tr><tr><td>Tyres</td><td>Distance, speed and harsh manoeuvres</td></tr><tr><td>Transmission</td><td>Harsh acceleration</td></tr><tr><td>Engine and driveline</td><td>Harsh acceleration and sustained load</td></tr><tr><td>Suspension</td><td>Vibration and harsh events</td></tr></tbody></table></div>
+        <p class="card__text mt-4">The output is a maintenance-risk percentage and a count of components above the fleet level. It answers
+          whether this bus is being worked harder than its peers. It does not estimate time to failure.</p>
+        <p class="card__text mt-3">After the journey is stored, a Gemini summary may be requested. The model receives only the recorded
+          fields: route, harsh events and whether they were excused, the context-aware score and the maintenance
+          risk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="section section--md section--surface anchor">
+  <div class="container">
+    <div class="section-heading section-heading--center"><span class="eyebrow">Findings</span><h2>What the <span class="text-gradient">held-out tests showed</span></h2><p>Behaviour, comfort and pedal numbers come from the training notebooks. System-level score comparisons that still need an on-road trial are left out.</p></div>
+
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>Behaviour classification</h3>
+    <p class="card__text max-3xl">A single IMU sample reached 57.7% accuracy. Sudden-brake samples were most often called sudden
+      acceleration, with recall 0.37. Grouping 30 samples into a window raised accuracy to 76.4% and macro F1
+      from 0.54 to 0.74.</p>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Measure</th><th scope="col">Per-sample Random Forest</th><th scope="col">Window Random Forest</th></tr></thead><tbody><tr><td>Test set</td><td>3,374 samples</td><td>110 windows</td></tr><tr><td>Input</td><td>12 features, one sample</td><td>17 features, 30-sample window</td></tr><tr><td>Trees</td><td>400</td><td>500</td></tr><tr><td>Accuracy</td><td>0.577</td><td>0.764</td></tr><tr><td>Macro precision</td><td>0.56</td><td>0.76</td></tr><tr><td>Macro recall</td><td>0.54</td><td>0.73</td></tr><tr><td>Macro F1</td><td>0.54</td><td>0.74</td></tr><tr><td>Weighted F1</td><td>0.57</td><td>0.76</td></tr></tbody></table></div></div>
+    <div class="grid mt-6" style="--lg: 2">
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_19.png" alt="Window behaviour model on the test set (110 windows)" loading="lazy">
+          <figcaption>Window behaviour model on the test set (110 windows)</figcaption>
+        </figure>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_20.png" alt="Per-class F1 and accuracy: one sample against a 30-sample window" loading="lazy">
+          <figcaption>Per-class F1 and accuracy: one sample against a 30-sample window</figcaption>
+        </figure>
+    </div>
+    <div class="mt-6"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Class</th><th scope="col">Precision</th><th scope="col">Recall</th><th scope="col">F1</th><th scope="col">Support</th></tr></thead><tbody><tr><td>Smooth driving</td><td>0.81</td><td>0.78</td><td>0.79</td><td>27</td></tr><tr><td>Sudden acceleration</td><td>0.77</td><td>0.89</td><td>0.82</td><td>53</td></tr><tr><td>Sudden brake</td><td>0.70</td><td>0.53</td><td>0.60</td><td>30</td></tr><tr><td>Macro average</td><td>0.76</td><td>0.73</td><td>0.74</td><td>110</td></tr></tbody></table></div></div>
+    <p class="card__text max-3xl mt-4">Smooth driving is the decision that protects a fair score: 21 of 27 smooth windows were kept smooth, and 6
+      were flagged as aggressive. Sudden braking is the weak class. Twelve of 30 brake windows were predicted as
+      sudden acceleration, because the magnitude features do not say whether the vehicle was slowing or
+      speeding up. That is why the cascade, the pedal stream and a later GPS check exist.</p>
+
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>Passenger comfort</h3>
+    <p class="card__text max-3xl">The comfort Random Forest reached 99.1% accuracy on the same 110 windows, missing one Uncomfortable window.
+      The labels were tertiles of an index built from acceleration spread, jerk mean, jerk max and gyroscope
+      spread, and those features are also model inputs. The result shows that the index can be reproduced live
+      with a confidence band. It does not show that passengers would agree.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Class</th><th scope="col">Precision</th><th scope="col">Recall</th><th scope="col">F1</th><th scope="col">Support</th></tr></thead><tbody><tr><td>Comfortable</td><td>1.00</td><td>1.00</td><td>1.00</td><td>37</td></tr><tr><td>Moderate discomfort</td><td>0.97</td><td>1.00</td><td>0.99</td><td>36</td></tr><tr><td>Uncomfortable</td><td>1.00</td><td>0.97</td><td>0.99</td><td>37</td></tr></tbody></table></div>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_22.png" alt="Comfort feature importance. Orange bars are inputs of the label formula" loading="lazy">
+          <figcaption>Comfort feature importance. Orange bars are inputs of the label formula</figcaption>
+        </figure>
+    </div>
+
+    <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg>Pedal position</h3>
+    <p class="card__text max-3xl">On the phone-video test set, ResNet18 had the lower mean absolute error (0.0673 against 0.0925) and the
+      lower mean RMSE (0.1279 against 0.1708). The gain was on the brake. The custom CNN was slightly closer on
+      throttle MAE.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Measure</th><th scope="col">Custom CNN</th><th scope="col">ResNet18</th></tr></thead><tbody><tr><td>Trainable parameters</td><td>0.42 M</td><td>11.18 M</td></tr><tr><td>Validation MAE (mean)</td><td>0.0689</td><td>0.0500</td></tr><tr><td>Test MAE, brake</td><td>0.0987</td><td>0.0403</td></tr><tr><td>Test MAE, throttle</td><td>0.0863</td><td>0.0943</td></tr><tr><td>Test MAE, mean</td><td>0.0925</td><td>0.0673</td></tr><tr><td>Test RMSE, mean</td><td>0.1708</td><td>0.1279</td></tr></tbody></table></div>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_23.png" alt="Test MAE and RMSE on phone-video pedal frames" loading="lazy">
+          <figcaption>Test MAE and RMSE on phone-video pedal frames</figcaption>
+        </figure>
+    </div>
+    <p class="card__text max-3xl mt-8">The phone-trained ResNet18 did not transfer to the live webcam. Mean MAE on 208 webcam test frames was
+      0.2929. After fine-tuning with webcam frames oversampled, it fell to 0.0647. Hard throttle, which the
+      phone model had averaged at 0.29, was predicted at 0.79. Idle throttle fell from 0.12 to 0.017. The best
+      fine-tuning epoch was the first, so the schedule was kept short.</p>
+    <div class="grid mt-5" style="--lg: 2">
+      <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Webcam test</th><th scope="col">Phone-trained</th><th scope="col">After fine-tuning</th></tr></thead><tbody><tr><td>MAE, brake</td><td>0.2402</td><td>0.0318</td></tr><tr><td>MAE, throttle</td><td>0.3456</td><td>0.0977</td></tr><tr><td>MAE, mean</td><td>0.2929</td><td>0.0647</td></tr><tr><td>RMSE, brake</td><td>0.2637</td><td>0.0902</td></tr><tr><td>RMSE, throttle</td><td>0.4464</td><td>0.1523</td></tr></tbody></table></div>
+      <figure class="figure">
+          <img src="assets/figures/behaviour/fig_25.png" alt="Webcam error before and after fine-tuning ResNet18" loading="lazy">
+          <figcaption>Webcam error before and after fine-tuning ResNet18</figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
+
+<section id="journey" class="section section--md anchor">
+  <div class="container grid" style="--lg: 5; --gap: 3rem">
+    <div style="--span-lg: 3">
+      <h2 class="title-2xl title-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M12 3v3"/><path d="M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>Research journey</h2>
+      <ol class="journey"><li><small>Problem</small><strong>Score the driver, not the corridor</strong><p>The component was framed around city-bus routes, where many harsh brakes and accelerations are required by stops, signals, junctions, curves and gradients.</p></li><li><small>Data</small><strong>Windows and labelled pedals</strong><p>IMU samples were corrected and cut into 30-sample windows. Footwell videos from a phone and a webcam were labelled with continuous brake and throttle positions.</p></li><li><small>Models</small><strong>Random Forests and ResNet18</strong><p>A windowed behaviour model beat the per-sample baseline. ResNet18 was selected for the pedals and fine-tuned for the live camera.</p></li><li><small>System</small><strong>Route context inside CITOS</strong><p>FastAPI serves the models, OpenStreetMap context and the two score ledgers. React pages for monitoring, comfort, maintenance, history and alerts sit under the Behaviour tab.</p></li><li><small>Evidence</small><strong>Held-out tests, open system trial</strong><p>RQ1 to RQ3 have measured test-set results. The quantitative comparison of context-aware and naive scores, and an on-road check with the on-board GPS, are still to be collected.</p></li></ol>
+    </div>
+    <div style="--span-lg: 2">
+      <h2 class="title-2xl title-icon"><svg class="icon amber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Limitations and next steps</h2>
+      <ul class="limit-list"><li>The behaviour and comfort recordings were not collected on Sri Lankan buses, so they describe vehicle motion in general.</li><li>Sudden braking remains the weakest class (F1 0.60). Magnitude and jerk do not carry a sign, so a hard stop and a hard launch can look alike.</li><li>The 99.1% comfort accuracy reproduces an index built from features the model also receives. It is not a passenger rating study.</li><li>Separate test metrics for the two cascade stages were not recorded. The 76.4% figure is the three-class window model.</li><li>The context-aware ledger is implemented. A counted comparison against the naive ledger on real trips has not yet been run.</li><li>Maintenance duty is a relative indicator against the same-route fleet. It is not a remaining-useful-life prediction.</li><li>The NEO-6M GPS receiver is fitted and producing fixes. Using those fixes to confirm or reject IMU events on the road is designed and not yet evaluated.</li><li>A formal on-road study with bus drivers has not been carried out.</li></ul>
+      <div class="cluster mt-8"><span class="chip chip--md">ESP32</span><span class="chip chip--md">MPU6050</span><span class="chip chip--md">NEO-6M GPS</span><span class="chip chip--md">Random Forest</span><span class="chip chip--md">scikit-learn</span><span class="chip chip--md">ResNet18</span><span class="chip chip--md">PyTorch</span><span class="chip chip--md">OpenCV</span><span class="chip chip--md">OpenStreetMap</span><span class="chip chip--md">FastAPI</span><span class="chip chip--md">Cloud Firestore</span><span class="chip chip--md">Gemini</span><span class="chip chip--md">React</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="documents" class="pb-24 anchor">
+  <div class="container container--5xl">
+    <h2 class="title-2xl center">Research documents</h2>
+    <div class="grid mt-8" style="--gap: 1rem"><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">March 2026</p>
+            <p class="bold mt-1">Project proposal</p>
+            <p class="text-sm-tight muted">Route-Aware Driver Behaviour Analytics Using Vision-Based Pedal Monitoring, Vehicle Motion Sensing, and Predictive Maintenance Insights</p>
+          </div>
+          <a href="https://storage.googleapis.com/citos-portfolio/harry/IT22297440-project-proposal.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        </div><div class="card doc-card doc-card--sm">
+          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <div class="doc-card__body">
+            <p class="overline">October 2026</p>
+            <p class="bold mt-1">Individual thesis</p>
+            <p class="text-sm-tight muted">RouteGuard, the driver behaviour component of CITOS (IT22297440)</p>
+          </div>
+          <a href="https://storage.googleapis.com/citos-portfolio/harry/IT22297440-individual-thesis.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        </div></div>
+    <div class="center mt-10">
+      <a href="research.html" class="link-arrow"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to all research components</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container grid site-footer__grid" style="--md: 12">
+    <div class="site-footer__about" style="--span-md: 4">
+      <a href="index.html" class="logo" aria-label="CITOS home">
+      <img src="assets/images/logo.png" alt="" width="72" height="48">
+      <span class="logo__text">
+        <span class="logo__name">CITOS</span>
+        <span class="logo__tagline">R26-DS-013</span>
+      </span>
+    </a>
+      <p>An AI-driven framework for real-time driver behaviour analysis, vehicle monitoring, and road safety.</p>
+      <p class="project-tag">Research project R26-DS-013</p>
+    </div>
+    <div style="--span-md: 2">
+      <h3>Explore</h3>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="domain.html">Domain</a></li><li><a href="research.html">Research</a></li><li><a href="milestones.html">Milestones</a></li><li><a href="documents.html">Documents</a></li><li><a href="presentations.html">Presentations</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact Us</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Research components</h3>
+      <ul class="footer-links"><li><a href="research.html#graphrag">Verifiable GraphRAG</a></li><li><a href="research.html#fatigue">Fatigue detection</a></li><li><a href="research.html#distraction">Distraction detection</a></li><li><a href="research.html#behaviour">Behaviour analytics</a></li><li><a href="research.html#traffic">Violation detection</a></li><li><a href="research.html#scoring">Risk scoring</a></li></ul>
+    </div>
+    <div style="--span-md: 3">
+      <h3>Contact</h3>
+      <ul class="footer-links">
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:IT2207184@my.sliit.lk">IT2207184@my.sliit.lk</a></li>
+        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malabe, Sri Lanka</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>© 2026 CITOS. Sri Lanka Institute of Information Technology (SLIIT).</p>
+      <p>Built for research &amp; educational purposes.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

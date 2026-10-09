@@ -5918,3 +5918,123 @@
     white-space: normal;
   }
 }
+
+@layer components {
+  /* Longer key-result values (e.g. "0.293 → 0.065") start one size smaller on narrow screens. */
+  .key-result--fit strong {
+    font-size: 1.5rem;
+    line-height: 2rem;
+
+    @media (width >= 40rem) {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+  }
+
+  .note-box {
+    padding: 1rem;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-2xl);
+    background: var(--slate-50);
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--muted);
+  }
+
+  .formula .formula__text {
+    margin-block-start: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--muted);
+  }
+}
+
+/* ───────── Contact form result (set by contact.php through the URL fragment) ───────── */
+@layer components {
+  .form-result,
+  .form-alert {
+    display: none;
+  }
+
+  .form-alert {
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-block-end: 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--rose-200);
+    border-radius: var(--radius-2xl);
+    background: var(--rose-50);
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: var(--rose-800);
+
+    .icon {
+      margin-block-start: 0.125rem;
+      font-size: 1.25rem;
+    }
+
+    &:target {
+      display: flex;
+    }
+  }
+
+  .form-result {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem;
+    border: 1px solid var(--emerald-200);
+    border-radius: var(--radius-3xl);
+    background: rgb(236 253 245 / 0.6);
+    text-align: center;
+    animation: fade-up 0.7s var(--ease-out) both;
+
+    &:target {
+      display: flex;
+    }
+
+    h3 {
+      margin-block-start: 1.5rem;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      font-weight: 700;
+    }
+
+    p {
+      max-inline-size: 24rem;
+      margin-block-start: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5rem;
+      color: var(--muted);
+    }
+
+    .btn {
+      margin-block-start: 2rem;
+    }
+  }
+
+  .form-result__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 4rem;
+    block-size: 4rem;
+    border-radius: var(--radius-full);
+    background: var(--emerald-100);
+    font-size: 2.25rem;
+    color: var(--emerald-600);
+  }
+
+  /* After a successful send the confirmation replaces the form. */
+  .form-card:has(#sent:target) > :not(#sent, h2) {
+    display: none;
+  }
+
+  .honeypot {
+    position: absolute;
+    inset-inline-start: -9999px;
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+  }
+}

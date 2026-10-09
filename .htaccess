@@ -1,0 +1,8 @@
+# Block .env, .env.example, .git and every other dotfile from being downloaded.
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# No directory listings.
+Options -Indexes
+

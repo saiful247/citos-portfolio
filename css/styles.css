@@ -680,6 +680,15 @@
     &:hover {
       background: var(--brand-700);
     }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    &:hover:disabled {
+      background: var(--ink);
+    }
   }
 
   .btn--primary {
@@ -2746,6 +2755,11 @@
 
     &:disabled {
       cursor: not-allowed;
+    }
+
+    &:hover:disabled {
+      scale: 1;
+      box-shadow: var(--shadow-sm);
     }
   }
 

@@ -58,7 +58,7 @@
 
 <!-- ───────────── Key results ───────────── -->
 <section aria-label="Key results" class="pb-16">
-  <div class="container grid" style="--sm: 2; --lg: 5; --gap: 1rem"><div class="card key-result"><strong>0.973</strong><span>mAP@0.5 of the YOLOv8m detector on its held-out test split</span></div><div class="card key-result"><strong>3.5%</strong><span>false violations from the GPS stop test, against 27.3% without our correction</span></div><div class="card key-result"><strong>76% → 95%</strong><span>multilingual answer accuracy after cross-lingual value linking</span></div><div class="card key-result"><strong>0 / 341</strong><span>false alarms when checking answer claims against the graph</span></div><div class="card key-result"><strong>≤ 2.07%</strong><span>certified rate of unsupported claims at 95% confidence</span></div></div>
+  <div class="container grid" style="--sm: 2; --lg: 4; --gap: 1rem"><div class="card key-result"><strong>0.973</strong><span>mAP@0.5 of the YOLOv8m detector on its held-out test split</span></div><div class="card key-result"><strong>3.5%</strong><span>false violations from the GPS stop test, against 27.3% without our correction</span></div><div class="card key-result"><strong>0 / 341</strong><span>false alarms when checking answer claims against the graph</span></div><div class="card key-result"><strong>≤ 2.07%</strong><span>certified rate of unsupported claims at 95% confidence</span></div></div>
 </section>
 
 <!-- ───────────── Problem and gap ───────────── -->
@@ -287,17 +287,7 @@
     </div>
 
     <h3 class="title-xl title-icon mt-14"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>DriverGraphRAG</h3>
-    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Study</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Adaptive retrieval (40 paired questions)</td><td>80.0%</td><td>85.0%</td><td>2 fixed, 0 broken, no extra latency (17.1 s vs 17.0 s mean)</td></tr><tr><td>Cross-lingual linking (24 questions, 21 completed)</td><td>76.2%</td><td>95.2%</td><td>Sinhala 3/6 → 6/6, Tamil 4/6 → 5/6</td></tr><tr><td>Wrong-subgraph fault injection (10 questions)</td><td>-</td><td>8 / 10</td><td>All diagnosed as Mode C; confidence improved on 8</td></tr><tr><td>Faithfulness ledger (341 hand-labelled claims)</td><td>-</td><td>0 false alarms</td><td>No model inference needed</td></tr><tr><td>Conformal certificate</td><td>-</td><td>≤ 2.07%</td><td>Unsupported claims at 95% confidence, keeping 97.1% of content</td></tr></tbody></table></div></div>
-    <div class="grid mt-6" style="--lg: 2">
-      <figure class="figure">
-          <img src="assets/figures/fig_adaptive.png" alt="Accuracy by question category, with and without adaptive retrieval" loading="lazy">
-          <figcaption>Accuracy by question category, with and without adaptive retrieval</figcaption>
-        </figure>
-      <figure class="figure">
-          <img src="assets/figures/fig_xlink.png" alt="Accuracy by language, with and without cross-lingual linking" loading="lazy">
-          <figcaption>Accuracy by language, with and without cross-lingual linking</figcaption>
-        </figure>
-    </div>
+    <div class="mt-5"><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Study</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Faithfulness ledger (341 hand-labelled claims)</td><td>-</td><td>0 false alarms</td><td>No model inference needed</td></tr><tr><td>Conformal certificate</td><td>-</td><td>≤ 2.07%</td><td>Unsupported claims at 95% confidence, keeping 97.1% of content</td></tr></tbody></table></div></div>
   </div>
 </section>
 
@@ -310,7 +300,7 @@
     </div>
     <div style="--span-lg: 2">
       <h2 class="title-2xl title-icon"><svg class="icon amber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Limitations and next steps</h2>
-      <ul class="limit-list"><li>Detector test sets come from public datasets; the next step is a held-out set of NCG fleet footage, including night driving.</li><li>Without mapped stop lines, the stop test measures stopping behaviour, not stop-line compliance.</li><li>Speed zones are configured for Route 177 and do not yet follow school holidays.</li><li>The GraphRAG question sets are small (40 and 24), so gains are directional; legal questions remain the hardest.</li><li>The verifier checks values, not the relationships between them.</li></ul>
+      <ul class="limit-list"><li>Detector test sets come from public datasets; the next step is a held-out set of NCG fleet footage, including night driving.</li><li>Without mapped stop lines, the stop test measures stopping behaviour, not stop-line compliance.</li><li>Speed zones are configured for Route 177 and do not yet follow school holidays.</li><li>The GraphRAG question sets are small, so gains are directional; legal questions remain the hardest.</li><li>The verifier checks values, not the relationships between them.</li></ul>
       <div class="cluster mt-8"><span class="chip chip--md">YOLOv8m</span><span class="chip chip--md">Ultralytics</span><span class="chip chip--md">Google Colab</span><span class="chip chip--md">OpenCV</span><span class="chip chip--md">SciPy</span><span class="chip chip--md">Google Maps Platform</span><span class="chip chip--md">Neo4j</span><span class="chip chip--md">Cloud Firestore</span><span class="chip chip--md">Gemini on Vertex AI</span><span class="chip chip--md">gemini-embedding-001</span><span class="chip chip--md">FastAPI</span><span class="chip chip--md">React</span></div>
     </div>
   </div>
@@ -336,14 +326,6 @@
             <p class="text-sm-tight muted">Diagnose, Verify, Personalize: A Black-Box GraphRAG Pipeline for Multilingual Driver-Safety and Traffic-Law Question Answering</p>
           </div>
           <a href="https://storage.googleapis.com/citos-portfolio/saiful/Diagnose%20Verify%20Personalize%20A%20Black-Box%20GraphRAG%20Pipeline%20for%20Multilingual%20Driver-Safety%20and%20Traffic-Law%20Question%20Answering.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
-        </div><div class="card doc-card doc-card--sm">
-          <span class="gradient-icon"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
-          <div class="doc-card__body">
-            <p class="overline">Oct 2026</p>
-            <p class="bold mt-1">Individual thesis</p>
-            <p class="text-sm-tight muted">Intelligent Bus Driver Assessment &amp; Explainable AI-Based System</p>
-          </div>
-          <a href="https://storage.googleapis.com/citos-portfolio/saiful/IT22071484_DRAFT.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--dark">View PDF <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
         </div></div>
     <div class="center mt-10">
       <a href="research.html" class="link-arrow"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to all research components</a>
